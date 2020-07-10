@@ -19,6 +19,9 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -140,7 +143,13 @@ public class BaseMenuActivity extends AppCompatActivity {
                         }
                     });
                 }
+                AccessToken token;
+                token = AccessToken.getCurrentAccessToken();
 
+                if (token != null) {
+                    //Means user is logged in
+                    LoginManager.getInstance().logOut();
+                }
                 Intent intent = new Intent(BaseMenuActivity.this.getBaseContext(),
                         LoginActivity.class);
                 BaseMenuActivity.this.startActivity(intent);
