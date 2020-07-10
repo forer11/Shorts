@@ -27,8 +27,7 @@ public class FireStoreHandler {
 
     private Context context;
 
-    public FireStoreHandler(Context context)
-    {
+    public FireStoreHandler(Context context) {
         this.context = context;
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection(USERS);
@@ -37,7 +36,8 @@ public class FireStoreHandler {
 
     public void createUserIfNotExists(FirebaseUser user) {
         if (user != null && user.getEmail() != null) {
-            final DocumentReference userRef = usersRef.document(user.getEmail());
+            final DocumentReference userRef = usersRef.document(user.getEmail()
+                    + user.getUid());
             userRef.get()
                     .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                         @Override

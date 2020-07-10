@@ -10,6 +10,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -19,20 +26,26 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     private Button googleSignInButton, anonymousSignInButton;
     private GoogleSignInClient googleSignInClient;
+    private static final String EMAIL = "email";
     private String TAG = "LoginActivity";
     private int RC_SIGN_IN = 1;
 
     AppData appData;
     FirebaseAuth firebaseAuth;
+    private Button facebookSignIn;
+    private CallbackManager callbackManager;
+    private LoginButton loginButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,8 +54,16 @@ public class LoginActivity extends AppCompatActivity {
 
         getAppData();
         setViews();
+        loginButton = findViewById(R.id.login_button);
+        loginButton.setPermissions(Arrays.asList(EMAIL));
+        // If you are using in a fragment, call loginButton.setFragment(this);
+
+        // Callback registration
         setSignInClickListener();
         googleSignInClient = appData.fireBaseAuthHandler.googleSignInClient;
+
+        callbackManager = CallbackManager.Factory.create();
+
     }
 
     private void setSignInClickListener() {
@@ -53,10 +74,54 @@ public class LoginActivity extends AppCompatActivity {
                 signIn();
             }
         });
+
+        facebookSignIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loginButton.performClick();
+                LoginManager.getInstance().registerCallback(callbackManager,
+                        new FacebookCallback<LoginResult>() {
+                            @Override
+                            public void onSuccess(LoginResult loginResult) {
+                                signInWithFacebook(loginResult);
+                            }
+
+                            @Override
+                            public void onCancel() {
+                                // App code
+                            }
+
+                            @Override
+                            public void onError(FacebookException exception) {
+                                // App code
+                            }
+                        });
+            }
+        });
+    }
+
+    private void signInWithFacebook(LoginResult loginResult) {
+        AuthCredential credential = FacebookAuthProvider
+                .getCredential(loginResult.getAccessToken().getToken());
+        firebaseAuth.signInWithCredential(credential)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+                        if (task.isSuccessful()) {
+                            Log.d(TAG, "signInWithCredential:success");
+                            goToMainScreen();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        }
+                    }
+                });
     }
 
     private void setViews() {
         googleSignInButton = findViewById(R.id.google_sign_in_button);
+        facebookSignIn = findViewById(R.id.facebook_sign_in_button);
     }
 
     private void getAppData() {
@@ -75,6 +140,8 @@ public class LoginActivity extends AppCompatActivity {
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             handelSignInResults(data);
+        } else {
+            callbackManager.onActivityResult(requestCode, resultCode, data);
         }
         googleSignInButton.setEnabled(true);
     }
@@ -117,5 +184,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
 
 }

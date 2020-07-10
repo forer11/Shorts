@@ -25,16 +25,45 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/login_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/facebook_sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/sign_in_button_design"
+        android:drawableStart="@mipmap/facebook_icon"
+        android:drawablePadding="15dp"
+        android:padding="10dp"
+        android:scaleType="matrix"
+        android:text="Sign In with Facebook"
+        android:textAllCaps="false"
+        android:textColor="@color/gray"
+        app:layout_constraintBottom_toTopOf="@+id/google_sign_in_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.94" />
+
 
     <Button
         android:id="@+id/google_sign_in_button"
-
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="10dp"
         android:drawablePadding="15dp"
         android:textColor="@color/gray"
-        android:drawableStart="@drawable/google_button_image"
+        android:scaleType="matrix"
+        android:drawableStart="@mipmap/google_icon"
         android:text="Sign In with Google"
         android:textAllCaps="false"
         android:background="@drawable/sign_in_button_design"
