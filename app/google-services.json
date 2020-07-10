@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "354049566538",
+    "firebase_url": "https://shortmaker-dbb76.firebaseio.com",
+    "project_id": "shortmaker-dbb76",
+    "storage_bucket": "shortmaker-dbb76.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354049566538:android:22a3d72fbf14d58fd343b3",
+        "android_client_info": {
+          "package_name": "com.example.shortmaker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354049566538-skh0gq6hkvv53rh1udmpb37obusmivrf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ89Uca9Qwy7JxDNv-s-617qx5L7a2RHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354049566538-skh0gq6hkvv53rh1udmpb37obusmivrf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
