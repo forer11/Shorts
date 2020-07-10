@@ -3,19 +3,26 @@
     package="com.example.shortmaker">
 
     <application
+        android:name=".AppData"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/teddy_bear"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".OpeningScreenActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".BaseMenuActivity" />
+        <activity android:name=".LoginActivity">
+
+        </activity>
+        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>
