@@ -17,6 +17,8 @@ public class BluetoothHandler {
     public BluetoothHandler(Context context) {
         this.context = context;
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        IntentFilter BTintent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
+        context.registerReceiver(broadcastReceiver, BTintent);
     }
 
     private final BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
@@ -55,18 +57,12 @@ public class BluetoothHandler {
         if (!bluetoothAdapter.isEnabled()) {
             Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             context.startActivity(enableBluetoothIntent);
-
-            IntentFilter BTintent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-            context.registerReceiver(broadcastReceiver, BTintent);
         }
     }
 
     public void disableBluetooth() {
         if (bluetoothAdapter.isEnabled()) {
             bluetoothAdapter.disable();
-
-            IntentFilter BTintent = new IntentFilter(BluetoothAdapter.ACTION_STATE_CHANGED);
-            context.registerReceiver(broadcastReceiver, BTintent);
         }
     }
 

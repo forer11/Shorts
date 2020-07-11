@@ -74,7 +74,7 @@ public class MainActivity extends BaseMenuActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
         bluetoothHandler.unregister();
+        super.onDestroy();
     }
 }
