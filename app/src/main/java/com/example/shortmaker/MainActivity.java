@@ -3,17 +3,41 @@ package com.example.shortmaker;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.shortmaker.SystemHandlers.BluetoothHandler;
+
 public class MainActivity extends BaseMenuActivity {
+    BluetoothHandler bluetoothHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setToolbar();
+        bluetoothHandler = new BluetoothHandler(MainActivity.this);
+
+        Button bluetoothOnButton = findViewById(R.id.bluetooth_on_button);
+        bluetoothOnButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bluetoothHandler.enableBluetooth();
+            }
+        });
+
+        final Button bluetoothOffButton = findViewById(R.id.bluetooth_off_button);
+        bluetoothOffButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bluetoothHandler.disableBluetooth();
+            }
+        });
+
+
     }
 
     private void setToolbar() {
@@ -46,5 +70,11 @@ public class MainActivity extends BaseMenuActivity {
                 return false;
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        bluetoothHandler.unregister();
     }
 }

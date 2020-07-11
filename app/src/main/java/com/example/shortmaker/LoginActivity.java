@@ -78,6 +78,7 @@ public class LoginActivity extends AppCompatActivity {
         facebookSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                facebookSignIn.setEnabled(false);
                 loginButton.performClick();
                 LoginManager.getInstance().registerCallback(callbackManager,
                         new FacebookCallback<LoginResult>() {
@@ -144,6 +145,7 @@ public class LoginActivity extends AppCompatActivity {
             callbackManager.onActivityResult(requestCode, resultCode, data);
         }
         googleSignInButton.setEnabled(true);
+        facebookSignIn.setEnabled(true);
     }
 
     private void handelSignInResults(Intent data) {
