@@ -3,11 +3,8 @@ package com.example.shortmaker;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
-import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,7 +25,7 @@ public class OpeningScreenActivity extends AppCompatActivity {
     private void checkLoginStatus(FirebaseUser currentUser) {
         Intent intent;
         if (currentUser != null) {
-            intent = new Intent(getApplicationContext(), MainActivity.class);
+            intent = new Intent(getApplicationContext(), ActivateBluetoothActivity.class);
             startActivity(intent);
         } else {
             intent = new Intent(getApplicationContext(), LoginActivity.class);
