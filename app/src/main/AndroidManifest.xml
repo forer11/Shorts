@@ -30,7 +30,7 @@
         <activity android:name=".LoginActivity">
 
         </activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".ActivateBluetoothActivity" />
 
 
         <meta-data

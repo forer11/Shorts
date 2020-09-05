@@ -11,15 +11,15 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.example.shortmaker.SystemHandlers.BluetoothHandler;
 
-public class MainActivity extends BaseMenuActivity {
+public class ActivateBluetoothActivity extends BaseMenuActivity {
     BluetoothHandler bluetoothHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_activate_bluetooth);
         setToolbar();
-        bluetoothHandler = new BluetoothHandler(MainActivity.this);
+        bluetoothHandler = new BluetoothHandler(ActivateBluetoothActivity.this);
 
         Button bluetoothOnButton = findViewById(R.id.bluetooth_on_button);
         bluetoothOnButton.setOnClickListener(new View.OnClickListener() {
