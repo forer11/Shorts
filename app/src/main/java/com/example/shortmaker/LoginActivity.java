@@ -178,7 +178,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void goToMainScreen() {
-        Intent intent = new Intent(getApplicationContext(), ActivateBluetoothActivity.class);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
     }
