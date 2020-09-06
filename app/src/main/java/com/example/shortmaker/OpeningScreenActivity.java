@@ -25,7 +25,7 @@ public class OpeningScreenActivity extends AppCompatActivity {
     private void checkLoginStatus(FirebaseUser currentUser) {
         Intent intent;
         if (currentUser != null) {
-            intent = new Intent(getApplicationContext(), ActivateBluetoothActivity.class);
+            intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
         } else {
             intent = new Intent(getApplicationContext(), LoginActivity.class);
