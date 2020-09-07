@@ -52,10 +52,9 @@ public class DraggableGridAdapter extends RecyclerView
     public void onBindViewHolder(@NonNull ShortcutItemHolder holder, int position) {
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
-        holder.shortcut_image.setImageResource(R.mipmap.google_icon);
-
-
+        holder.shortcut_image.setImageResource(R.drawable.richi);
     }
+
 
     @Override
     public int getItemCount() {
@@ -91,7 +90,7 @@ public class DraggableGridAdapter extends RecyclerView
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.setHeaderTitle("Select The Action");
             menu.add(0, v.getId(), 0, "Delete");
-            menu.add(0, v.getId(), 0, "Change Picture");
+            menu.add(0, v.getId(), 0, "Change Icon");
         }
 
 

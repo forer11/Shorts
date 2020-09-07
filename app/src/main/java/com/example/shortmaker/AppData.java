@@ -7,8 +7,13 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
+import androidx.annotation.Nullable;
+
 import com.example.shortmaker.FireBaseHandlers.FireBaseAuthHandler;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
+import com.maltaisn.icondialog.pack.IconPack;
+import com.maltaisn.icondialog.pack.IconPackLoader;
+import com.maltaisn.iconpack.defaultpack.IconPackDefault;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,13 +21,33 @@ import java.security.NoSuchAlgorithmException;
 public class AppData extends Application {
     FireStoreHandler fireStoreHandler;
     FireBaseAuthHandler fireBaseAuthHandler;
-
+    @Nullable
+    private IconPack iconPack;
     @Override
     public void onCreate() {
         super.onCreate();
         fireBaseAuthHandler = new FireBaseAuthHandler(getApplicationContext());
         fireStoreHandler = new FireStoreHandler(getApplicationContext());
         printHashKey();
+        loadIconPack();
+
+    }
+
+
+    @Nullable
+    public IconPack getIconPack() {
+        return iconPack != null ? iconPack : loadIconPack();
+    }
+
+    private IconPack loadIconPack() {
+        // Create an icon pack loader with application context.
+        IconPackLoader loader = new IconPackLoader(this);
+
+        // Create an icon pack and load all drawables.
+        iconPack = IconPackDefault.createDefaultIconPack(loader);
+        iconPack.loadDrawables(loader.getDrawableLoader());
+
+        return iconPack;
     }
 
     public void printHashKey() {
