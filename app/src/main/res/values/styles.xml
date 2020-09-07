@@ -6,6 +6,7 @@
         <item name="colorPrimary">#F8F8F8</item>
         <item name="colorPrimaryDark">#C7CCD1</item>
         <item name="colorAccent">@color/indigo</item>
+        <item name="icdStyle">@style/CustomIconDialogStyle</item>
     </style>
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -38,12 +39,35 @@
     <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowFullscreen">true</item>
     </style>
-    
+
     <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@drawable/background_splash</item>
     </style>
 
+    <!-- Your custom dialog style, don't forget to specify the parent style! -->
+    <style name="CustomIconDialogStyle" parent="IcdStyle">
+        <item name="icdIconSize">72dp</item>
+        <item name="icdIconColor">#9FE3DB</item>
+        <item name="icdListHeaderStyle">@style/CustomHeaderStyle</item>
+        <item name="icdDialogButtonStyle">@style/IcdButtonStyle</item>
+    </style>
 
 
+    <!-- Custom style for the list headers, again don't forget the parent! -->
+    <style name="CustomHeaderStyle" parent="IcdListHeaderStyle">
+        <item name="android:textAllCaps">true</item>
+        <item name="android:typeface">monospace</item>
+<!--        <item name="android:paddingTop">18dp</item>-->
+<!--        <item name="android:paddingBottom">18dp</item>-->
+<!--        <item name="android:paddingLeft">18dp</item>-->
+<!--        <item name="android:paddingRight">18dp</item>-->
+    </style>
 
+    <style name="IcdButtonStyle" parent="Base.Widget.AppCompat.Button.ButtonBar.AlertDialog">
+        <item name="android:textColor">@color/gray</item>
+        <item name="android:background">@drawable/sign_in_button_design</item>
+        <item name="android:minWidth">64dp</item>
+        <item name="android:minHeight">64dp</item>
+        <item name="android:padding">10dp</item>
+    </style>
 </resources>

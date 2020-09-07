@@ -76,7 +76,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         if ("Delete".equals(title)) {
             //TODO - delete selected item
         } else if ("Change Icon".equals(title)) {
-            //TODO - replaace selected item
+            //TODO - change icon of selected item
 
             // If dialog is already added to fragment manager, get it. If not, create a new instance.
             IconDialog dialog = (IconDialog) getSupportFragmentManager().findFragmentByTag(ICON_DIALOG_TAG);
@@ -117,6 +117,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     @Override
     public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
         // Show a toast with the list of selected icon IDs.
+        dialog.dismiss();
         StringBuilder sb = new StringBuilder();
         for (Icon icon : icons) {
             sb.append(icon.getId());
