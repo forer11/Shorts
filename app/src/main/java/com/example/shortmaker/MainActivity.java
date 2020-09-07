@@ -1,7 +1,6 @@
 package com.example.shortmaker;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -10,11 +9,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
@@ -24,15 +20,12 @@ import com.maltaisn.icondialog.IconDialogSettings;
 import com.maltaisn.icondialog.data.Icon;
 import com.maltaisn.icondialog.pack.IconPack;
 
-import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-
-import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG;
 
 public class MainActivity extends BaseMenuActivity implements IconDialog.Callback {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
@@ -48,23 +41,23 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         setContentView(R.layout.activity_main);
 
         shortcuts = new ArrayList<>();
-        shortcuts.add(new Shortcut("yay", ""));
-        shortcuts.add(new Shortcut("yay1", ""));
-        shortcuts.add(new Shortcut("yay2", ""));
-        shortcuts.add(new Shortcut("yay3", ""));
-        shortcuts.add(new Shortcut("yay4", ""));
-        shortcuts.add(new Shortcut("yay5", ""));
-        shortcuts.add(new Shortcut("yay6", ""));
-        shortcuts.add(new Shortcut("yay7", ""));
-        shortcuts.add(new Shortcut("yay8", ""));
-        shortcuts.add(new Shortcut("yay9", ""));
-        shortcuts.add(new Shortcut("yay10", ""));
-        shortcuts.add(new Shortcut("yay15", ""));
-        shortcuts.add(new Shortcut("yay16", ""));
-        shortcuts.add(new Shortcut("yay17", ""));
-        shortcuts.add(new Shortcut("yay18", ""));
-        shortcuts.add(new Shortcut("yay19", ""));
-        shortcuts.add(new Shortcut("yay110", ""));
+        shortcuts.add(new Shortcut("yay", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay1", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay2", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay3", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay4", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay5", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay6", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay7", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay8", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay9", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay10", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay15", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay16", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay17", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay18", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay19", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("yay110", "", R.drawable.richi));
         setRecyclerView();
 
 
@@ -80,6 +73,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         CharSequence title = item.getTitle();
         if ("Delete".equals(title)) {
             shortcuts.get(position).setTitle("malol");
+            shortcuts.get(position).setImageResource(R.mipmap.google_image);
             adapter.notifyItemChanged(position);
             //TODO - delete selected item
         } else if ("Change Icon".equals(title)) {

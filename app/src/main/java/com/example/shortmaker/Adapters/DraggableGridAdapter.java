@@ -52,7 +52,8 @@ public class DraggableGridAdapter extends RecyclerView
     public void onBindViewHolder(@NonNull ShortcutItemHolder holder, int position) {
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
-        holder.shortcut_image.setImageResource(R.drawable.richi);
+        //TODO get from storage with picasso or something
+        holder.shortcut_image.setImageResource(shortcut.getImageResource());
     }
 
 
