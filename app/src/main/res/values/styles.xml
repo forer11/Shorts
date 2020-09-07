@@ -50,6 +50,7 @@
         <item name="icdIconColor">#9FE3DB</item>
         <item name="icdListHeaderStyle">@style/CustomHeaderStyle</item>
         <item name="icdDialogButtonStyle">@style/IcdButtonStyle</item>
+        <item name="icdSelectedIconColor">@color/midnight_blue</item>
     </style>
 
 
@@ -57,10 +58,6 @@
     <style name="CustomHeaderStyle" parent="IcdListHeaderStyle">
         <item name="android:textAllCaps">true</item>
         <item name="android:typeface">monospace</item>
-<!--        <item name="android:paddingTop">18dp</item>-->
-<!--        <item name="android:paddingBottom">18dp</item>-->
-<!--        <item name="android:paddingLeft">18dp</item>-->
-<!--        <item name="android:paddingRight">18dp</item>-->
     </style>
 
     <style name="IcdButtonStyle" parent="Base.Widget.AppCompat.Button.ButtonBar.AlertDialog">
