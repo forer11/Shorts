@@ -40,7 +40,7 @@ dependencies {
     implementation 'androidx.cardview:cardview:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
     implementation "com.maltaisn:icondialog:3.3.0"
-//    implementation 'com.maltaisn:iconpack-default:1.0.1'
+    //implementation 'com.maltaisn:iconpack-default:1.0.1'
     implementation 'com.maltaisn:iconpack-font-awesome:5.13.0'
     implementation 'com.maltaisn:iconpack-community-material:5.3.45'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
