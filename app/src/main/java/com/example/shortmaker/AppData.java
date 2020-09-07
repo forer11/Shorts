@@ -13,7 +13,8 @@ import com.example.shortmaker.FireBaseHandlers.FireBaseAuthHandler;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.maltaisn.icondialog.pack.IconPack;
 import com.maltaisn.icondialog.pack.IconPackLoader;
-import com.maltaisn.iconpack.defaultpack.IconPackDefault;
+import com.maltaisn.iconpack.fa.IconPackFa;
+import com.maltaisn.iconpack.mdi.IconPackMdi;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -45,9 +46,8 @@ public class AppData extends Application {
         // Create an icon pack loader with application context.
         IconPackLoader loader = new IconPackLoader(this);
         // Create an icon pack and load all drawables.
-        iconPack = IconPackDefault.createDefaultIconPack(loader);
+        iconPack = IconPackFa.createFontAwesomeIconPack(loader);
         iconPack.loadDrawables(loader.getDrawableLoader());
-
         return iconPack;
     }
 
