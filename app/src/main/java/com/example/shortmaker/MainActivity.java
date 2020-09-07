@@ -17,14 +17,26 @@ import android.widget.Toast;
 
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
 import com.example.shortmaker.DataClasses.Shortcut;
+import com.maltaisn.icondialog.IconDialog;
+import com.maltaisn.icondialog.IconDialogSettings;
+import com.maltaisn.icondialog.data.Icon;
+import com.maltaisn.icondialog.pack.IconPack;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-public class MainActivity extends BaseMenuActivity {
+public class MainActivity extends BaseMenuActivity implements IconDialog.Callback {
+    private static final String ICON_DIALOG_TAG = "icon-dialog";
+
+
     List<Shortcut> shortcuts;
+    private IconDialog iconDialog;
+    private DraggableGridAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +65,7 @@ public class MainActivity extends BaseMenuActivity {
 
 
         setToolbar();
+
     }
 
     //TODO - replace to something smarter after we decide on which actions the context menu will have
@@ -62,15 +75,22 @@ public class MainActivity extends BaseMenuActivity {
         CharSequence title = item.getTitle();
         if ("Delete".equals(title)) {
             //TODO - delete selected item
-        } else if ("Change Picture".equals(title)) {
+        } else if ("Change Icon".equals(title)) {
             //TODO - replaace selected item
+
+            // If dialog is already added to fragment manager, get it. If not, create a new instance.
+            IconDialog dialog = (IconDialog) getSupportFragmentManager().findFragmentByTag(ICON_DIALOG_TAG);
+            iconDialog = dialog != null ? dialog
+                    : IconDialog.newInstance(new IconDialogSettings.Builder().build());
+            iconDialog.show(getSupportFragmentManager(), ICON_DIALOG_TAG);
+            List<Integer> iconIds = iconDialog.getSelectedIconIds();
         }
-        return true;
+        return super.onContextItemSelected(item);
     }
 
     private void setRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        DraggableGridAdapter adapter = new DraggableGridAdapter(this, shortcuts);
+        adapter = new DraggableGridAdapter(this, shortcuts);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(adapter);
 
@@ -86,6 +106,29 @@ public class MainActivity extends BaseMenuActivity {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
+
+
+    @Nullable
+    @Override
+    public IconPack getIconDialogIconPack() {
+        return ((AppData) getApplication()).getIconPack();
+    }
+
+    @Override
+    public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
+        // Show a toast with the list of selected icon IDs.
+        StringBuilder sb = new StringBuilder();
+        for (Icon icon : icons) {
+            sb.append(icon.getId());
+            sb.append(", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        Toast.makeText(this, "Icons selected: " + sb, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onIconDialogCancelled() {}
+
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -144,4 +187,5 @@ public class MainActivity extends BaseMenuActivity {
 
         }
     };
+
 }
