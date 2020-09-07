@@ -14,6 +14,7 @@ import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
+import static androidx.recyclerview.widget.ItemTouchHelper.ACTION_STATE_DRAG;
 
 public class MainActivity extends BaseMenuActivity implements IconDialog.Callback {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
@@ -72,9 +75,12 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     //TODO - replace to something smarter after we decide on which actions the context menu will have
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+        int position = item.getGroupId();
+        Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
         CharSequence title = item.getTitle();
         if ("Delete".equals(title)) {
+            shortcuts.get(position).setTitle("malol");
+            adapter.notifyItemChanged(position);
             //TODO - delete selected item
         } else if ("Change Icon".equals(title)) {
             showIconPickerDialog();
@@ -111,7 +117,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     }
 
     @Override
-    public void onIconDialogCancelled() {}
+    public void onIconDialogCancelled() {
+    }
 
 
     private void setRecyclerView() {
@@ -126,13 +133,13 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
                 Toast.makeText(MainActivity.this,
                         "position = " + position,
                         Toast.LENGTH_SHORT).show();
+
             }
         });
 
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
-
 
 
     private void setToolbar() {
@@ -189,7 +196,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-
         }
     };
 

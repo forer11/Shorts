@@ -89,8 +89,8 @@ public class DraggableGridAdapter extends RecyclerView
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.setHeaderTitle("Select The Action");
-            menu.add(0, v.getId(), 0, "Delete");
-            menu.add(0, v.getId(), 0, "Change Icon");
+            menu.add(getAdapterPosition(), v.getId(), 0, "Delete");
+            menu.add(getAdapterPosition(), v.getId(), 0, "Change Icon");
         }
 
 
