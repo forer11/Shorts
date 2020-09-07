@@ -9,8 +9,10 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
@@ -47,11 +49,23 @@ public class MainActivity extends BaseMenuActivity {
         shortcuts.add(new Shortcut("yay18", ""));
         shortcuts.add(new Shortcut("yay19", ""));
         shortcuts.add(new Shortcut("yay110", ""));
-
         setRecyclerView();
 
 
         setToolbar();
+    }
+
+    //TODO - replace to something smarter after we decide on which actions the context menu will have
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        Toast.makeText(this, "Selected Item: " +item.getTitle(), Toast.LENGTH_SHORT).show();
+        CharSequence title = item.getTitle();
+        if ("Delete".equals(title)) {
+            //TODO - delete selected item
+        } else if ("Change Picture".equals(title)) {
+            //TODO - replaace selected item
+        }
+        return true;
     }
 
     private void setRecyclerView() {

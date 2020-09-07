@@ -4,7 +4,7 @@
     android:id="@+id/shortcut_cardview"
     android:layout_width="100dp"
     android:layout_height="140dp"
-    android:layout_margin="4dp"
+    android:layout_margin="15dp"
     android:clickable="true"
     android:foreground="?android:attr/selectableItemBackground"
     android:padding="5dp"

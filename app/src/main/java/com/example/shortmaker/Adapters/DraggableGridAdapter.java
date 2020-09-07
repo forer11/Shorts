@@ -2,6 +2,7 @@ package com.example.shortmaker.Adapters;
 
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +62,7 @@ public class DraggableGridAdapter extends RecyclerView
         return shortcuts.size();
     }
 
-    public static class ShortcutItemHolder extends RecyclerView.ViewHolder {
+    public static class ShortcutItemHolder extends RecyclerView.ViewHolder implements View.OnCreateContextMenuListener {
 
         TextView shortcut_title;
         ImageView shortcut_image;
@@ -69,9 +70,9 @@ public class DraggableGridAdapter extends RecyclerView
 
         public ShortcutItemHolder(@NonNull View itemView, final OnItemClickListener listener) {
             super(itemView);
-
             shortcut_title = itemView.findViewById(R.id.icon_title);
             shortcut_image = itemView.findViewById(R.id.icon_image);
+            itemView.setOnCreateContextMenuListener(this);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -85,5 +86,14 @@ public class DraggableGridAdapter extends RecyclerView
                 }
             });
         }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            menu.setHeaderTitle("Select The Action");
+            menu.add(0, v.getId(), 0, "Delete");
+            menu.add(0, v.getId(), 0, "Change Picture");
+        }
+
+
     }
 }
