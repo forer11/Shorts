@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.Menu;
@@ -76,17 +77,42 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         if ("Delete".equals(title)) {
             //TODO - delete selected item
         } else if ("Change Icon".equals(title)) {
-            //TODO - change icon of selected item
-
-            // If dialog is already added to fragment manager, get it. If not, create a new instance.
-            IconDialog dialog = (IconDialog) getSupportFragmentManager().findFragmentByTag(ICON_DIALOG_TAG);
-            iconDialog = dialog != null ? dialog
-                    : IconDialog.newInstance(new IconDialogSettings.Builder().build());
-            iconDialog.show(getSupportFragmentManager(), ICON_DIALOG_TAG);
-            List<Integer> iconIds = iconDialog.getSelectedIconIds();
+            showIconPickerDialog();
         }
         return super.onContextItemSelected(item);
     }
+
+    private void showIconPickerDialog() {
+        // If dialog is already added to fragment manager, get it. If not, create a new instance.
+        IconDialog dialog = (IconDialog) getSupportFragmentManager().findFragmentByTag(ICON_DIALOG_TAG);
+        iconDialog = dialog != null ? dialog
+                : IconDialog.newInstance(new IconDialogSettings.Builder().build());
+        iconDialog.show(getSupportFragmentManager(), ICON_DIALOG_TAG);
+    }
+
+
+    @Nullable
+    @Override
+    public IconPack getIconDialogIconPack() {
+        return ((AppData) getApplication()).getIconPack();
+    }
+
+    @Override
+    public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
+        // Show a toast with the list of selected icon IDs.
+        StringBuilder sb = new StringBuilder();
+        for (Icon icon : icons) {
+            sb.append(icon.getId());
+            Drawable drawable = icon.getDrawable();
+            sb.append(", ");
+        }
+        sb.delete(sb.length() - 2, sb.length());
+        Toast.makeText(this, "Icons selected: " + sb, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onIconDialogCancelled() {}
+
 
     private void setRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -107,28 +133,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-
-    @Nullable
-    @Override
-    public IconPack getIconDialogIconPack() {
-        return ((AppData) getApplication()).getIconPack();
-    }
-
-    @Override
-    public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
-        // Show a toast with the list of selected icon IDs.
-        dialog.dismiss();
-        StringBuilder sb = new StringBuilder();
-        for (Icon icon : icons) {
-            sb.append(icon.getId());
-            sb.append(", ");
-        }
-        sb.delete(sb.length() - 2, sb.length());
-        Toast.makeText(this, "Icons selected: " + sb, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onIconDialogCancelled() {}
 
 
     private void setToolbar() {
