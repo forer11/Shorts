@@ -17,6 +17,8 @@ import com.maltaisn.iconpack.defaultpack.IconPackDefault;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
+import java.util.Locale;
 
 public class AppData extends Application {
     FireStoreHandler fireStoreHandler;
@@ -42,7 +44,6 @@ public class AppData extends Application {
     private IconPack loadIconPack() {
         // Create an icon pack loader with application context.
         IconPackLoader loader = new IconPackLoader(this);
-
         // Create an icon pack and load all drawables.
         iconPack = IconPackDefault.createDefaultIconPack(loader);
         iconPack.loadDrawables(loader.getDrawableLoader());
