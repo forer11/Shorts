@@ -7,17 +7,12 @@ public class Shortcut {
         /* empty public constructor for FireStore */
     }
 
-    public Shortcut(String title, String imageUrl, int imageResource) {
+    public Shortcut(String title, Drawable drawable) {
         this.title = title;
-        this.imageUrl = imageUrl;
-        this.imageResource = imageResource;
+        this.drawable = drawable;
     }
 
     private String title;
-
-    private String imageUrl;
-
-    private int imageResource;
 
     private Drawable drawable;
 
@@ -29,27 +24,12 @@ public class Shortcut {
         this.title = title;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
-    }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
-    }
-
-    public void setDrawable(Drawable newDrawable) {
-        drawable = newDrawable;
-    }
-
-    public int getImageResource() {
-        return imageResource;
-    }
-
-    public void setImageResource(int imageResource) {
-        this.imageResource = imageResource;
+    public void setDrawable(Drawable drawable) {
+        this.drawable = drawable;
     }
 
     public Drawable getDrawable() {
-        return drawable;
+        return this.drawable;
     }
 }

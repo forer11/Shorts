@@ -48,23 +48,24 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         setContentView(R.layout.activity_main);
 
         shortcuts = new ArrayList<>();
-        shortcuts.add(new Shortcut("yay", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay1", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay2", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay3", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay4", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay5", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay6", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay7", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay8", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay9", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay10", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay15", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay16", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay17", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay18", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay19", "", R.drawable.richi));
-        shortcuts.add(new Shortcut("yay110", "", R.drawable.richi));
+        shortcuts.add(new Shortcut("Sport",getDrawable(R.drawable.sport)));
+        shortcuts.add(new Shortcut("Study",  getDrawable(R.drawable.study)));
+        shortcuts.add(new Shortcut("Driving", getDrawable(R.drawable.drive_home)));
+        shortcuts.add(new Shortcut("Party", getDrawable(R.drawable.party)));
+        shortcuts.add(new Shortcut("Cooking", getDrawable(R.drawable.cooking)));
+        shortcuts.add(new Shortcut("Sleeping", getDrawable(R.drawable.sleeping)));
+        shortcuts.add(new Shortcut("Relaxing", getDrawable(R.drawable.relax_kawaii)));
+        shortcuts.add(new Shortcut("Meeting", getDrawable(R.drawable.meeting)));
+        shortcuts.add(new Shortcut("yay1", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("yay2", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("yay3", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("yay4", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("yay5", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("yay6", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("yay7", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("yay8", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("yay9", getDrawable(R.drawable.richi)));
+
         setRecyclerView();
 
         setToolbar();

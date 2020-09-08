@@ -28,7 +28,6 @@ public class DraggableGridAdapter extends RecyclerView
 
     private Context context;
     private List<Shortcut> shortcuts;
-    private AnimationDrawable animationDrawable;
 
     private OnItemClickListener listener;
 
@@ -58,18 +57,22 @@ public class DraggableGridAdapter extends RecyclerView
     public void onBindViewHolder(@NonNull ShortcutItemHolder holder, int position) {
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
-        animationDrawable = (AnimationDrawable) holder.shortcut_image.getBackground();
-        animationDrawable.setEnterFadeDuration(3000);
-        animationDrawable.setExitFadeDuration(2000);
-        if (animationDrawable != null && !animationDrawable.isRunning()) {
-            animationDrawable.start();
-        }
+        setAnimatedGradientBackground(holder);
+        holder.shortcut_image.setImageResource(R.drawable.richi);
         Glide.with(context)
                 .load("")
                 .placeholder(shortcut.getDrawable())
                 .into(holder.shortcut_image);
     }
 
+    private void setAnimatedGradientBackground(@NonNull ShortcutItemHolder holder) {
+        AnimationDrawable animationDrawable = (AnimationDrawable) holder.shortcut_image.getBackground();
+        animationDrawable.setEnterFadeDuration(3000);
+        animationDrawable.setExitFadeDuration(2000);
+        if (animationDrawable != null && !animationDrawable.isRunning()) {
+            animationDrawable.start();
+        }
+    }
 
 
     @Override
