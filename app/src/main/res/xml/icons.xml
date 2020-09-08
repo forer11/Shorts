@@ -1,17 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<icons width="24" height="24">
-    <category id="0" name="Kawaii">
-        <icon id="1" tags="" src="@drawable/ic_baseline_adb_24"/>
-        <icon id="2" src="@drawable/study"/>
-        <icon id="3" src="@drawable/drive_home"/>
-        <icon id="4"  src="@drawable/party"/>
-        <icon id="5"  src="@drawable/cooking"/>
-        <icon id="6"  src="@drawable/sleeping"/>
-        <icon id="7"  src="@drawable/relax_kawaii"/>
-        <icon id="8" src="@drawable/meeting"/>
-        <icon id="9" src="@drawable/game"/>
-
+<icons width="190" height="190">
+    <category id="202020" name="Kawaii">
+        <icon id="11111" src="@drawable/sport"/>
+        <icon id="22222" src="@drawable/study"/>
+        <icon id="3333" src="@drawable/drive_home"/>
+        <icon id="44444"  src="@drawable/party"/>
+        <icon id="55555"  src="@drawable/cooking"/>
+        <icon id="6666"  src="@drawable/sleeping"/>
+        <icon id="77777"  src="@drawable/relax_kawaii"/>
+        <icon id="8888" src="@drawable/meeting"/>
+        <icon id="99999" src="@drawable/game"/>
     </category>
+    
 <!--    <category id="1" name="catg_stars">-->
 <!--        <icon id="" tags="shape,star,three" path="M12 2.6L9 12.4L2 19.9L12 17.6L22 20L15 12.5L12 2.6Z"/>-->
 <!--        <icon id="6" tags="shape,star,four" path="M12 1L9 9L1 12L9 15L12 23L15 15L23 12L15 9L12 1Z"/>-->

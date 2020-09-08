@@ -3,6 +3,7 @@ package com.example.shortmaker.Adapters;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -12,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -63,8 +63,8 @@ public class DraggableGridAdapter extends RecyclerView
                 .load("")
                 .placeholder(shortcut.getDrawable())
                 .into(holder.shortcut_image);
-        if(shortcuts.get(position).isChanged()){
-            holder.shortcut_image.setColorFilter(Color.argb(255, 255, 255, 255));
+        if(shortcuts.get(position).isTintNeeded()){
+            holder.shortcut_image.setColorFilter(Color.argb(255, 255, 255, 255),PorterDuff.Mode.SRC_IN);
         }
     }
 

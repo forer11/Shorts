@@ -49,6 +49,7 @@ public class AppData extends Application {
         IconPack parentIconPack = IconPackFa.createFontAwesomeIconPack(loader);
         parentIconPack.loadDrawables(loader.getDrawableLoader());
         iconPack = loader.load(R.xml.icons, R.xml.tags, Collections.singletonList(Locale.ENGLISH), parentIconPack);
+        iconPack.loadDrawables(loader.getDrawableLoader());
         return iconPack;
     }
 
