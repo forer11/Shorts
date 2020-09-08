@@ -1,5 +1,7 @@
 package com.example.shortmaker.DataClasses;
 
+import android.graphics.drawable.Drawable;
+
 public class Shortcut {
     public Shortcut() {
         /* empty public constructor for FireStore */
@@ -17,6 +19,8 @@ public class Shortcut {
 
     private int imageResource;
 
+    private Drawable drawable;
+
     public String getTitle() {
         return title;
     }
@@ -33,11 +37,19 @@ public class Shortcut {
         this.imageUrl = imageUrl;
     }
 
+    public void setDrawable(Drawable newDrawable) {
+        drawable = newDrawable;
+    }
+
     public int getImageResource() {
         return imageResource;
     }
 
     public void setImageResource(int imageResource) {
         this.imageResource = imageResource;
+    }
+
+    public Drawable getDrawable() {
+        return drawable;
     }
 }
