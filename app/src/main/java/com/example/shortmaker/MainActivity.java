@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,13 +29,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static java.sql.Types.NULL;
+
 public class MainActivity extends BaseMenuActivity implements IconDialog.Callback {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
-
 
     List<Shortcut> shortcuts;
     private IconDialog iconDialog;
     private DraggableGridAdapter adapter;
+    int lastPosition = NULL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,14 +72,14 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     //TODO - replace to something smarter after we decide on which actions the context menu will have
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        int position = item.getGroupId();
-        Toast.makeText(this, "Selected Item: " + item.getTitle(), Toast.LENGTH_SHORT).show();
+        lastPosition = item.getGroupId();
         CharSequence title = item.getTitle();
         if ("Delete".equals(title)) {
-            shortcuts.get(position).setTitle("malol");
-            shortcuts.get(position).setImageResource(R.mipmap.google_image);
-            adapter.notifyItemChanged(position);
-            //TODO - delete selected item
+            if(lastPosition!=NULL){
+                //TODO - delete selected item
+                shortcuts.get(lastPosition).setTitle("malol");
+                adapter.notifyItemChanged(lastPosition);
+            }
         } else if ("Change Icon".equals(title)) {
             showIconPickerDialog();
         }
@@ -99,19 +103,16 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
     @Override
     public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
-        // Show a toast with the list of selected icon IDs.
-        StringBuilder sb = new StringBuilder();
-        for (Icon icon : icons) {
-            sb.append(icon.getId());
-            Drawable drawable = icon.getDrawable();
-            sb.append(", ");
+        if(lastPosition!=NULL){
+            shortcuts.get(lastPosition).setDrawable(icons.get(0).getDrawable());
+            adapter.notifyItemChanged(lastPosition);
         }
-        sb.delete(sb.length() - 2, sb.length());
-        Toast.makeText(this, "Icons selected: " + sb, Toast.LENGTH_SHORT).show();
     }
+
 
     @Override
     public void onIconDialogCancelled() {
+
     }
 
 

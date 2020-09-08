@@ -58,6 +58,7 @@
     <style name="CustomHeaderStyle" parent="IcdListHeaderStyle">
         <item name="android:textAllCaps">true</item>
         <item name="android:typeface">monospace</item>
+
     </style>
 
     <style name="IcdButtonStyle" parent="Base.Widget.AppCompat.Button.ButtonBar.AlertDialog">

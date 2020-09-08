@@ -12,9 +12,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.R;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 public class DraggableGridAdapter extends RecyclerView
@@ -53,7 +57,8 @@ public class DraggableGridAdapter extends RecyclerView
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
         //TODO get from storage with picasso or something
-        holder.shortcut_image.setImageResource(shortcut.getImageResource());
+        holder.shortcut_image.setImageDrawable(shortcut.getDrawable());
+
     }
 
 
