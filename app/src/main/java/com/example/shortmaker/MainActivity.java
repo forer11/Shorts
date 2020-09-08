@@ -7,6 +7,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,6 +21,7 @@ import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
 import com.maltaisn.icondialog.data.Icon;
 import com.maltaisn.icondialog.pack.IconPack;
+import com.opensooq.supernova.gligar.GligarPicker;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -30,6 +34,7 @@ import static java.sql.Types.NULL;
 
 public class MainActivity extends BaseMenuActivity implements IconDialog.Callback {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
+    public static final int PICKER_REQUEST_CODE = 10;
 
     List<Shortcut> shortcuts;
     private DraggableGridAdapter adapter;
@@ -42,23 +47,23 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         setContentView(R.layout.activity_main);
 
         shortcuts = new ArrayList<>();
-        shortcuts.add(new Shortcut("Sport",getDrawable(R.drawable.sport),false));
-        shortcuts.add(new Shortcut("Study",  getDrawable(R.drawable.study),false));
-        shortcuts.add(new Shortcut("Driving", getDrawable(R.drawable.drive_home),false));
-        shortcuts.add(new Shortcut("Party", getDrawable(R.drawable.party),false));
-        shortcuts.add(new Shortcut("Cooking", getDrawable(R.drawable.cooking),false));
-        shortcuts.add(new Shortcut("Sleeping", getDrawable(R.drawable.sleeping),false));
-        shortcuts.add(new Shortcut("Relaxing", getDrawable(R.drawable.relax_kawaii),false));
-        shortcuts.add(new Shortcut("Meeting", getDrawable(R.drawable.meeting),false));
-        shortcuts.add(new Shortcut("Gaming", getDrawable(R.drawable.game),false));
-        shortcuts.add(new Shortcut("yay2", getDrawable(R.drawable.richi),false));
-        shortcuts.add(new Shortcut("yay3", getDrawable(R.drawable.richi),false));
-        shortcuts.add(new Shortcut("yay4", getDrawable(R.drawable.richi),false));
-        shortcuts.add(new Shortcut("yay5", getDrawable(R.drawable.richi),false));
-        shortcuts.add(new Shortcut("yay6", getDrawable(R.drawable.richi),false));
-        shortcuts.add(new Shortcut("yay7", getDrawable(R.drawable.richi),false));
-        shortcuts.add(new Shortcut("yay8", getDrawable(R.drawable.richi),false));
-        shortcuts.add(new Shortcut("yay9", getDrawable(R.drawable.richi),false));
+        shortcuts.add(new Shortcut("Sport", getDrawable(R.drawable.sport), false));
+        shortcuts.add(new Shortcut("Study", getDrawable(R.drawable.study), false));
+        shortcuts.add(new Shortcut("Driving", getDrawable(R.drawable.drive_home), false));
+        shortcuts.add(new Shortcut("Party", getDrawable(R.drawable.party), false));
+        shortcuts.add(new Shortcut("Cooking", getDrawable(R.drawable.cooking), false));
+        shortcuts.add(new Shortcut("Sleeping", getDrawable(R.drawable.sleeping), false));
+        shortcuts.add(new Shortcut("Relaxing", getDrawable(R.drawable.relax_kawaii), false));
+        shortcuts.add(new Shortcut("Meeting", getDrawable(R.drawable.meeting), false));
+        shortcuts.add(new Shortcut("Gaming", getDrawable(R.drawable.game), false));
+        shortcuts.add(new Shortcut("yay2", getDrawable(R.drawable.richi), false));
+        shortcuts.add(new Shortcut("yay3", getDrawable(R.drawable.richi), false));
+        shortcuts.add(new Shortcut("yay4", getDrawable(R.drawable.richi), false));
+        shortcuts.add(new Shortcut("yay5", getDrawable(R.drawable.richi), false));
+        shortcuts.add(new Shortcut("yay6", getDrawable(R.drawable.richi), false));
+        shortcuts.add(new Shortcut("yay7", getDrawable(R.drawable.richi), false));
+        shortcuts.add(new Shortcut("yay8", getDrawable(R.drawable.richi), false));
+        shortcuts.add(new Shortcut("yay9", getDrawable(R.drawable.richi), false));
 
         setRecyclerView();
 
@@ -72,15 +77,31 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         lastPosition = item.getGroupId();
         String title = item.getTitle().toString();
         if ("Delete".equals(title)) {
-            if(lastPosition!=NULL){
+            if (lastPosition != NULL) {
                 //TODO - delete selected item
                 shortcuts.get(lastPosition).setTitle("malol");
                 adapter.notifyItemChanged(lastPosition);
             }
         } else if ("Change Icon".equals(title)) {
             showIconPickerDialog();
+        } else if ("Load Icon".equals(title)) {
+            new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();
         }
         return super.onContextItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+        if (requestCode == PICKER_REQUEST_CODE) {
+            String[] pathsList = data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // a list of length 1
+            Drawable drawable = Drawable.createFromPath(pathsList[0]);
+            shortcuts.get(lastPosition).setDrawable(drawable);
+            adapter.notifyItemChanged(lastPosition);
+        }
     }
 
     private void showIconPickerDialog() {
@@ -100,8 +121,9 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
     @Override
     public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
-        if(lastPosition!=NULL){
+        if (lastPosition != NULL) {
             shortcuts.get(lastPosition).setDrawable(icons.get(0).getDrawable());
+            //TODO - change it to changed to one from normal icons
             shortcuts.get(lastPosition).setChanged(true);
             adapter.notifyItemChanged(lastPosition);
         }

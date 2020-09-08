@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<icons width="24" height="24">
+    <category id="0" name="Kawaii">
+        <icon id="1" tags="" src="@drawable/ic_baseline_adb_24"/>
+        <icon id="2" src="@drawable/study"/>
+        <icon id="3" src="@drawable/drive_home"/>
+        <icon id="4"  src="@drawable/party"/>
+        <icon id="5"  src="@drawable/cooking"/>
+        <icon id="6"  src="@drawable/sleeping"/>
+        <icon id="7"  src="@drawable/relax_kawaii"/>
+        <icon id="8" src="@drawable/meeting"/>
+        <icon id="9" src="@drawable/game"/>
+
+    </category>
+<!--    <category id="1" name="catg_stars">-->
+<!--        <icon id="" tags="shape,star,three" path="M12 2.6L9 12.4L2 19.9L12 17.6L22 20L15 12.5L12 2.6Z"/>-->
+<!--        <icon id="6" tags="shape,star,four" path="M12 1L9 9L1 12L9 15L12 23L15 15L23 12L15 9L12 1Z"/>-->
+<!--        <icon id="7" tags="shape,star,five" path="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.62L12 2L9.19 8.62L2 9.24L7.45 13.97L5.82 21L12 17.27Z"/>-->
+<!--        <icon id="8" tags="shape,star,eight" path="M2.2 16.06L3.88 12L2.2 7.94L6.26 6.26L7.94 2.2L12 3.88L16.06 2.2L17.74 6.26L21.8 7.94L20.12 12L21.8 16.06L17.74 17.74L16.06 21.8L12 20.12L7.94 21.8L6.26 17.74L2.2 16.06Z"/>-->
+<!--    </category>-->
+</icons>

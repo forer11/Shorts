@@ -46,8 +46,9 @@ public class AppData extends Application {
         // Create an icon pack loader with application context.
         IconPackLoader loader = new IconPackLoader(this);
         // Create an icon pack and load all drawables.
-        iconPack = IconPackFa.createFontAwesomeIconPack(loader);
-        iconPack.loadDrawables(loader.getDrawableLoader());
+        IconPack parentIconPack = IconPackFa.createFontAwesomeIconPack(loader);
+        parentIconPack.loadDrawables(loader.getDrawableLoader());
+        iconPack = loader.load(R.xml.icons, R.xml.tags, Collections.singletonList(Locale.ENGLISH), parentIconPack);
         return iconPack;
     }
 
