@@ -7,10 +7,14 @@ public class Shortcut {
         /* empty public constructor for FireStore */
     }
 
-    public Shortcut(String title, Drawable drawable) {
+    public Shortcut(String title, Drawable drawable, boolean isChanged) {
         this.title = title;
         this.drawable = drawable;
+        this.isChanged = isChanged;
     }
+
+
+    private boolean isChanged;
 
     private String title;
 
@@ -31,5 +35,13 @@ public class Shortcut {
 
     public Drawable getDrawable() {
         return this.drawable;
+    }
+
+    public boolean isChanged() {
+        return isChanged;
+    }
+
+    public void setChanged(boolean changed) {
+        this.isChanged = changed;
     }
 }

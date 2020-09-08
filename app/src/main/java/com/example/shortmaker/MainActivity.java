@@ -3,15 +3,10 @@ package com.example.shortmaker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,7 +32,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     private static final String ICON_DIALOG_TAG = "icon-dialog";
 
     List<Shortcut> shortcuts;
-    private IconDialog iconDialog;
     private DraggableGridAdapter adapter;
     int lastPosition = NULL;
 
@@ -48,23 +42,23 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         setContentView(R.layout.activity_main);
 
         shortcuts = new ArrayList<>();
-        shortcuts.add(new Shortcut("Sport",getDrawable(R.drawable.sport)));
-        shortcuts.add(new Shortcut("Study",  getDrawable(R.drawable.study)));
-        shortcuts.add(new Shortcut("Driving", getDrawable(R.drawable.drive_home)));
-        shortcuts.add(new Shortcut("Party", getDrawable(R.drawable.party)));
-        shortcuts.add(new Shortcut("Cooking", getDrawable(R.drawable.cooking)));
-        shortcuts.add(new Shortcut("Sleeping", getDrawable(R.drawable.sleeping)));
-        shortcuts.add(new Shortcut("Relaxing", getDrawable(R.drawable.relax_kawaii)));
-        shortcuts.add(new Shortcut("Meeting", getDrawable(R.drawable.meeting)));
-        shortcuts.add(new Shortcut("yay1", getDrawable(R.drawable.richi)));
-        shortcuts.add(new Shortcut("yay2", getDrawable(R.drawable.richi)));
-        shortcuts.add(new Shortcut("yay3", getDrawable(R.drawable.richi)));
-        shortcuts.add(new Shortcut("yay4", getDrawable(R.drawable.richi)));
-        shortcuts.add(new Shortcut("yay5", getDrawable(R.drawable.richi)));
-        shortcuts.add(new Shortcut("yay6", getDrawable(R.drawable.richi)));
-        shortcuts.add(new Shortcut("yay7", getDrawable(R.drawable.richi)));
-        shortcuts.add(new Shortcut("yay8", getDrawable(R.drawable.richi)));
-        shortcuts.add(new Shortcut("yay9", getDrawable(R.drawable.richi)));
+        shortcuts.add(new Shortcut("Sport",getDrawable(R.drawable.sport),false));
+        shortcuts.add(new Shortcut("Study",  getDrawable(R.drawable.study),false));
+        shortcuts.add(new Shortcut("Driving", getDrawable(R.drawable.drive_home),false));
+        shortcuts.add(new Shortcut("Party", getDrawable(R.drawable.party),false));
+        shortcuts.add(new Shortcut("Cooking", getDrawable(R.drawable.cooking),false));
+        shortcuts.add(new Shortcut("Sleeping", getDrawable(R.drawable.sleeping),false));
+        shortcuts.add(new Shortcut("Relaxing", getDrawable(R.drawable.relax_kawaii),false));
+        shortcuts.add(new Shortcut("Meeting", getDrawable(R.drawable.meeting),false));
+        shortcuts.add(new Shortcut("Gaming", getDrawable(R.drawable.game),false));
+        shortcuts.add(new Shortcut("yay2", getDrawable(R.drawable.richi),false));
+        shortcuts.add(new Shortcut("yay3", getDrawable(R.drawable.richi),false));
+        shortcuts.add(new Shortcut("yay4", getDrawable(R.drawable.richi),false));
+        shortcuts.add(new Shortcut("yay5", getDrawable(R.drawable.richi),false));
+        shortcuts.add(new Shortcut("yay6", getDrawable(R.drawable.richi),false));
+        shortcuts.add(new Shortcut("yay7", getDrawable(R.drawable.richi),false));
+        shortcuts.add(new Shortcut("yay8", getDrawable(R.drawable.richi),false));
+        shortcuts.add(new Shortcut("yay9", getDrawable(R.drawable.richi),false));
 
         setRecyclerView();
 
@@ -76,7 +70,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         lastPosition = item.getGroupId();
-        CharSequence title = item.getTitle();
+        String title = item.getTitle().toString();
         if ("Delete".equals(title)) {
             if(lastPosition!=NULL){
                 //TODO - delete selected item
@@ -92,7 +86,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     private void showIconPickerDialog() {
         // If dialog is already added to fragment manager, get it. If not, create a new instance.
         IconDialog dialog = (IconDialog) getSupportFragmentManager().findFragmentByTag(ICON_DIALOG_TAG);
-        iconDialog = dialog != null ? dialog
+        IconDialog iconDialog = dialog != null ? dialog
                 : IconDialog.newInstance(new IconDialogSettings.Builder().build());
         iconDialog.show(getSupportFragmentManager(), ICON_DIALOG_TAG);
     }
@@ -108,6 +102,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
         if(lastPosition!=NULL){
             shortcuts.get(lastPosition).setDrawable(icons.get(0).getDrawable());
+            shortcuts.get(lastPosition).setChanged(true);
             adapter.notifyItemChanged(lastPosition);
         }
     }
