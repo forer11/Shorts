@@ -54,7 +54,7 @@
     </style>
 
 
-    <!-- Custom style for the list headers, again don't forget the parent! -->
+
     <style name="CustomHeaderStyle" parent="IcdListHeaderStyle">
         <item name="android:textAllCaps">true</item>
         <item name="android:typeface">monospace</item>

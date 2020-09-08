@@ -57,8 +57,11 @@ public class DraggableGridAdapter extends RecyclerView
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
         //TODO get from storage with picasso or something
-        holder.shortcut_image.setImageDrawable(shortcut.getDrawable());
-
+//        holder.shortcut_image.setImageDrawable(shortcut.getDrawable());
+        Glide.with(context)
+                .load("")
+                .placeholder(shortcut.getDrawable())
+                .into(holder.shortcut_image);
     }
 
 
