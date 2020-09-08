@@ -20,9 +20,10 @@
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:padding="5dp"
-            android:tint="@color/white"
             android:background="@drawable/gradient_animation"
             android:scaleType="fitCenter" />
+<!--        android:tint="@color/white"-->
+
 
         <TextView
             android:id="@+id/icon_title"
