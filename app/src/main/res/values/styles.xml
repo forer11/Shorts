@@ -51,6 +51,7 @@
         <item name="icdListHeaderStyle">@style/CustomHeaderStyle</item>
         <item name="icdDialogButtonStyle">@style/IcdButtonStyle</item>
         <item name="icdSelectedIconColor">@color/midnight_blue</item>
+        <item name="icdDialogListStyle">@style/IcdListStyle</item>
     </style>
 
 

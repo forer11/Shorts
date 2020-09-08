@@ -7,14 +7,14 @@ public class Shortcut {
         /* empty public constructor for FireStore */
     }
 
-    public Shortcut(String title, Drawable drawable, boolean isChanged) {
+    public Shortcut(String title, Drawable drawable, boolean tintNeeded) {
         this.title = title;
         this.drawable = drawable;
-        this.isChanged = isChanged;
+        this.tintNeeded = tintNeeded;
     }
 
 
-    private boolean isChanged;
+    private boolean tintNeeded;
 
     private String title;
 
@@ -37,11 +37,11 @@ public class Shortcut {
         return this.drawable;
     }
 
-    public boolean isChanged() {
-        return isChanged;
+    public boolean isTintNeeded() {
+        return tintNeeded;
     }
 
-    public void setChanged(boolean changed) {
-        this.isChanged = changed;
+    public void setTintNeeded(boolean tintNeeded) {
+        this.tintNeeded = tintNeeded;
     }
 }

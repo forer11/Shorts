@@ -98,7 +98,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         }
         if (requestCode == PICKER_REQUEST_CODE) {
             String[] pathsList = data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // a list of length 1
-            Drawable drawable = Drawable.createFromPath(pathsList[0]);
+            Drawable drawable = Drawable.createFromPath(pathsList[0]);//TODO- resize all images to same size
             shortcuts.get(lastPosition).setDrawable(drawable);
             adapter.notifyItemChanged(lastPosition);
         }
@@ -123,8 +123,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
         if (lastPosition != NULL) {
             shortcuts.get(lastPosition).setDrawable(icons.get(0).getDrawable());
-            //TODO - change it to changed to one from normal icons
-            shortcuts.get(lastPosition).setChanged(true);
+            boolean isKawaiiCategory =  icons.get(0).getCategoryId()==202020;
+            shortcuts.get(lastPosition).setTintNeeded(!isKawaiiCategory);
             adapter.notifyItemChanged(lastPosition);
         }
     }
