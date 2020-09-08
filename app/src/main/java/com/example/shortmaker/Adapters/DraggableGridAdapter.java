@@ -2,6 +2,7 @@ package com.example.shortmaker.Adapters;
 
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +28,7 @@ public class DraggableGridAdapter extends RecyclerView
 
     private Context context;
     private List<Shortcut> shortcuts;
+    private AnimationDrawable animationDrawable;
 
     private OnItemClickListener listener;
 
@@ -56,13 +58,18 @@ public class DraggableGridAdapter extends RecyclerView
     public void onBindViewHolder(@NonNull ShortcutItemHolder holder, int position) {
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
-        //TODO get from storage with picasso or something
-//        holder.shortcut_image.setImageDrawable(shortcut.getDrawable());
+        animationDrawable = (AnimationDrawable) holder.shortcut_image.getBackground();
+        animationDrawable.setEnterFadeDuration(3000);
+        animationDrawable.setExitFadeDuration(2000);
+        if (animationDrawable != null && !animationDrawable.isRunning()) {
+            animationDrawable.start();
+        }
         Glide.with(context)
                 .load("")
                 .placeholder(shortcut.getDrawable())
                 .into(holder.shortcut_image);
     }
+
 
 
     @Override

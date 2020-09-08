@@ -3,12 +3,14 @@ package com.example.shortmaker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
@@ -39,6 +41,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     private DraggableGridAdapter adapter;
     int lastPosition = NULL;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,10 +67,9 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         shortcuts.add(new Shortcut("yay110", "", R.drawable.richi));
         setRecyclerView();
 
-
         setToolbar();
-
     }
+
 
     //TODO - replace to something smarter after we decide on which actions the context menu will have
     @Override
