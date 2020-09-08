@@ -10,11 +10,16 @@
         <icon id="8888" src="@drawable/meeting"/>
         <icon id="99999" src="@drawable/game"/>
     </category>
-    
-<!--    <category id="1" name="catg_stars">-->
-<!--        <icon id="" tags="shape,star,three" path="M12 2.6L9 12.4L2 19.9L12 17.6L22 20L15 12.5L12 2.6Z"/>-->
-<!--        <icon id="6" tags="shape,star,four" path="M12 1L9 9L1 12L9 15L12 23L15 15L23 12L15 9L12 1Z"/>-->
-<!--        <icon id="7" tags="shape,star,five" path="M12 17.27L18.18 21L16.54 13.97L22 9.24L14.81 8.62L12 2L9.19 8.62L2 9.24L7.45 13.97L5.82 21L12 17.27Z"/>-->
-<!--        <icon id="8" tags="shape,star,eight" path="M2.2 16.06L3.88 12L2.2 7.94L6.26 6.26L7.94 2.2L12 3.88L16.06 2.2L17.74 6.26L21.8 7.94L20.12 12L21.8 16.06L17.74 17.74L16.06 21.8L12 20.12L7.94 21.8L6.26 17.74L2.2 16.06Z"/>-->
-<!--    </category>-->
+
+    <category id="303030" name="Pusheen">
+        <icon id="1111411" src="@drawable/sport_pusheen"/>
+        <icon id="122222" src="@drawable/study_pusheen"/>
+        <icon id="13333" src="@drawable/drive_pusheen"/>
+        <icon id="144444"  src="@drawable/party_pusheen"/>
+        <icon id="155555"  src="@drawable/cook_pusheen"/>
+        <icon id="16666"  src="@drawable/sleep_pusheen"/>
+        <icon id="177777"  src="@drawable/relax_pusheen"/>
+        <icon id="18888" src="@drawable/meeting_pusheen"/>
+        <icon id="199999" src="@drawable/game_pusheen"/>
+    </category>
 </icons>

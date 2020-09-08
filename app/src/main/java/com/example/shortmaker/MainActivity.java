@@ -35,10 +35,11 @@ import static java.sql.Types.NULL;
 public class MainActivity extends BaseMenuActivity implements IconDialog.Callback {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     public static final int PICKER_REQUEST_CODE = 10;
+    public static final int NO_POSITION = -1;
 
     List<Shortcut> shortcuts;
     private DraggableGridAdapter adapter;
-    int lastPosition = NULL;
+    int lastPosition = NO_POSITION;
 
 
     @Override
@@ -77,7 +78,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         lastPosition = item.getGroupId();
         String title = item.getTitle().toString();
         if ("Delete".equals(title)) {
-            if (lastPosition != NULL) {
+            if (lastPosition != NO_POSITION) {
                 //TODO - delete selected item
                 shortcuts.get(lastPosition).setTitle("malol");
                 adapter.notifyItemChanged(lastPosition);
@@ -99,8 +100,10 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         if (requestCode == PICKER_REQUEST_CODE) {
             String[] pathsList = data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // a list of length 1
             Drawable drawable = Drawable.createFromPath(pathsList[0]);//TODO- resize all images to same size
-            shortcuts.get(lastPosition).setDrawable(drawable);
-            adapter.notifyItemChanged(lastPosition);
+            if(lastPosition!=NO_POSITION){
+                shortcuts.get(lastPosition).setDrawable(drawable);
+                adapter.notifyItemChanged(lastPosition);
+            }
         }
     }
 
@@ -121,10 +124,11 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
     @Override
     public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
-        if (lastPosition != NULL) {
+        if (lastPosition != NO_POSITION) {
             shortcuts.get(lastPosition).setDrawable(icons.get(0).getDrawable());
-            boolean isKawaiiCategory =  icons.get(0).getCategoryId()==202020;
-            shortcuts.get(lastPosition).setTintNeeded(!isKawaiiCategory);
+            boolean isSpecialIcon =  icons.get(0).getCategoryId()==202020 || icons.get(0).getCategoryId()==303030;
+            //We want to add white tint to all regular icons
+            shortcuts.get(lastPosition).setTintNeeded(!isSpecialIcon);
             adapter.notifyItemChanged(lastPosition);
         }
     }
