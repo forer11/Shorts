@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tags>
+    <tag name="shape">Shape</tag>
+    <tag name="star">Star</tag>
+    <tag name="circle">Circle</tag>
+    <tag name="triangle">Triangle</tag>
+    <tag name="square">
+        <alias>Square</alias>
+        <alias>Rectangle</alias>
+    </tag>
+    <tag name="pentagon">Pentagon</tag>
+    <tag name="octagon">Octagon</tag>
+    <tag name="three">Three</tag>
+    <tag name="four">Four</tag>
+    <tag name="five">Five</tag>
+    <tag name="eight">
+        <alias>8</alias>
+        <alias>Eight</alias>
+    </tag>
+</tags>

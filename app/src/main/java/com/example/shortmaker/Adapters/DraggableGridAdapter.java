@@ -112,6 +112,8 @@ public class DraggableGridAdapter extends RecyclerView
             menu.setHeaderTitle("Select The Action");
             menu.add(getAdapterPosition(), v.getId(), 0, "Delete");
             menu.add(getAdapterPosition(), v.getId(), 0, "Change Icon");
+            menu.add(getAdapterPosition(), v.getId(), 0, "Load Icon");
+
         }
 
 
