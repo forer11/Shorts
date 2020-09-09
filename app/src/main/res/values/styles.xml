@@ -46,7 +46,7 @@
 
     <!-- Your custom dialog style, don't forget to specify the parent style! -->
     <style name="CustomIconDialogStyle" parent="IcdStyle">
-        <item name="icdIconSize">72dp</item>
+        <item name="icdIconSize">60dp</item>
         <item name="icdIconColor">#9FE3DB</item>
         <item name="icdListHeaderStyle">@style/CustomHeaderStyle</item>
         <item name="icdDialogButtonStyle">@style/IcdButtonStyle</item>
