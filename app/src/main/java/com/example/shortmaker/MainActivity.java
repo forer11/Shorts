@@ -1,6 +1,7 @@
 package com.example.shortmaker;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -15,6 +16,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import android.view.View;
 import android.widget.Toast;
 
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
@@ -33,7 +35,8 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class MainActivity extends BaseMenuActivity implements IconDialog.Callback {
+public class MainActivity extends BaseMenuActivity implements IconDialog.Callback,
+        PopupMenu.OnMenuItemClickListener {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     public static final int PICKER_REQUEST_CODE = 10;
     public static final int NO_POSITION = -1;
@@ -74,25 +77,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         setToolbar();
     }
 
-
-    //TODO - replace to something smarter after we decide on which actions the context menu will have
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        lastPosition = item.getGroupId();
-        String title = item.getTitle().toString();
-        if ("Delete".equals(title)) {
-            if (lastPosition != NO_POSITION) {
-                //TODO - delete selected item
-                shortcuts.get(lastPosition).setTitle("malol");
-                adapter.notifyItemChanged(lastPosition);
-            }
-        } else if ("Change Icon".equals(title)) {
-            showIconPickerDialog();
-        } else if ("Load Icon".equals(title)) {
-            new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();
-        }
-        return super.onContextItemSelected(item);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -149,21 +133,63 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         adapter = new DraggableGridAdapter(this, shortcuts);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
         recyclerView.setAdapter(adapter);
+        setOnItemClickListener();
+        setOnItemLongClickListener();
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
+    }
 
+    private void setOnItemLongClickListener() {
+        adapter.setOnItemLongClickListener(new DraggableGridAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                lastPosition=position;
+                showPopupMenu(view);
+            }
+        });
+    }
+
+    private void setOnItemClickListener() {
         adapter.setOnItemClickListener(new DraggableGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 Toast.makeText(MainActivity.this,
                         "position = " + position,
                         Toast.LENGTH_SHORT).show();
-
             }
         });
-
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
-        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
+
+    private void showPopupMenu(View view) {
+        PopupMenu popupMenu = new PopupMenu(view.getContext(), view);
+        popupMenu.inflate(R.menu.popup_menu);
+        popupMenu.setOnMenuItemClickListener(this);
+        popupMenu.show();
+    }
+
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_popup_edit:
+                //TODO - edit selected item
+                return true;
+            case R.id.action_popup_delete:
+                //TODO - delete selected item
+                shortcuts.get(lastPosition).setTitle("malol");
+                adapter.notifyItemChanged(lastPosition);
+                return true;
+            case R.id.action_popup_change_icon:
+                showIconPickerDialog();
+                return true;
+            case R.id.action_popup_load_icon:
+                new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();
+                return true;
+            default:
+                return false;
+        }
+    }
 
     private void setToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
