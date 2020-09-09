@@ -12,8 +12,7 @@ public class Shortcut {
         this.drawable = drawable;
         this.tintNeeded = tintNeeded;
     }
-
-
+    
     private boolean tintNeeded;
 
     private String title;

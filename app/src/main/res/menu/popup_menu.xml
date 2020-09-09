@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+
+    <item
+        android:id="@+id/action_popup_edit"
+        android:title="edit" />
+    <item
+        android:id="@+id/action_popup_delete"
+        android:title="delete" />
+    <item
+        android:id="@+id/action_popup_change_icon"
+        android:title="change icon" />
+    <item
+        android:id="@+id/action_popup_load_icon"
+        android:title="load icon" />
+</menu>
