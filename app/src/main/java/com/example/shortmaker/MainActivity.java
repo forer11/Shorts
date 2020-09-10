@@ -9,15 +9,17 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
-import android.view.ContextThemeWrapper;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -171,9 +173,39 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
     private void drivingConfiguration() {
         //TODO - add more actions when driving
-        openWaze();
-        openSpotify();
+//        openWaze();
+//        openSpotify();
+//        putPhoneOnVibrateMode();
+//        putPhoneOnRingingMode();
+//        changePhoneSoundMode();
     }
+
+    private void changePhoneSoundMode() {
+        //TODO - add a picker between silent/normal/vibration
+        AudioManager audioManager= (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
+        //For Silent mode
+        putPhoneOnSilent(audioManager);
+        //For Normal mode
+        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        //For Vibrate mode
+        audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+    }
+
+    private void putPhoneOnSilent(AudioManager audioManager) {
+        NotificationManager notificationManager =
+                (NotificationManager) MainActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && !notificationManager.isNotificationPolicyAccessGranted()) {
+            Intent intent = new Intent(
+                    android.provider.Settings
+                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+            startActivity(intent);
+        } else {
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+        }
+    }
+
 
     private void openWaze() {
         try {
