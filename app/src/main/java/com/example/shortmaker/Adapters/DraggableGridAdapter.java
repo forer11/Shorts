@@ -1,11 +1,14 @@
 package com.example.shortmaker.Adapters;
 
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
 
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,7 +64,7 @@ public class DraggableGridAdapter extends RecyclerView
         View view;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         view = layoutInflater.inflate(R.layout.shortcut_item, parent, false);
-        return new ShortcutItemHolder(view, listener, longClickListener);
+        return new ShortcutItemHolder(view, context, listener, longClickListener);
     }
 
     @Override
@@ -78,6 +81,7 @@ public class DraggableGridAdapter extends RecyclerView
             holder.shortcut_image.setColorFilter(Color.argb(255, 255,
                     255, 255), PorterDuff.Mode.SRC_IN);
         }
+
     }
 
     private void setAnimatedGradientBackground(@NonNull ShortcutItemHolder holder) {
@@ -99,8 +103,9 @@ public class DraggableGridAdapter extends RecyclerView
 
         TextView shortcut_title;
         ImageView shortcut_image;
+        Context context;
 
-        public ShortcutItemHolder(@NonNull View itemView, final OnItemClickListener listener,
+        public ShortcutItemHolder(@NonNull View itemView, Context context, final OnItemClickListener listener,
                                   final OnItemLongClickListener longClickListener) {
             super(itemView);
             shortcut_title = itemView.findViewById(R.id.icon_title);
@@ -124,7 +129,7 @@ public class DraggableGridAdapter extends RecyclerView
             });
         }
 
-        private void setOnItemClickListener(@NonNull View itemView, final OnItemClickListener listener) {
+        private void setOnItemClickListener(@NonNull final View itemView, final OnItemClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
