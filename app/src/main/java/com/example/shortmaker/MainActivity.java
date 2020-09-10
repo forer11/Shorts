@@ -9,10 +9,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.Menu;
@@ -145,7 +147,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         adapter.setOnItemLongClickListener(new DraggableGridAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
-                lastPosition=position;
+                lastPosition = position;
                 showPopupMenu(view);
             }
         });
@@ -158,8 +160,30 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
                 Toast.makeText(MainActivity.this,
                         "position = " + position,
                         Toast.LENGTH_SHORT).show();
+                if (shortcuts.get(position).getTitle().equals("Driving")) {
+                    drivingConfiguration();
+                }
+
             }
         });
+    }
+
+    private void drivingConfiguration() {
+        //TODO - add more actions when driving
+        openWaze();
+    }
+
+    private void openWaze() {
+        try {
+            // Launch Waze to look for Hawaii:
+            String url = "https://waze.com/ul?q=Hawaii"; //TODO - change to user defined address
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(intent);
+        } catch (ActivityNotFoundException ex) {
+            // If Waze is not installed, open it in Google Play:
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
+            startActivity(intent);
+        }
     }
 
 
