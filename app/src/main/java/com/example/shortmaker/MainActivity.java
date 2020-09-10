@@ -178,11 +178,23 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 //        putPhoneOnVibrateMode();
 //        putPhoneOnRingingMode();
 //        changePhoneSoundMode();
+//        sendTextMessage(true);
+    }
+
+    private void sendTextMessage(boolean sendThroughWhatsapp) {
+        Intent sendIntent = new Intent();
+        if(sendThroughWhatsapp){
+            sendIntent.setPackage("com.whatsapp");
+        }
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send."); //TODO - change to a costumized user text
+        sendIntent.setType("text/plain");
+        startActivity(sendIntent);
     }
 
     private void changePhoneSoundMode() {
         //TODO - add a picker between silent/normal/vibration
-        AudioManager audioManager= (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
         //For Silent mode
         putPhoneOnSilent(audioManager);
         //For Normal mode
