@@ -173,8 +173,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
     private void drivingConfiguration() {
         //TODO - add more actions when driving
-//        openWaze();
-//        openSpotify();
+        openSpotify();
+        openWaze();
 //        putPhoneOnVibrateMode();
 //        putPhoneOnRingingMode();
 //        changePhoneSoundMode();
@@ -221,7 +221,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
     private void openWaze() {
         try {
-            // Launch Waze to look for Hawaii:
+            // Launch Waze to look for Hawaii:.
+            // we can also give the following uri :  "https://waze.com/ul?ll=40.761043,-73.980545&navigate=yes" for it to navigate automatically
             String url = "https://waze.com/ul?q=Hawaii"; //TODO - change to user defined address
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(intent);
@@ -264,7 +265,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     private void launchSpotify() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //TODO - we can generally open spotify with "spotify:open" and not a specific album
-        intent.setData(Uri.parse("spotify:album:0sNOF9WDwhWunNAHPD3Baj"));
+        // we can delete the ":play: from the uri in order for the song not to be played automatically
+        intent.setData(Uri.parse("spotify:album:0sNOF9WDwhWunNAHPD3Baj:play"));
         intent.putExtra(Intent.EXTRA_REFERRER,
                 Uri.parse("android-app://" + MainActivity.this.getPackageName()));
         startActivity(intent);
