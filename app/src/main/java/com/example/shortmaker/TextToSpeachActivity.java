@@ -6,27 +6,42 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.speech.tts.TextToSpeech;
 import android.view.View;
+import android.view.textclassifier.TextLanguage;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.api.GoogleApi;
+
+import org.intellij.lang.annotations.Language;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class TextToSpeachActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0;
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
+    // Request code for READ_CONTACTS. It can be any number > 0.
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     TextView messageTextView, phoneNumTextView;
     MyReceiver receiver = new MyReceiver() {
@@ -37,6 +52,7 @@ public class TextToSpeachActivity extends AppCompatActivity {
             phoneNumTextView.setText(phoneNumber);
         }
     };
+    private Map<String, String> contacts;
 
     @Override
     protected void onResume() {
@@ -65,7 +81,58 @@ public class TextToSpeachActivity extends AppCompatActivity {
             }
         }
         setTextToSpeech();
+        showContacts();
     }
+
+    private void showContacts() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
+                    PERMISSIONS_REQUEST_READ_CONTACTS);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        } else {
+            // Android version is lesser than 6.0 or the permission is already granted.
+            contacts = getContactNames();
+        }
+    }
+
+
+    private Map<String, String> getContactNames() {
+        Map<String, String> contacts = new HashMap<>();
+        ContentResolver cr = getContentResolver();
+        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                null, null, null, null);
+
+        if ((cur != null ? cur.getCount() : 0) > 0) {
+            while (cur != null && cur.moveToNext()) {
+                String id = cur.getString(
+                        cur.getColumnIndex(ContactsContract.Contacts._ID));
+                String name = cur.getString(cur.getColumnIndex(
+                        ContactsContract.Contacts.DISPLAY_NAME));
+                if (cur.getInt(cur.getColumnIndex(
+                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
+                    Cursor pCur = cr.query(
+                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                            null,
+                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                            new String[]{id}, null);
+                    while (pCur.moveToNext()) {
+                        String phoneNo = pCur.getString(pCur.getColumnIndex(
+                                ContactsContract.CommonDataKinds.Phone.NUMBER))
+                                .replaceAll("\\s", "")
+                                .replaceAll("-", "");
+                        contacts.put(name, phoneNo);
+                    }
+                    pCur.close();
+                }
+            }
+        }
+        if (cur != null) {
+            cur.close();
+        }
+        return contacts;
+    }
+
 
     private void setTextToSpeech() {
         textToSpeech = new TextToSpeech(this, new TextToSpeech.OnInitListener() {
@@ -86,6 +153,7 @@ public class TextToSpeachActivity extends AppCompatActivity {
                 }
             }
         });
+
     }
 
     private void initializeUi() {
@@ -107,16 +175,24 @@ public class TextToSpeachActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_RECEIVE_SMS: {
+            case MY_PERMISSIONS_REQUEST_RECEIVE_SMS:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     Toast.makeText(this, "Thank you for permitting", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Please permit", Toast.LENGTH_SHORT).show();
                 }
-            }
+
+            case PERMISSIONS_REQUEST_READ_CONTACTS:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission is granted
+                    showContacts();
+                } else {
+                    Toast.makeText(this, "Until you grant the permission, we cannot get the names", Toast.LENGTH_SHORT).show();
+                }
         }
     }
 
@@ -133,10 +209,24 @@ public class TextToSpeachActivity extends AppCompatActivity {
 
         textToSpeech.setPitch(pitch);
         textToSpeech.setSpeechRate(speed);
+        if (!(phoneNumTextView.getText().equals("") || messageTextView.getText().equals(""))) {
+            String a = getKey(phoneNumTextView.getText().toString());
+            textToSpeech.speak("You got a message from: " + getKey(phoneNumTextView.getText().toString()) +
+                            " and it says: " + messageTextView.getText(), TextToSpeech.QUEUE_FLUSH,
+                    null);
+        } else {
+            textToSpeech.speak("You have no messages yet", TextToSpeech.QUEUE_FLUSH,
+                    null);
+        }
+    }
 
-        textToSpeech.speak("You got a message from: " + phoneNumTextView.getText() +
-                " and it says: " + messageTextView.getText(), TextToSpeech.QUEUE_FLUSH,
-                null);
+    public String getKey(String value) {
+        for (Map.Entry<String, String> entry : contacts.entrySet()) {
+            if (entry.getValue().equals(value)) {
+                return entry.getKey();
+            }
+        }
+        return null;
     }
 
     @Override
