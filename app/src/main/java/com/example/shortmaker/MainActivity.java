@@ -5,7 +5,6 @@ import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -14,15 +13,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
@@ -33,9 +29,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
@@ -48,12 +42,9 @@ import com.opensooq.supernova.gligar.GligarPicker;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -65,12 +56,17 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     public static final int NO_POSITION = -1;
     public static final int KAWAII_ICON_CATEGORY = 202020;
     public static final int PUSHEEN_ICON_CATEGORY = 303030;
+    public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
+    public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
+    public static final String DRIVING_CONFIGURATION = "Driving";
+    public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
+    public static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
 
     List<Shortcut> shortcuts;
     private DraggableGridAdapter adapter;
     int lastPosition = NO_POSITION;
     private EditText editText;
-    private View customLayout;
+    private View phoneCallDialogLayout;
     private AlertDialog makeCallDialog;
 
 
@@ -106,8 +102,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     }
 
     private void setMakeCallDialog() {
-        customLayout = getLayoutInflater().inflate(R.layout.custome_layout, null);
-        editText = customLayout.findViewById(R.id.edit_text_number);
+        phoneCallDialogLayout = getLayoutInflater().inflate(R.layout.phone_call_dialog_layout, null);
+        editText = phoneCallDialogLayout.findViewById(R.id.edit_text_number);
         showAlertDialogMakeCall();
     }
 
@@ -115,11 +111,11 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     public void showAlertDialogMakeCall() {
         // Create an alert builder
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Make a phone call");
+        builder.setTitle(PHONE_CALL_DIALOG_TITLE);
         // set the custom layout
-        builder.setView(customLayout);
+        builder.setView(phoneCallDialogLayout);
         // add a button
-        builder.setPositiveButton("DIAL", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(PHONE_CALL_DIALOG_POS_BTN, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // send data from the AlertDialog to the Activity
@@ -236,7 +232,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
                 Toast.makeText(MainActivity.this,
                         "position = " + position,
                         Toast.LENGTH_SHORT).show();
-                if (shortcuts.get(position).getTitle().equals("Driving")) {
+                if (shortcuts.get(position).getTitle().equals(DRIVING_CONFIGURATION)) {
                     drivingConfiguration();
                 }
 
@@ -258,7 +254,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     private void sendTextMessage(boolean sendThroughWhatsapp) {
         Intent sendIntent = new Intent();
         if (sendThroughWhatsapp) {
-            sendIntent.setPackage("com.whatsapp");
+            sendIntent.setPackage(WHATSAPP_PACKAGE_NAME);
         }
         sendIntent.setAction(Intent.ACTION_SEND);
         sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send."); //TODO - change to a costumized user text
@@ -317,19 +313,18 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     }
 
     private void installSpotify() {
-        final String appPackageName = "com.spotify.music";
         final String referrer = "adjust_campaign=PACKAGE_NAME&adjust_tracker=ndjczk&utm_source=adjust_preinstall";
         try {
             Uri uri = Uri.parse("market://details")
                     .buildUpon()
-                    .appendQueryParameter("id", appPackageName)
+                    .appendQueryParameter("id", SPOTIFY_PACKAGE_NAME)
                     .appendQueryParameter("referrer", referrer)
                     .build();
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
         } catch (ActivityNotFoundException ignored) {
             Uri uri = Uri.parse("https://play.google.com/store/apps/details")
                     .buildUpon()
-                    .appendQueryParameter("id", appPackageName)
+                    .appendQueryParameter("id", SPOTIFY_PACKAGE_NAME)
                     .appendQueryParameter("referrer", referrer)
                     .build();
             startActivity(new Intent(Intent.ACTION_VIEW, uri));
@@ -350,7 +345,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         PackageManager pm = getPackageManager();
         boolean isSpotifyInstalled;
         try {
-            pm.getPackageInfo("com.spotify.music", 0);
+            pm.getPackageInfo(SPOTIFY_PACKAGE_NAME, 0);
             isSpotifyInstalled = true;
         } catch (PackageManager.NameNotFoundException e) {
             isSpotifyInstalled = false;
