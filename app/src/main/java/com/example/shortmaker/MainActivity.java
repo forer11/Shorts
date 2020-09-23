@@ -25,6 +25,7 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -32,7 +33,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.shortmaker.Actions.ActionAlarmClock;
+import com.example.shortmaker.Actions.ActionSendTextMessage;
+import com.example.shortmaker.Actions.ActionSoundSettings;
+import com.example.shortmaker.Actions.ActionSpotify;
+import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
+import com.example.shortmaker.DataClasses.Action;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
@@ -52,15 +59,14 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         PopupMenu.OnMenuItemClickListener {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private static final int REQUEST_CALL = 1;
+    public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
+    public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
     public static final int PICKER_REQUEST_CODE = 10;
     public static final int NO_POSITION = -1;
     public static final int KAWAII_ICON_CATEGORY = 202020;
     public static final int PUSHEEN_ICON_CATEGORY = 303030;
-    public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
-    public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
+
     public static final String DRIVING_CONFIGURATION = "Driving";
-    public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
-    public static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
 
     List<Shortcut> shortcuts;
     private DraggableGridAdapter adapter;
@@ -98,60 +104,62 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
         setToolbar();
 
-        setMakeCallDialog();
-    }
-
-    private void setMakeCallDialog() {
-        phoneCallDialogLayout = getLayoutInflater().inflate(R.layout.phone_call_dialog_layout, null);
-        editText = phoneCallDialogLayout.findViewById(R.id.edit_text_number);
-        showAlertDialogMakeCall();
+//        setMakeCallDialog();
     }
 
 
-    public void showAlertDialogMakeCall() {
-        // Create an alert builder
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(PHONE_CALL_DIALOG_TITLE);
-        // set the custom layout
-        builder.setView(phoneCallDialogLayout);
-        // add a button
-        builder.setPositiveButton(PHONE_CALL_DIALOG_POS_BTN, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // send data from the AlertDialog to the Activity
-                makePhoneCall(editText.getText().toString());
-            }
-        }).setIcon(R.drawable.ic_phone);
-        // create and show the alert dialog
-        makeCallDialog = builder.create();
-    }
 
-
-    private void makePhoneCall(String number) {
-        if (number.trim().length() > 0) {
-            if (ContextCompat.checkSelfPermission(MainActivity.this,
-                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(MainActivity.this,
-                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
-            } else {
-                String dial = "tel:" + number;
-                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-            }
-        } else {
-            Toast.makeText(MainActivity.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CALL) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                makePhoneCall(editText.getText().toString());
-            } else {
-                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+//    private void setMakeCallDialog() {
+//        phoneCallDialogLayout = getLayoutInflater().inflate(R.layout.phone_call_dialog_layout, null);
+//        editText = phoneCallDialogLayout.findViewById(R.id.edit_text_number);
+//        showAlertDialogMakeCall();
+//    }
+//
+//
+//    public void showAlertDialogMakeCall() {
+//        // Create an alert builder
+//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//        builder.setTitle(PHONE_CALL_DIALOG_TITLE);
+//        // set the custom layout
+//        builder.setView(phoneCallDialogLayout);
+//        // add a button
+//        builder.setPositiveButton(PHONE_CALL_DIALOG_POS_BTN, new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                // send data from the AlertDialog to the Activity
+//                makePhoneCall(editText.getText().toString());
+//            }
+//        }).setIcon(R.drawable.ic_phone);
+//        // create and show the alert dialog
+//        makeCallDialog = builder.create();
+//    }
+//
+//
+//    private void makePhoneCall(String number) {
+//        if (number.trim().length() > 0) {
+//            if (ContextCompat.checkSelfPermission(MainActivity.this,
+//                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+//                ActivityCompat.requestPermissions(MainActivity.this,
+//                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+//            } else {
+//                String dial = "tel:" + number;
+//                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+//            }
+//        } else {
+//            Toast.makeText(MainActivity.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
+//        }
+//    }
+//
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        if (requestCode == REQUEST_CALL) {
+//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                makePhoneCall(editText.getText().toString());
+//            } else {
+//                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+//            }
+//        }
+//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -242,116 +250,25 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
     private void drivingConfiguration() {
         //TODO - add more actions when driving
-//        openSpotify();
-//        openWaze();
-//        putPhoneOnVibrateMode();
-//        putPhoneOnRingingMode();
-//        changePhoneSoundMode();
-//        sendTextMessage(true);
-        makeCallDialog.show();
-    }
+//        Action spotify = new ActionSpotify(this);
+//        spotify.activate();
 
-    private void sendTextMessage(boolean sendThroughWhatsapp) {
-        Intent sendIntent = new Intent();
-        if (sendThroughWhatsapp) {
-            sendIntent.setPackage(WHATSAPP_PACKAGE_NAME);
-        }
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send."); //TODO - change to a costumized user text
-        sendIntent.setType("text/plain");
-        startActivity(sendIntent);
-    }
+//        Action waze = new ActionWaze(this);
+//        waze.activate();
 
-    private void changePhoneSoundMode() {
-        //TODO - add a picker between silent/normal/vibration
-        AudioManager audioManager = (AudioManager) getBaseContext().getSystemService(Context.AUDIO_SERVICE);
-        //For Silent mode
-        putPhoneOnSilent(audioManager);
-        //For Normal mode
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-        //For Vibrate mode
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-    }
+//        Action soundMode = new ActionSoundSettings(this,0);
+//        soundMode.activate();
 
-    private void putPhoneOnSilent(AudioManager audioManager) {
-        NotificationManager notificationManager =
-                (NotificationManager) MainActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+//        Action textMessage = new ActionSendTextMessage(this,true);
+//        textMessage.activate();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && !notificationManager.isNotificationPolicyAccessGranted()) {
-            Intent intent = new Intent(
-                    android.provider.Settings
-                            .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-            startActivity(intent);
-        } else {
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-        }
+//        makeCallDialog.show();
+
+        Action alarmClock = new ActionAlarmClock(this);
+        alarmClock.activate();
     }
 
 
-    private void openWaze() {
-        try {
-            // Launch Waze to look for Hawaii:.
-            // we can also give the following uri :  "https://waze.com/ul?ll=40.761043,-73.980545&navigate=yes" for it to navigate automatically
-            String url = "https://waze.com/ul?q=Hawaii"; //TODO - change to user defined address
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(intent);
-        } catch (ActivityNotFoundException ex) {
-            // If Waze is not installed, open it in Google Play:
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.waze"));
-            startActivity(intent);
-        }
-    }
-
-    private void openSpotify() {
-        boolean isSpotifyInstalled = checkIfSpotifyInstalled();
-        if (isSpotifyInstalled) {
-            launchSpotify();
-        } else {
-            installSpotify();
-        }
-    }
-
-    private void installSpotify() {
-        final String referrer = "adjust_campaign=PACKAGE_NAME&adjust_tracker=ndjczk&utm_source=adjust_preinstall";
-        try {
-            Uri uri = Uri.parse("market://details")
-                    .buildUpon()
-                    .appendQueryParameter("id", SPOTIFY_PACKAGE_NAME)
-                    .appendQueryParameter("referrer", referrer)
-                    .build();
-            startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        } catch (ActivityNotFoundException ignored) {
-            Uri uri = Uri.parse("https://play.google.com/store/apps/details")
-                    .buildUpon()
-                    .appendQueryParameter("id", SPOTIFY_PACKAGE_NAME)
-                    .appendQueryParameter("referrer", referrer)
-                    .build();
-            startActivity(new Intent(Intent.ACTION_VIEW, uri));
-        }
-    }
-
-    private void launchSpotify() {
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        //TODO - we can generally open spotify with "spotify:open" and not a specific album
-        // we can delete the ":play: from the uri in order for the song not to be played automatically
-        intent.setData(Uri.parse("spotify:album:0sNOF9WDwhWunNAHPD3Baj:play"));
-        intent.putExtra(Intent.EXTRA_REFERRER,
-                Uri.parse("android-app://" + MainActivity.this.getPackageName()));
-        startActivity(intent);
-    }
-
-    private boolean checkIfSpotifyInstalled() {
-        PackageManager pm = getPackageManager();
-        boolean isSpotifyInstalled;
-        try {
-            pm.getPackageInfo(SPOTIFY_PACKAGE_NAME, 0);
-            isSpotifyInstalled = true;
-        } catch (PackageManager.NameNotFoundException e) {
-            isSpotifyInstalled = false;
-        }
-        return isSpotifyInstalled;
-    }
 
 
     private void showPopupMenu(View view) {
