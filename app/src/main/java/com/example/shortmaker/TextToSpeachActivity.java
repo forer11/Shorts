@@ -4,35 +4,38 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.provider.Settings;
 import android.speech.tts.TextToSpeech;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.textclassifier.TextLanguage;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApi;
-
-import org.intellij.lang.annotations.Language;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -42,6 +45,7 @@ public class TextToSpeachActivity extends AppCompatActivity {
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     // Request code for READ_CONTACTS. It can be any number > 0.
     private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
 
     TextView messageTextView, phoneNumTextView;
     MyReceiver receiver = new MyReceiver() {
@@ -53,13 +57,6 @@ public class TextToSpeachActivity extends AppCompatActivity {
         }
     };
     private Map<String, String> contacts;
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(receiver, new IntentFilter(SMS_RECEIVED));
-    }
-
     private TextToSpeech textToSpeech;
     private EditText editText;
     private SeekBar seekBarPitch;
@@ -82,6 +79,16 @@ public class TextToSpeachActivity extends AppCompatActivity {
         }
         setTextToSpeech();
         showContacts();
+
+    }
+
+
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(SMS_RECEIVED));
     }
 
     private void showContacts() {
@@ -118,9 +125,7 @@ public class TextToSpeachActivity extends AppCompatActivity {
                             new String[]{id}, null);
                     while (pCur.moveToNext()) {
                         String phoneNo = pCur.getString(pCur.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER))
-                                .replaceAll("\\s", "")
-                                .replaceAll("-", "");
+                                ContactsContract.CommonDataKinds.Phone.NUMBER));
                         contacts.put(name, phoneNo);
                     }
                     pCur.close();
@@ -170,8 +175,8 @@ public class TextToSpeachActivity extends AppCompatActivity {
             }
         });
 
-        messageTextView = findViewById(R.id.message);
-        phoneNumTextView = findViewById(R.id.phoneNum);
+//        messageTextView = findViewById(R.id.message);
+//        phoneNumTextView = findViewById(R.id.phoneNum);
     }
 
     @Override
