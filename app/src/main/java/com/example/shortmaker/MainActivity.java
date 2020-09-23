@@ -4,17 +4,22 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.content.IntentFilter;
@@ -28,6 +33,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -53,6 +60,7 @@ import java.util.Objects;
 public class MainActivity extends BaseMenuActivity implements IconDialog.Callback,
         PopupMenu.OnMenuItemClickListener {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
+    private static final int REQUEST_CALL = 1;
     public static final int PICKER_REQUEST_CODE = 10;
     public static final int NO_POSITION = -1;
     public static final int KAWAII_ICON_CATEGORY = 202020;
@@ -61,6 +69,9 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     List<Shortcut> shortcuts;
     private DraggableGridAdapter adapter;
     int lastPosition = NO_POSITION;
+    private EditText editText;
+    private View customLayout;
+    private AlertDialog makeCallDialog;
 
 
     @Override
@@ -91,9 +102,60 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
         setToolbar();
 
+        setMakeCallDialog();
+    }
+
+    private void setMakeCallDialog() {
+        customLayout = getLayoutInflater().inflate(R.layout.custome_layout, null);
+        editText = customLayout.findViewById(R.id.edit_text_number);
+        showAlertDialogMakeCall();
     }
 
 
+    public void showAlertDialogMakeCall() {
+        // Create an alert builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Make a phone call");
+        // set the custom layout
+        builder.setView(customLayout);
+        // add a button
+        builder.setPositiveButton("DIAL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // send data from the AlertDialog to the Activity
+                makePhoneCall(editText.getText().toString());
+            }
+        }).setIcon(R.drawable.ic_phone);
+        // create and show the alert dialog
+        makeCallDialog = builder.create();
+    }
+
+
+    private void makePhoneCall(String number) {
+        if (number.trim().length() > 0) {
+            if (ContextCompat.checkSelfPermission(MainActivity.this,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(MainActivity.this,
+                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+            } else {
+                String dial = "tel:" + number;
+                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            }
+        } else {
+            Toast.makeText(MainActivity.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall(editText.getText().toString());
+            } else {
+                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -184,17 +246,18 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
     private void drivingConfiguration() {
         //TODO - add more actions when driving
-        openSpotify();
-        openWaze();
+//        openSpotify();
+//        openWaze();
 //        putPhoneOnVibrateMode();
 //        putPhoneOnRingingMode();
 //        changePhoneSoundMode();
 //        sendTextMessage(true);
+        makeCallDialog.show();
     }
 
     private void sendTextMessage(boolean sendThroughWhatsapp) {
         Intent sendIntent = new Intent();
-        if(sendThroughWhatsapp){
+        if (sendThroughWhatsapp) {
             sendIntent.setPackage("com.whatsapp");
         }
         sendIntent.setAction(Intent.ACTION_SEND);
