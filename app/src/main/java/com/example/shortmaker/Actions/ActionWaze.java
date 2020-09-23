@@ -10,7 +10,7 @@ import com.example.shortmaker.DataClasses.Action;
 public class ActionWaze implements Action {
 
     private Context context;
-    
+
     public ActionWaze(Context context) {
         this.context = context;
     }
