@@ -1,4 +1,4 @@
-package com.example;
+package com.example.shortmaker.ActionDialogs;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -7,18 +7,20 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
+import com.bumptech.glide.Glide;
 import com.example.shortmaker.R;
 
 import java.util.ArrayList;
 
 
-public class WazeDialog extends AppCompatDialogFragment {
+public class SpotifyDialog extends AppCompatDialogFragment {
 
     private WazeDialogListener listener;
     private EditText editTextAddress;
@@ -31,9 +33,11 @@ public class WazeDialog extends AppCompatDialogFragment {
         View view = layoutInflater.inflate(R.layout.waze_dialog,null);
 
         editTextAddress = view.findViewById(R.id.editText);
+        ImageView imageView = view.findViewById(R.id.imageView);
+        Glide.with(this).load(R.drawable.spotify_gif).into(imageView);
 
         builder.setView(view)
-                .setTitle("Open Waze")
+                .setTitle("Open Spotify")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -61,7 +65,7 @@ public class WazeDialog extends AppCompatDialogFragment {
         try {
             listener = (WazeDialogListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "must implement WazeDialogListener");
+            throw new ClassCastException(context.toString() + "mustimplement WazeDialogListener");
         }
     }
 
