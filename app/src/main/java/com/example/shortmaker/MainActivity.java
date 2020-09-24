@@ -4,30 +4,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.NotificationManager;
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 
-import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.media.AudioManager;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.AlarmClock;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -35,10 +22,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.WazeDialog;
-import com.example.shortmaker.Actions.ActionAlarmClock;
-import com.example.shortmaker.Actions.ActionSendTextMessage;
-import com.example.shortmaker.Actions.ActionSoundSettings;
+import com.example.shortmaker.ActionDialogs.WazeDialog;
 import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
@@ -253,6 +237,11 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     private void drivingConfiguration() {
         //TODO - add more actions when driving
 //        Action spotify = new ActionSpotify(this);
+//        DialogFragment dialogFragment = spotify.getDialog(); //TOOD - todo in interface
+//        if(dialogFragment!=null) {
+//            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
+//        }
+
 //        spotify.activate();
 
         ActionWaze waze = new ActionWaze(this);
