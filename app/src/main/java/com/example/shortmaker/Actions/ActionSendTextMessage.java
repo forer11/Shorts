@@ -5,6 +5,8 @@ import android.content.Intent;
 
 import com.example.shortmaker.DataClasses.Action;
 
+import java.util.List;
+
 public class ActionSendTextMessage implements Action {
 
     public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
@@ -30,8 +32,9 @@ public class ActionSendTextMessage implements Action {
         context.startActivity(sendIntent);
     }
 
+
     @Override
-    public void setData(String stringData, Integer intData) {
+    public void setData(List<String> params) {
 
     }
 }

@@ -8,6 +8,8 @@ import android.os.Build;
 
 import com.example.shortmaker.DataClasses.Action;
 
+import java.util.List;
+
 public class ActionSoundSettings implements Action {
 
     public static final int SILENT_MODE = 0;
@@ -39,7 +41,7 @@ public class ActionSoundSettings implements Action {
     }
 
     @Override
-    public void setData(String stringData, Integer intData) {
+    public void setData(List<String> params) {
 
     }
 

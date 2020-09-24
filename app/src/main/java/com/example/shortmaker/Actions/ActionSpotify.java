@@ -1,12 +1,16 @@
 package com.example.shortmaker.Actions;
 
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.view.KeyEvent;
 
 import com.example.shortmaker.DataClasses.Action;
+
+import java.util.List;
 
 public class ActionSpotify implements Action {
 
@@ -28,7 +32,7 @@ public class ActionSpotify implements Action {
     }
 
     @Override
-    public void setData(String stringData, Integer intData) {
+    public void setData(List<String> params) {
 
     }
 
@@ -59,6 +63,7 @@ public class ActionSpotify implements Action {
         intent.putExtra(Intent.EXTRA_REFERRER,
                 Uri.parse("android-app://" + context.getPackageName()));
         context.startActivity(intent);
+
     }
 
     private boolean checkIfSpotifyInstalled() {
