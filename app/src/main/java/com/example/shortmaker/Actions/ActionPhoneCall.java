@@ -8,6 +8,8 @@ import android.widget.EditText;
 
 import com.example.shortmaker.DataClasses.Action;
 
+import java.util.List;
+
 public class ActionPhoneCall implements Action {
 
     private static final int REQUEST_CALL = 1;
@@ -29,7 +31,7 @@ public class ActionPhoneCall implements Action {
     }
 
     @Override
-    public void setData(String stringData, Integer intData) {
+    public void setData(List<String> params) {
 
     }
 }

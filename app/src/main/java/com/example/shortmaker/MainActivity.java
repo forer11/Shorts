@@ -6,6 +6,8 @@ import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,6 +35,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.WazeDialog;
 import com.example.shortmaker.Actions.ActionAlarmClock;
 import com.example.shortmaker.Actions.ActionSendTextMessage;
 import com.example.shortmaker.Actions.ActionSoundSettings;
@@ -56,7 +59,7 @@ import java.util.Objects;
 
 
 public class MainActivity extends BaseMenuActivity implements IconDialog.Callback,
-        PopupMenu.OnMenuItemClickListener {
+        PopupMenu.OnMenuItemClickListener, WazeDialog.WazeDialogListener {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
@@ -106,7 +109,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
 //        setMakeCallDialog();
     }
-
 
 
 //    private void setMakeCallDialog() {
@@ -253,7 +255,13 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 //        Action spotify = new ActionSpotify(this);
 //        spotify.activate();
 
-//        Action waze = new ActionWaze(this);
+        ActionWaze waze = new ActionWaze(this);
+        DialogFragment dialogFragment = waze.getDialog(); //TOOD - todo in interface
+        if(dialogFragment!=null) {
+            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
+        }
+
+
 //        waze.activate();
 
 //        Action soundMode = new ActionSoundSettings(this,0);
@@ -263,12 +271,12 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 //        textMessage.activate();
 
 //        makeCallDialog.show();
+//
+//        Action alarmClock = new ActionAlarmClock(this);
+//        alarmClock.activate();
 
-        Action alarmClock = new ActionAlarmClock(this);
-        alarmClock.activate();
+
     }
-
-
 
 
     private void showPopupMenu(View view) {
@@ -358,4 +366,9 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         }
     };
 
+
+    @Override
+    public void applyText(String address) {
+
+    }
 }

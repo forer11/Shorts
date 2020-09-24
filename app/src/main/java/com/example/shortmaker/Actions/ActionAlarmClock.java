@@ -6,6 +6,8 @@ import android.provider.AlarmClock;
 
 import com.example.shortmaker.DataClasses.Action;
 
+import java.util.List;
+
 public class ActionAlarmClock implements Action {
 
     private Context context;
@@ -26,7 +28,7 @@ public class ActionAlarmClock implements Action {
     }
 
     @Override
-    public void setData(String stringData, Integer intData) {
+    public void setData(List<String> params) {
 
     }
 
