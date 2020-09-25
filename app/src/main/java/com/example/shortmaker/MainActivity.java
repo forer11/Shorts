@@ -29,6 +29,7 @@ import com.example.flatdialoglibrary.dialog.FlatDialog;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
 import com.example.shortmaker.DataClasses.Shortcut;
+import com.example.shortmaker.Views.MovableFloatingActionButton;
 import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
 import com.maltaisn.icondialog.data.Icon;
@@ -93,6 +94,14 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         setRecyclerView();
 
         setToolbar();
+
+        MovableFloatingActionButton addShortcut = findViewById(R.id.addShortcut);
+        addShortcut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCreateShortcutDialog();
+            }
+        });
 
 //        setMakeCallDialog();
     }
@@ -253,8 +262,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 //            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
 //        }
 
-
-        showCreateShortcutDialog();
 
 //        Action soundMode = new ActionSoundSettings(this,0);
 //        soundMode.activate();
