@@ -12,8 +12,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -21,9 +25,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.flatdialoglibrary.dialog.FlatDialog;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
-import com.example.shortmaker.ActionDialogs.WazeDialog;
-import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.maltaisn.icondialog.IconDialog;
@@ -34,6 +37,8 @@ import com.opensooq.supernova.gligar.GligarPicker;
 
 import org.jetbrains.annotations.Nullable;
 
+import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -44,7 +49,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         PopupMenu.OnMenuItemClickListener, ActionDialog.DialogListener {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private static final int REQUEST_CALL = 1;
-    public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
+    public static final String PHONE_CALL_DIALOG_TITLE = "Make action phone call";
     public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
     public static final int PICKER_REQUEST_CODE = 10;
     public static final int NO_POSITION = -1;
@@ -106,7 +111,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 //        builder.setTitle(PHONE_CALL_DIALOG_TITLE);
 //        // set the custom layout
 //        builder.setView(phoneCallDialogLayout);
-//        // add a button
+//        // add action button
 //        builder.setPositiveButton(PHONE_CALL_DIALOG_POS_BTN, new DialogInterface.OnClickListener() {
 //            @Override
 //            public void onClick(DialogInterface dialog, int which) {
@@ -152,7 +157,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
             return;
         }
         if (requestCode == PICKER_REQUEST_CODE) {
-            String[] pathsList = data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // a list of length 1
+            String[] pathsList = data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // action list of length 1
             Drawable drawable = Drawable.createFromPath(pathsList[0]);
             if (lastPosition != NO_POSITION) {
                 shortcuts.get(lastPosition).setDrawable(drawable);
@@ -163,7 +168,7 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
 
     private void showIconPickerDialog() {
-        // If dialog is already added to fragment manager, get it. If not, create a new instance.
+        // If dialog is already added to fragment manager, get it. If not, create action new instance.
         IconDialog dialog = (IconDialog) getSupportFragmentManager().findFragmentByTag(ICON_DIALOG_TAG);
         IconDialog iconDialog = dialog != null ? dialog
                 : IconDialog.newInstance(new IconDialogSettings.Builder().build());
@@ -242,14 +247,14 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
 //        spotify.activate();
 
-        ActionWaze waze = new ActionWaze(this);
-        ActionDialog dialogFragment = waze.getDialog(); //TOOD - todo in interface
-        if (dialogFragment != null) {
-            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
-        }
+//        ActionWaze waze = new ActionWaze(this);
+//        ActionDialog dialogFragment = waze.getDialog(); //TOOD - todo in interface
+//        if (dialogFragment != null) {
+//            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
+//        }
 
 
-//        waze.activate();
+        showCreateShortcutDialog();
 
 //        Action soundMode = new ActionSoundSettings(this,0);
 //        soundMode.activate();
@@ -263,6 +268,40 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 //        alarmClock.activate();
 
 
+    }
+
+    private void showCreateShortcutDialog() {
+        final FlatDialog flatDialog = new FlatDialog(MainActivity.this);
+        flatDialog.setTitle("Add Shortcut")
+                .setIcon(R.drawable.shortcut)
+                .setSubtitle("Choose the shortcut name")
+                .setFirstTextFieldHint("shortcut name")
+                .setFirstButtonText("OK")
+                .setSecondButtonText("CANCEL")
+                .withFirstButtonListner(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String shortcutName = flatDialog.getFirstTextField();
+                        if (shortcutName.equals("")) {
+                            Toast.makeText(MainActivity.this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Bitmap iconBitmap = ((BitmapDrawable) getDrawable(R.drawable.shortcut)).getBitmap();
+                            Intent intent = new Intent(getBaseContext(), SetActionsActivity.class);
+                            intent.putExtra("shortcutName", shortcutName);
+                            intent.putExtra("shortcutIcon", iconBitmap);
+                            startActivity(intent);
+
+                            //TODO - add to the grid the new shortcut
+                        }
+                    }
+                })
+                .withSecondButtonListner(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        flatDialog.dismiss();
+                    }
+                })
+                .show();
     }
 
 
@@ -357,4 +396,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
     public void applyUserInfo(ArrayList<String> data) {
         Toast.makeText(this, data.get(0), Toast.LENGTH_SHORT).show();
     }
+
+
 }

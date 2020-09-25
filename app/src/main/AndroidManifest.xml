@@ -16,7 +16,7 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
-
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:name=".AppData"
@@ -26,20 +26,18 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".SetActionsActivity"></activity>
+
         <receiver
             android:name=".MyReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.provider.Telephony.SMS_RECEIVED" />
-
             </intent-filter>
         </receiver>
 
-        <activity android:name=".TextToSpeachActivity">
-
-        </activity>
-
+        <activity android:name=".TextToSpeachActivity"></activity>
         <activity android:name=".MainActivity" />
         <activity
             android:name=".OpeningScreenActivity"
@@ -74,9 +72,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
     </application>
-
-    <uses-permission android:name="android.permission.CALL_PHONE" />
 
 </manifest>
