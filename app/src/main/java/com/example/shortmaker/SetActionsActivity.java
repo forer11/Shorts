@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,7 +59,6 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
             shortcutTitle.setText(title);
             shortcutIcon.setImageBitmap(bitmap);
         }
-        ArrayList<Action> items = createSampleData();
 
         MovableFloatingActionButton changeIconButton = findViewById(R.id.changeIcon);
         changeIconButton.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +75,7 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
         addActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SimpleSearchDialogCompat(SetActionsActivity.this, "Search...",
+                SearchDialog dialogCompact = new SearchDialog(SetActionsActivity.this, "Search action",
                         "Search for an action", null, createSampleData(),
                         new SearchResultListener<Action>() {
                             @Override
@@ -89,7 +89,9 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
                                 }
                                 dialog.dismiss();
                             }
-                        }).show();
+                        });
+                dialogCompact.show();
+
             }
         });
     }
