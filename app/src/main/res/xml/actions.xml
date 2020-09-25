@@ -1,4 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+<!-- This is a sample actions.xml -->
+<actions>
+    <action intentName="actions.intent.OPEN_APP_FEATURE">
+        <!-- Use url from inventory match for deep link fulfillment -->
+        <fulfillment urlTemplate="{@url}" />
 
-</PreferenceScreen>
+
+        <!-- Define parameters with inventories here -->
+        <parameter name="feature">
+            <entity-set-reference entitySetId="featureParamEntitySet"/>
+        </parameter>
+    </action>
+
+    <entity-set entitySetId="featureParamEntitySet">
+        <!-- Provide a URL per entity -->
+<!--        <entity url="myapp://deeplink/one" name="featureParam_one" alternateName="@array/featureParam_one_synonyms"/>-->
+<!--        <entity url="myapp://deeplink/two" name="featureParam_two" alternateName="@array/featureParam_two_synonyms"/>-->
+    </entity-set>
+</actions>
