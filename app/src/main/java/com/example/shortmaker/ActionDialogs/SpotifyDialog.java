@@ -20,7 +20,7 @@ import com.example.shortmaker.R;
 import java.util.ArrayList;
 
 
-public class SpotifyDialog extends AppCompatDialogFragment {
+public class SpotifyDialog extends ActionDialog {
 
     private WazeDialogListener listener;
     private EditText editTextAddress;

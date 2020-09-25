@@ -1,7 +1,6 @@
 package com.example.shortmaker.ActionDialogs;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,7 +11,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.bumptech.glide.Glide;
 import com.example.shortmaker.R;
@@ -20,9 +18,8 @@ import com.example.shortmaker.R;
 import java.util.ArrayList;
 
 
-public class WazeDialog extends AppCompatDialogFragment {
+public class WazeDialog extends ActionDialog {
 
-    private WazeDialogListener listener;
     private EditText editTextAddress;
 
     @NonNull
@@ -50,23 +47,13 @@ public class WazeDialog extends AppCompatDialogFragment {
                         String address = editTextAddress.getText().toString();
                         ArrayList<String> results = new ArrayList<>();
                         results.add(address);
+                        listener.applyUserInfo(results);
 
                     }
                 });
 
 
         return builder.create();
-    }
-
-
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            listener = (WazeDialogListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "must implement WazeDialogListener");
-        }
     }
 
     public interface WazeDialogListener {

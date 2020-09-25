@@ -7,8 +7,8 @@ import android.net.Uri;
 
 import androidx.fragment.app.DialogFragment;
 
+import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.WazeDialog;
-import com.example.shortmaker.DataClasses.Action;
 
 
 import java.util.ArrayList;
@@ -28,10 +28,6 @@ public class ActionWaze implements Action {
         this.data = new ArrayList<>();
     }
 
-    public DialogFragment getDialog() {
-        return dialog;
-    }
-
     @Override
     public void activate() {
         try {
@@ -46,8 +42,13 @@ public class ActionWaze implements Action {
     }
 
     @Override
-    public void setData(List<String> params) {
-        address = params.get(0);
+    public ActionDialog getDialog() {
+        return dialog;
+    }
+
+    @Override
+    public void setData(List<String> data) {
+        address = data.get(0);
         activate();
     }
 

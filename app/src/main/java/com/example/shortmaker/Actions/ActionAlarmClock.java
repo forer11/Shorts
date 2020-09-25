@@ -4,7 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.provider.AlarmClock;
 
-import com.example.shortmaker.DataClasses.Action;
+import androidx.fragment.app.DialogFragment;
+
+import com.example.shortmaker.ActionDialogs.ActionDialog;
 
 import java.util.List;
 
@@ -28,7 +30,13 @@ public class ActionAlarmClock implements Action {
     }
 
     @Override
-    public void setData(List<String> params) {
+    public ActionDialog getDialog() {
+        return null;
+    }
+
+
+    @Override
+    public void setData(List<String> data) {
 
     }
 

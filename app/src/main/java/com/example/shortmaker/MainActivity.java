@@ -4,7 +4,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,11 +21,10 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.WazeDialog;
-import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
-import com.example.shortmaker.DataClasses.Action;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
@@ -43,7 +41,7 @@ import java.util.Objects;
 
 
 public class MainActivity extends BaseMenuActivity implements IconDialog.Callback,
-        PopupMenu.OnMenuItemClickListener, WazeDialog.WazeDialogListener {
+        PopupMenu.OnMenuItemClickListener, ActionDialog.DialogListener {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
@@ -245,8 +243,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 //        spotify.activate();
 
         ActionWaze waze = new ActionWaze(this);
-        DialogFragment dialogFragment = waze.getDialog(); //TOOD - todo in interface
-        if(dialogFragment!=null) {
+        ActionDialog dialogFragment = waze.getDialog(); //TOOD - todo in interface
+        if (dialogFragment != null) {
             dialogFragment.show(getSupportFragmentManager(), "waze dialog");
         }
 
@@ -355,9 +353,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         }
     };
 
-
     @Override
-    public void applyText(String address) {
-
+    public void applyUserInfo(ArrayList<String> data) {
+        Toast.makeText(this, data.get(0), Toast.LENGTH_SHORT).show();
     }
 }
