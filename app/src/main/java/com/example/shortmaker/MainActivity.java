@@ -257,12 +257,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
 
 //        spotify.activate();
 
-        ActionWaze waze = new ActionWaze(this);
-        ActionDialog dialogFragment = waze.getDialog(); //TOOD - todo in interface
-        if (dialogFragment != null) {
-            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
-        }
-
 
 //        Action soundMode = new ActionSoundSettings(this,0);
 //        soundMode.activate();
