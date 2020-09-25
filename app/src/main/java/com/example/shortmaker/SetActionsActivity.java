@@ -86,6 +86,9 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
                                         wazeActionHandler();
                                         break;
                                         //TODO - add more actions here and update the action in the activity recycler view
+                                    case "Spotify action":
+                                        spotifyActionHandler();
+                                        break;
                                 }
                                 dialog.dismiss();
                             }
@@ -96,9 +99,17 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
         });
     }
 
+    private void spotifyActionHandler() {
+        ActionSpotify spotify = new ActionSpotify(SetActionsActivity.this);
+        ActionDialog dialogFragment = spotify.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(getSupportFragmentManager(), "spotify dialog");
+        }
+    }
+
     private void wazeActionHandler() {
         ActionWaze waze = new ActionWaze(SetActionsActivity.this);
-        ActionDialog dialogFragment = waze.getDialog(); //TOOD - todo in interface
+        ActionDialog dialogFragment = waze.getDialog();
         if (dialogFragment != null) {
             dialogFragment.show(getSupportFragmentManager(), "waze dialog");
         }
