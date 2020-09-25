@@ -9,7 +9,16 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.shortmaker.ActionDialogs.ActionDialog;
+import com.example.shortmaker.Actions.Action;
+import com.example.shortmaker.Actions.ActionAlarmClock;
+import com.example.shortmaker.Actions.ActionPhoneCall;
+import com.example.shortmaker.Actions.ActionSendTextMessage;
+import com.example.shortmaker.Actions.ActionSoundSettings;
+import com.example.shortmaker.Actions.ActionSpotify;
+import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
 import com.maltaisn.icondialog.IconDialog;
@@ -20,25 +29,37 @@ import com.maltaisn.icondialog.pack.IconPack;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class SetActionsActivity extends AppCompatActivity implements IconDialog.Callback {
+import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
+import ir.mirrajabi.searchdialog.core.SearchResultListener;
+
+public class SetActionsActivity extends AppCompatActivity implements IconDialog.Callback, ActionDialog.DialogListener {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
+
+    public static final int SILENT_MODE = 0;
+    public static final int VIBRATE_MODE = 1;
+    public static final int RING_MODE = 2;
+
     private ImageView shortcutIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_actions);
-        if(getIntent().getExtras() != null) {
-            Bitmap bitmap = (Bitmap)this.getIntent().getParcelableExtra("shortcutIcon");
+        if (getIntent().getExtras() != null) {
+            Bitmap bitmap = (Bitmap) this.getIntent().getParcelableExtra("shortcutIcon");
             String title = getIntent().getStringExtra("shortcutName");
             TextView shortcutTitle = findViewById(R.id.shortcutTitle);
             shortcutIcon = findViewById(R.id.shortcutIcon);
             shortcutTitle.setText(title);
             shortcutIcon.setImageBitmap(bitmap);
         }
+        ArrayList<Action> items = createSampleData();
+
         MovableFloatingActionButton changeIconButton = findViewById(R.id.changeIcon);
         changeIconButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,8 +67,54 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
                 showIconPickerDialog();
             }
         });
+        MovableFloatingActionButton addActionButton = findViewById(R.id.addAction);
+        showAddActionDialog(addActionButton);
+    }
+
+    private void showAddActionDialog(MovableFloatingActionButton addActionButton) {
+        addActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SimpleSearchDialogCompat(SetActionsActivity.this, "Search...",
+                        "Search for an action", null, createSampleData(),
+                        new SearchResultListener<Action>() {
+                            @Override
+                            public void onSelected(BaseSearchDialogCompat dialog,
+                                                   Action item, int position) {
+                                switch (item.getTitle()){
+                                    case "Waze action":
+                                        wazeActionHandler();
+                                        break;
+                                        //TODO - add more actions here and update the action in the activity recycler view
+                                }
+                                dialog.dismiss();
+                            }
+                        }).show();
+            }
+        });
+    }
+
+    private void wazeActionHandler() {
+        ActionWaze waze = new ActionWaze(SetActionsActivity.this);
+        ActionDialog dialogFragment = waze.getDialog(); //TOOD - todo in interface
+        if (dialogFragment != null) {
+            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
+        }
+        return;
+    }
 
 
+    private ArrayList<Action> createSampleData() {
+        ArrayList<Action> items = new ArrayList<>();
+        items.add(new ActionWaze(SetActionsActivity.this));
+        items.add(new ActionSpotify(SetActionsActivity.this));
+        items.add(new ActionAlarmClock(SetActionsActivity.this));
+        items.add(new ActionPhoneCall(SetActionsActivity.this));
+        items.add(new ActionSendTextMessage(SetActionsActivity.this,false));
+        items.add(new ActionSoundSettings(SetActionsActivity.this,SILENT_MODE));
+        items.add(new ActionSoundSettings(SetActionsActivity.this,VIBRATE_MODE));
+        items.add(new ActionSoundSettings(SetActionsActivity.this,RING_MODE));
+        return items;
     }
 
     private void showIconPickerDialog() {
@@ -74,5 +141,10 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
     @Override
     public void onIconDialogCancelled() {
 
+    }
+
+    @Override
+    public void applyUserInfo(ArrayList<String> data) {
+        Toast.makeText(this, data.get(0), Toast.LENGTH_SHORT).show(); //TODO - update in waze action the address
     }
 }

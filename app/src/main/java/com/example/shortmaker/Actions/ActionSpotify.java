@@ -13,7 +13,9 @@ import com.example.shortmaker.ActionDialogs.SpotifyDialog;
 
 import java.util.List;
 
-public class ActionSpotify implements Action {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class ActionSpotify implements Action, Searchable {
 
     public static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
     private Context context;
@@ -85,6 +87,11 @@ public class ActionSpotify implements Action {
             isSpotifyInstalled = false;
         }
         return isSpotifyInstalled;
+    }
+
+    @Override
+    public String getTitle() {
+        return "Spotify action";
     }
 
 }

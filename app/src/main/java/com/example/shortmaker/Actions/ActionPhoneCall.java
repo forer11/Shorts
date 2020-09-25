@@ -12,7 +12,9 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 
 import java.util.List;
 
-public class ActionPhoneCall implements Action {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class ActionPhoneCall implements Action, Searchable {
 
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
@@ -40,5 +42,10 @@ public class ActionPhoneCall implements Action {
     @Override
     public void setData(List<String> data) {
 
+    }
+
+    @Override
+    public String getTitle() {
+        return "Make a phone call action";
     }
 }

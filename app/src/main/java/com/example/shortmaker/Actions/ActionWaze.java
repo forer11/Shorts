@@ -14,7 +14,9 @@ import com.example.shortmaker.ActionDialogs.WazeDialog;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActionWaze implements Action {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class ActionWaze implements Action, Searchable {
 
     private Context context;
     private String address;
@@ -58,4 +60,8 @@ public class ActionWaze implements Action {
         context.startActivity(intent);
     }
 
+    @Override
+    public String getTitle() {
+        return "Waze action";
+    }
 }
