@@ -10,7 +10,9 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 
 import java.util.List;
 
-public class ActionAlarmClock implements Action {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class ActionAlarmClock implements Action, Searchable {
 
     private Context context;
 
@@ -38,6 +40,11 @@ public class ActionAlarmClock implements Action {
     @Override
     public void setData(List<String> data) {
 
+    }
+
+    @Override
+    public String getTitle() {
+        return "set alarm clock action";
     }
 
 

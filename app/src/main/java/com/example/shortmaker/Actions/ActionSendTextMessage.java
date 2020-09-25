@@ -9,7 +9,9 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 
 import java.util.List;
 
-public class ActionSendTextMessage implements Action {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class ActionSendTextMessage implements Action, Searchable {
 
     public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
 
@@ -43,5 +45,10 @@ public class ActionSendTextMessage implements Action {
     @Override
     public void setData(List<String> data) {
 
+    }
+
+    @Override
+    public String getTitle() {
+        return "Send text message action";
     }
 }

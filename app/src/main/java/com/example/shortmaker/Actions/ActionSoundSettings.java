@@ -12,7 +12,9 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 
 import java.util.List;
 
-public class ActionSoundSettings implements Action {
+import ir.mirrajabi.searchdialog.core.Searchable;
+
+public class ActionSoundSettings implements Action, Searchable {
 
     public static final int SILENT_MODE = 0;
     public static final int VIBRATE_MODE = 1;
@@ -64,5 +66,18 @@ public class ActionSoundSettings implements Action {
         } else {
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
         }
+    }
+
+    @Override
+    public String getTitle() {
+        switch (mode) {
+            case SILENT_MODE:
+                return "Silent mode action";
+            case VIBRATE_MODE:
+                return "Vibrate mode action";
+            case RING_MODE:
+                return "Ring mode action";
+        }
+        return "";
     }
 }

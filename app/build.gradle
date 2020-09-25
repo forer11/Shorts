@@ -52,5 +52,6 @@ dependencies {
     implementation 'com.opensooq.supernova:gligar:1.1.0'
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     implementation 'com.github.mejdi14:Flat-Dialog-Android:1.0.5'
+    implementation 'com.github.mirrajabi:search-dialog:1.2.4'
 
 }

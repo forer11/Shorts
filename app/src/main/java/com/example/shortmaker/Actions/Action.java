@@ -7,6 +7,8 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 import java.util.ArrayList;
 import java.util.List;
 
+import ir.mirrajabi.searchdialog.core.Searchable;
+
 public interface Action {
 
     void activate();
@@ -14,4 +16,6 @@ public interface Action {
     ActionDialog getDialog();
 
     void setData(List<String> data);
+
+     String getTitle();
 }
