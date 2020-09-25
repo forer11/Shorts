@@ -3,7 +3,9 @@ package com.example.shortmaker.Actions;
 import android.content.Context;
 import android.content.Intent;
 
-import com.example.shortmaker.DataClasses.Action;
+import androidx.fragment.app.DialogFragment;
+
+import com.example.shortmaker.ActionDialogs.ActionDialog;
 
 import java.util.List;
 
@@ -32,9 +34,14 @@ public class ActionSendTextMessage implements Action {
         context.startActivity(sendIntent);
     }
 
+    @Override
+    public ActionDialog getDialog() {
+        return null;
+    }
+
 
     @Override
-    public void setData(List<String> params) {
+    public void setData(List<String> data) {
 
     }
 }

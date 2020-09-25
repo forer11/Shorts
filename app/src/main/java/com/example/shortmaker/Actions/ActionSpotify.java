@@ -1,14 +1,15 @@
 package com.example.shortmaker.Actions;
 
 import android.content.ActivityNotFoundException;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.view.KeyEvent;
 
-import com.example.shortmaker.DataClasses.Action;
+import androidx.fragment.app.DialogFragment;
+
+import com.example.shortmaker.ActionDialogs.ActionDialog;
+import com.example.shortmaker.ActionDialogs.SpotifyDialog;
 
 import java.util.List;
 
@@ -16,9 +17,12 @@ public class ActionSpotify implements Action {
 
     public static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
     private Context context;
+    private SpotifyDialog dialog;
 
     public ActionSpotify(Context context) {
+
         this.context = context;
+        this.dialog = new SpotifyDialog();
     }
 
     @Override
@@ -32,7 +36,12 @@ public class ActionSpotify implements Action {
     }
 
     @Override
-    public void setData(List<String> params) {
+    public ActionDialog getDialog() {
+        return dialog;
+    }
+
+    @Override
+    public void setData(List<String> data) {
 
     }
 
