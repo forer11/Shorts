@@ -7,6 +7,8 @@ import android.provider.AlarmClock;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
+import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
+import com.example.shortmaker.ActionDialogs.SpotifyDialog;
 
 import java.util.List;
 
@@ -15,9 +17,11 @@ import ir.mirrajabi.searchdialog.core.Searchable;
 public class ActionAlarmClock implements Action, Searchable {
 
     private Context context;
+    private AlarmClockDialog dialog;
 
     public ActionAlarmClock(Context context) {
         this.context = context;
+        this.dialog = new AlarmClockDialog();
     }
 
     @Override
@@ -33,7 +37,7 @@ public class ActionAlarmClock implements Action, Searchable {
 
     @Override
     public ActionDialog getDialog() {
-        return null;
+        return dialog;
     }
 
 
@@ -44,7 +48,7 @@ public class ActionAlarmClock implements Action, Searchable {
 
     @Override
     public String getTitle() {
-        return "set alarm clock action";
+        return "Set alarm clock action";
     }
 
 
