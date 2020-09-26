@@ -3,21 +3,22 @@ package com.example.shortmaker.DataClasses;
 import android.graphics.drawable.Drawable;
 
 public class Shortcut {
-    public Shortcut() {
-        /* empty public constructor for FireStore */
-    }
 
-    public Shortcut(String title, Drawable drawable, boolean tintNeeded) {
-        this.title = title;
-        this.drawable = drawable;
-        this.tintNeeded = tintNeeded;
-    }
-    
     private boolean tintNeeded;
 
     private String title;
 
-    private Drawable drawable;
+    private String imageUrl;
+
+    public Shortcut() {
+        /* empty public constructor for FireStore */
+    }
+
+    public Shortcut(String title, String imageUrl, boolean tintNeeded) {
+        this.title = title;
+        this.imageUrl = imageUrl;
+        this.tintNeeded = tintNeeded;
+    }
 
     public String getTitle() {
         return title;
@@ -28,12 +29,12 @@ public class Shortcut {
     }
 
 
-    public void setDrawable(Drawable drawable) {
-        this.drawable = drawable;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public Drawable getDrawable() {
-        return this.drawable;
+    public String getImageUrl() {
+        return this.imageUrl;
     }
 
     public boolean isTintNeeded() {

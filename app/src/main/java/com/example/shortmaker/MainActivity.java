@@ -13,11 +13,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -26,8 +24,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.flatdialoglibrary.dialog.FlatDialog;
-import com.example.shortmaker.ActionDialogs.ActionDialog;
-import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
@@ -39,15 +35,13 @@ import com.opensooq.supernova.gligar.GligarPicker;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 
-public class MainActivity extends BaseMenuActivity implements IconDialog.Callback,
+public class MainActivity extends BaseMenuActivity implements
         PopupMenu.OnMenuItemClickListener {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private static final int REQUEST_CALL = 1;
@@ -74,24 +68,13 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         setContentView(R.layout.activity_main);
 
         shortcuts = new ArrayList<>();
-        shortcuts.add(new Shortcut("Sport", getDrawable(R.drawable.sport), false));
-        shortcuts.add(new Shortcut("Study", getDrawable(R.drawable.study), false));
-        shortcuts.add(new Shortcut("Driving", getDrawable(R.drawable.drive_home), false));
-        shortcuts.add(new Shortcut("Party", getDrawable(R.drawable.party), false));
-        shortcuts.add(new Shortcut("Cooking", getDrawable(R.drawable.cooking), false));
-        shortcuts.add(new Shortcut("Sleeping", getDrawable(R.drawable.sleeping), false));
-        shortcuts.add(new Shortcut("Relaxing", getDrawable(R.drawable.relax_kawaii), false));
-        shortcuts.add(new Shortcut("Meeting", getDrawable(R.drawable.meeting), false));
-        shortcuts.add(new Shortcut("Gaming", getDrawable(R.drawable.game), false));
-        shortcuts.add(new Shortcut("yay2", getDrawable(R.drawable.richi), false));
-        shortcuts.add(new Shortcut("yay3", getDrawable(R.drawable.richi), false));
-        shortcuts.add(new Shortcut("yay4", getDrawable(R.drawable.richi), false));
-        shortcuts.add(new Shortcut("yay5", getDrawable(R.drawable.richi), false));
-        shortcuts.add(new Shortcut("yay6", getDrawable(R.drawable.richi), false));
-        shortcuts.add(new Shortcut("yay7", getDrawable(R.drawable.richi), false));
-        shortcuts.add(new Shortcut("yay8", getDrawable(R.drawable.richi), false));
-        shortcuts.add(new Shortcut("yay9", getDrawable(R.drawable.richi), false));
-
+        shortcuts.add(new Shortcut("Sport",
+                "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1",
+                false));
+        shortcuts.add(new Shortcut("Study", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
+        shortcuts.add(new Shortcut("Driving", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
+        shortcuts.add(new Shortcut("Party", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
+        shortcuts.add(new Shortcut("Cooking", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
         setRecyclerView();
 
         setToolbar();
@@ -167,49 +150,14 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
             return;
         }
         if (requestCode == PICKER_REQUEST_CODE) {
-            String[] pathsList = data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // action list of length 1
-            Drawable drawable = Drawable.createFromPath(pathsList[0]);
-            if (lastPosition != NO_POSITION) {
-                shortcuts.get(lastPosition).setDrawable(drawable);
-                adapter.notifyItemChanged(lastPosition);
-            }
+//            String[] pathsList = data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // action list of length 1
+//            Drawable drawable = Drawable.createFromPath(pathsList[0]);
+//            if (lastPosition != NO_POSITION) {
+//                shortcuts.get(lastPosition).setImageUrl(drawable);
+//                adapter.notifyItemChanged(lastPosition);
+//            }
         }
     }
-
-
-    private void showIconPickerDialog() {
-        // If dialog is already added to fragment manager, get it. If not, create action new instance.
-        IconDialog dialog = (IconDialog) getSupportFragmentManager().findFragmentByTag(ICON_DIALOG_TAG);
-        IconDialog iconDialog = dialog != null ? dialog
-                : IconDialog.newInstance(new IconDialogSettings.Builder().build());
-        iconDialog.show(getSupportFragmentManager(), ICON_DIALOG_TAG);
-    }
-
-
-    @Nullable
-    @Override
-    public IconPack getIconDialogIconPack() {
-        return ((AppData) getApplication()).getIconPack();
-    }
-
-    @Override
-    public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
-        if (lastPosition != NO_POSITION) {
-            shortcuts.get(lastPosition).setDrawable(icons.get(0).getDrawable());
-            boolean isSpecialIcon = icons.get(0).getCategoryId() == KAWAII_ICON_CATEGORY ||
-                    icons.get(0).getCategoryId() == PUSHEEN_ICON_CATEGORY;
-            //We want to add white tint to all regular icons
-            shortcuts.get(lastPosition).setTintNeeded(!isSpecialIcon);
-            adapter.notifyItemChanged(lastPosition);
-        }
-    }
-
-
-    @Override
-    public void onIconDialogCancelled() {
-
-    }
-
 
     private void setRecyclerView() {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -239,37 +187,8 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
                 Toast.makeText(MainActivity.this,
                         "position = " + position,
                         Toast.LENGTH_SHORT).show();
-                if (shortcuts.get(position).getTitle().equals(DRIVING_CONFIGURATION)) {
-                    drivingConfiguration();
-                }
-
             }
         });
-    }
-
-    private void drivingConfiguration() {
-        //TODO - add more actions when driving
-//        Action spotify = new ActionSpotify(this);
-//        DialogFragment dialogFragment = spotify.getDialog(); //TOOD - todo in interface
-//        if(dialogFragment!=null) {
-//            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
-//        }
-
-//        spotify.activate();
-
-
-//        Action soundMode = new ActionSoundSettings(this,0);
-//        soundMode.activate();
-
-//        Action textMessage = new ActionSendTextMessage(this,true);
-//        textMessage.activate();
-
-//        makeCallDialog.show();
-//
-//        Action alarmClock = new ActionAlarmClock(this);
-//        alarmClock.activate();
-
-
     }
 
     private void showCreateShortcutDialog() {
@@ -327,7 +246,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
                 adapter.notifyItemChanged(lastPosition);
                 return true;
             case R.id.action_popup_change_icon:
-                showIconPickerDialog();
                 return true;
             case R.id.action_popup_load_icon:
                 new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();
@@ -393,7 +311,6 @@ public class MainActivity extends BaseMenuActivity implements IconDialog.Callbac
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         }
     };
-
 
 
 }
