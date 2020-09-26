@@ -82,12 +82,15 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
                             public void onSelected(BaseSearchDialogCompat dialog,
                                                    Action item, int position) {
                                 switch (item.getTitle()){
+                                    //TODO - add more actions here and update the action in the activity recycler view
                                     case "Waze action":
                                         wazeActionHandler();
                                         break;
-                                        //TODO - add more actions here and update the action in the activity recycler view
                                     case "Spotify action":
                                         spotifyActionHandler();
+                                        break;
+                                    case "Set alarm clock action":
+                                        AlarmClockActionHandler();
                                         break;
                                 }
                                 dialog.dismiss();
@@ -97,6 +100,14 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
 
             }
         });
+    }
+
+    private void AlarmClockActionHandler() {
+        ActionAlarmClock alarmClock = new ActionAlarmClock(SetActionsActivity.this);
+        ActionDialog dialogFragment = alarmClock.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(getSupportFragmentManager(), "alarm clock dialog");
+        }
     }
 
     private void spotifyActionHandler() {
@@ -113,7 +124,6 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
         if (dialogFragment != null) {
             dialogFragment.show(getSupportFragmentManager(), "waze dialog");
         }
-        return;
     }
 
 
