@@ -5,25 +5,35 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.shortmaker.DataClasses.Icon;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import static android.content.ContentValues.TAG;
 
 public class FireStoreHandler {
     private static final String USERS = "Users";
+    private static final String ICONS = "Icons";
 
 
     private FirebaseFirestore db;
     private CollectionReference usersRef;
+    private CollectionReference iconsRef;
+
+    private boolean iconsLoaded;
 
     private Context context;
 
@@ -31,7 +41,8 @@ public class FireStoreHandler {
         this.context = context;
         db = FirebaseFirestore.getInstance();
         usersRef = db.collection(USERS);
-
+        iconsRef = db.collection(ICONS);
+        iconsLoaded = false;
     }
 
     public void createUserIfNotExists(FirebaseUser user) {
@@ -51,6 +62,28 @@ public class FireStoreHandler {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             Log.v(TAG, "error loading user");
+                        }
+                    });
+        }
+    }
+
+    public void loadIcons(final ArrayList<Icon> icons) {
+        if (!iconsLoaded) {
+            iconsRef.get()
+                    .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                        @Override
+                        public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                            for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                                Icon icon = snapshot.toObject(Icon.class);
+                                icons.add(icon);
+                            }
+                            iconsLoaded = true;
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+
                         }
                     });
         }

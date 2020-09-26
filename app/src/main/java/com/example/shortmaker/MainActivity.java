@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,8 +42,8 @@ import java.util.List;
 import java.util.Objects;
 
 
-public class MainActivity extends BaseMenuActivity implements
-        PopupMenu.OnMenuItemClickListener {
+public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuItemClickListener,
+        ChooseIconDialog.OnIconPick {
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make action phone call";
@@ -86,7 +87,6 @@ public class MainActivity extends BaseMenuActivity implements
                 showCreateShortcutDialog();
             }
         });
-
 //        setMakeCallDialog();
     }
 
@@ -187,6 +187,8 @@ public class MainActivity extends BaseMenuActivity implements
                 Toast.makeText(MainActivity.this,
                         "position = " + position,
                         Toast.LENGTH_SHORT).show();
+                AppData appData = (AppData) getApplicationContext();
+                System.out.println("yay");
             }
         });
     }
@@ -206,10 +208,8 @@ public class MainActivity extends BaseMenuActivity implements
                         if (shortcutName.equals("")) {
                             Toast.makeText(MainActivity.this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
                         } else {
-                            Bitmap iconBitmap = ((BitmapDrawable) getDrawable(R.drawable.shortcut)).getBitmap();
                             Intent intent = new Intent(getBaseContext(), SetActionsActivity.class);
                             intent.putExtra("shortcutName", shortcutName);
-                            intent.putExtra("shortcutIcon", iconBitmap);
                             startActivity(intent);
 
                             //TODO - add to the grid the new shortcut
@@ -243,9 +243,10 @@ public class MainActivity extends BaseMenuActivity implements
             case R.id.action_popup_delete:
                 //TODO - delete selected item
                 shortcuts.get(lastPosition).setTitle("malol");
-                adapter.notifyItemChanged(lastPosition);
                 return true;
             case R.id.action_popup_change_icon:
+                DialogFragment dialog = new ChooseIconDialog();
+                dialog.show(getSupportFragmentManager(), "choose action dialog");
                 return true;
             case R.id.action_popup_load_icon:
                 new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();
@@ -313,4 +314,9 @@ public class MainActivity extends BaseMenuActivity implements
     };
 
 
+    @Override
+    public void onIconPick(String iconLink) {
+        shortcuts.get(lastPosition).setImageUrl(iconLink);
+        adapter.notifyItemChanged(lastPosition);
+    }
 }
