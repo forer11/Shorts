@@ -90,6 +90,9 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
                                     case "Send text message action":
                                         textMessageActionHandler();
                                         break;
+                                    case "Sound settings action":
+                                        soundSettingActionHandler();
+                                        break;
                                 }
                                 dialog.dismiss();
                             }
@@ -98,6 +101,14 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
 
             }
         });
+    }
+
+    private void soundSettingActionHandler() {
+        ActionSoundSettings textMessage = new ActionSoundSettings(SetActionsActivity.this);
+        ActionDialog dialogFragment = textMessage.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(getSupportFragmentManager(), "sound settings dialog");
+        }
     }
 
     private void textMessageActionHandler() {
@@ -140,9 +151,7 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
         items.add(new ActionAlarmClock(SetActionsActivity.this));
         items.add(new ActionPhoneCall(SetActionsActivity.this));
         items.add(new ActionSendTextMessage(SetActionsActivity.this,false));
-        items.add(new ActionSoundSettings(SetActionsActivity.this,SILENT_MODE));
-        items.add(new ActionSoundSettings(SetActionsActivity.this,VIBRATE_MODE));
-        items.add(new ActionSoundSettings(SetActionsActivity.this,RING_MODE));
+        items.add(new ActionSoundSettings(SetActionsActivity.this));
         return items;
     }
 

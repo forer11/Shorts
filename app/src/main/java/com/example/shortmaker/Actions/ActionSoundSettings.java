@@ -9,6 +9,8 @@ import android.os.Build;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
+import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
+import com.example.shortmaker.ActionDialogs.SoundSettingsDialog;
 
 import java.util.List;
 
@@ -21,10 +23,12 @@ public class ActionSoundSettings implements Action, Searchable {
     public static final int RING_MODE = 2;
     private Context context;
     private int mode;
+    private SoundSettingsDialog dialog;
 
-    public ActionSoundSettings(Context context, int mode) {
+
+    public ActionSoundSettings(Context context) {
         this.context = context;
-        this.mode = mode;
+        this.dialog = new SoundSettingsDialog();
     }
 
 
@@ -46,7 +50,7 @@ public class ActionSoundSettings implements Action, Searchable {
 
     @Override
     public ActionDialog getDialog() {
-        return null;
+        return dialog;
     }
 
     @Override
@@ -70,14 +74,6 @@ public class ActionSoundSettings implements Action, Searchable {
 
     @Override
     public String getTitle() {
-        switch (mode) {
-            case SILENT_MODE:
-                return "Silent mode action";
-            case VIBRATE_MODE:
-                return "Vibrate mode action";
-            case RING_MODE:
-                return "Ring mode action";
-        }
-        return "";
+        return "Sound settings action";
     }
 }
