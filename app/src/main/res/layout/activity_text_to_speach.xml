@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
-    tools:context=".TextToSpeachActivity">
+    tools:context=".Activities.TextToSpeachActivity">
     
     <EditText
         android:id="@+id/edit_text"

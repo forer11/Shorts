@@ -1,4 +1,4 @@
-package com.example.shortmaker;
+package com.example.shortmaker.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
@@ -13,9 +13,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,12 +23,11 @@ import android.widget.Toast;
 
 import com.example.flatdialoglibrary.dialog.FlatDialog;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
+import com.example.shortmaker.AppData;
+import com.example.shortmaker.DialogFragments.ChooseIconDialog;
 import com.example.shortmaker.DataClasses.Shortcut;
+import com.example.shortmaker.R;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
-import com.maltaisn.icondialog.IconDialog;
-import com.maltaisn.icondialog.IconDialogSettings;
-import com.maltaisn.icondialog.data.Icon;
-import com.maltaisn.icondialog.pack.IconPack;
 import com.opensooq.supernova.gligar.GligarPicker;
 
 import org.jetbrains.annotations.Nullable;

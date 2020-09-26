@@ -1,4 +1,4 @@
-package com.example.shortmaker;
+package com.example.shortmaker.Activities;
 
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
+import com.example.shortmaker.R;
 import com.example.shortmaker.SystemHandlers.BluetoothHandler;
 
 public class ActivateBluetoothActivity extends BaseMenuActivity {

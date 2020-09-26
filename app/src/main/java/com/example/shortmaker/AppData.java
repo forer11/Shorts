@@ -16,9 +16,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
 public class AppData extends Application {
-    FireStoreHandler fireStoreHandler;
-    FireBaseAuthHandler fireBaseAuthHandler;
-    ArrayList<Icon> icons;
+    public FireStoreHandler fireStoreHandler;
+    public FireBaseAuthHandler fireBaseAuthHandler;
+    public ArrayList<Icon> icons;
 
     @Override
     public void onCreate() {

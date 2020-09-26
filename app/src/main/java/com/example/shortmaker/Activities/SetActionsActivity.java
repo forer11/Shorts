@@ -1,44 +1,31 @@
-package com.example.shortmaker;
+package com.example.shortmaker.Activities;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
-import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
-import com.example.shortmaker.ActionDialogs.WazeDialog;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Actions.ActionAlarmClock;
-import com.example.shortmaker.Actions.ActionPhoneCall;
 import com.example.shortmaker.Actions.ActionSendTextMessage;
 import com.example.shortmaker.Actions.ActionSoundSettings;
 import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.ActionAdapter;
+import com.example.shortmaker.DialogFragments.ChooseActionDialog;
+import com.example.shortmaker.R;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
 import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
-import com.maltaisn.icondialog.data.Icon;
-import com.maltaisn.icondialog.pack.IconPack;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.List;
-
 
 
 public class SetActionsActivity extends AppCompatActivity

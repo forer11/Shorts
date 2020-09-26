@@ -1,4 +1,4 @@
-package com.example.shortmaker;
+package com.example.shortmaker.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -28,6 +28,9 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+
+import com.example.shortmaker.MyReceiver;
+import com.example.shortmaker.R;
 
 import java.util.HashMap;
 import java.util.Locale;

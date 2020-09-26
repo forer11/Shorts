@@ -11,8 +11,8 @@ public class MyReceiver extends BroadcastReceiver {
 
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     private static final String TAG = "SmsBroadcastReceiver";
-    String msg ="";
-    String phoneNumber="";
+    public String msg ="";
+    public String phoneNumber="";
 
     @Override
     public void onReceive(Context context, Intent intent) {

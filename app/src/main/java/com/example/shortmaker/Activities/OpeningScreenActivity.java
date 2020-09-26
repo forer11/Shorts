@@ -1,4 +1,4 @@
-package com.example.shortmaker;
+package com.example.shortmaker.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.shortmaker.AppData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
