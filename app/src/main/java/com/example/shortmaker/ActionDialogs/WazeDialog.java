@@ -48,7 +48,6 @@ public class WazeDialog extends ActionDialog {
                         ArrayList<String> results = new ArrayList<>();
                         results.add(address);
                         listener.applyUserInfo(results);
-
                     }
                 });
 

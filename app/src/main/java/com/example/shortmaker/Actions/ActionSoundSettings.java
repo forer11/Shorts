@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.SoundSettingsDialog;
+import com.example.shortmaker.R;
 
 import java.util.List;
 
@@ -75,5 +76,10 @@ public class ActionSoundSettings implements Action, Searchable {
     @Override
     public String getTitle() {
         return "Sound settings action";
+    }
+
+    @Override
+    public int getImageResource() {
+        return R.drawable.sound_mode_icon;
     }
 }

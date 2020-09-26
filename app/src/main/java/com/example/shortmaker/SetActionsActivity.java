@@ -2,6 +2,8 @@ package com.example.shortmaker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -11,6 +13,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
+import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
+import com.example.shortmaker.ActionDialogs.WazeDialog;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Actions.ActionAlarmClock;
 import com.example.shortmaker.Actions.ActionPhoneCall;
@@ -18,6 +22,7 @@ import com.example.shortmaker.Actions.ActionSendTextMessage;
 import com.example.shortmaker.Actions.ActionSoundSettings;
 import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
+import com.example.shortmaker.Adapters.ActionAdapter;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
 import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
@@ -35,11 +40,6 @@ import ir.mirrajabi.searchdialog.core.SearchResultListener;
 public class SetActionsActivity extends AppCompatActivity implements IconDialog.Callback, ActionDialog.DialogListener {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
-
-    public static final int SILENT_MODE = 0;
-    public static final int VIBRATE_MODE = 1;
-    public static final int RING_MODE = 2;
-
     private ImageView shortcutIcon;
 
     @Override
@@ -64,6 +64,19 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
         });
         MovableFloatingActionButton addActionButton = findViewById(R.id.addAction);
         showAddActionDialog(addActionButton);
+
+        ArrayList<Action> exampleList = new ArrayList<>();
+        exampleList.add(new ActionWaze(this));
+        exampleList.add(new ActionSpotify(this));
+        exampleList.add(new ActionSoundSettings(this));
+        exampleList.add(new ActionAlarmClock(this));
+        exampleList.add(new ActionSendTextMessage(this));
+        RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        RecyclerView.Adapter mAdapter = new ActionAdapter(exampleList);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void showAddActionDialog(MovableFloatingActionButton addActionButton) {
@@ -112,7 +125,7 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
     }
 
     private void textMessageActionHandler() {
-        ActionSendTextMessage textMessage = new ActionSendTextMessage(SetActionsActivity.this,false);
+        ActionSendTextMessage textMessage = new ActionSendTextMessage(SetActionsActivity.this);
         ActionDialog dialogFragment = textMessage.getDialog();
         if (dialogFragment != null) {
             dialogFragment.show(getSupportFragmentManager(), "text message dialog");
@@ -150,7 +163,7 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
         items.add(new ActionSpotify(SetActionsActivity.this));
         items.add(new ActionAlarmClock(SetActionsActivity.this));
         items.add(new ActionPhoneCall(SetActionsActivity.this));
-        items.add(new ActionSendTextMessage(SetActionsActivity.this,false));
+        items.add(new ActionSendTextMessage(SetActionsActivity.this));
         items.add(new ActionSoundSettings(SetActionsActivity.this));
         return items;
     }

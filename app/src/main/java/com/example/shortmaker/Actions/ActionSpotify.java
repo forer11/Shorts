@@ -10,6 +10,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.SpotifyDialog;
+import com.example.shortmaker.R;
 
 import java.util.List;
 
@@ -92,6 +93,11 @@ public class ActionSpotify implements Action, Searchable {
     @Override
     public String getTitle() {
         return "Spotify action";
+    }
+
+    @Override
+    public int getImageResource() {
+        return R.drawable.spotify_icon;
     }
 
 }
