@@ -23,6 +23,8 @@ import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.R;
 
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.List;
 
 
@@ -72,11 +74,7 @@ public class DraggableGridAdapter extends RecyclerView
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
         setAnimatedGradientBackground(holder);
-        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
-        circularProgressDrawable.setStrokeWidth(10f);
-        circularProgressDrawable.setCenterRadius(60f);
-        circularProgressDrawable.start();
-        holder.shortcut_image.setImageResource(R.drawable.richi);
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressDrawable();
         Glide.with(context)
                 .load(Uri.parse(shortcut.getImageUrl()))
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
@@ -90,6 +88,15 @@ public class DraggableGridAdapter extends RecyclerView
                     255, 255), PorterDuff.Mode.SRC_IN);
         }
 
+    }
+
+    @NotNull
+    private CircularProgressDrawable setCircularProgressDrawable() {
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setStrokeWidth(10f);
+        circularProgressDrawable.setCenterRadius(60f);
+        circularProgressDrawable.start();
+        return circularProgressDrawable;
     }
 
     private void setAnimatedGradientBackground(@NonNull ShortcutItemHolder holder) {
@@ -116,6 +123,7 @@ public class DraggableGridAdapter extends RecyclerView
         public ShortcutItemHolder(@NonNull View itemView, Context context, final OnItemClickListener listener,
                                   final OnItemLongClickListener longClickListener) {
             super(itemView);
+            this.context = context;
             shortcut_title = itemView.findViewById(R.id.icon_title);
             shortcut_image = itemView.findViewById(R.id.icon_image);
             setOnItemClickListener(itemView, listener);

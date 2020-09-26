@@ -70,12 +70,10 @@ public class SetActionsActivity extends AppCompatActivity
     }
 
     private void getShortcutData() {
-        Bitmap bitmap = (Bitmap) this.getIntent().getParcelableExtra("shortcutIcon");
         String title = getIntent().getStringExtra("shortcutName");
         TextView shortcutTitle = findViewById(R.id.shortcutTitle);
         shortcutIcon = findViewById(R.id.shortcutIcon);
         shortcutTitle.setText(title);
-        shortcutIcon.setImageBitmap(bitmap);
     }
 
     private void setRecyclerView() {

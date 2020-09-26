@@ -7,50 +7,35 @@ import android.content.pm.Signature;
 import android.util.Base64;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
-
+import com.example.shortmaker.DataClasses.Icon;
 import com.example.shortmaker.FireBaseHandlers.FireBaseAuthHandler;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
-import com.maltaisn.icondialog.pack.IconPack;
-import com.maltaisn.icondialog.pack.IconPackLoader;
-import com.maltaisn.iconpack.fa.IconPackFa;
-import com.maltaisn.iconpack.mdi.IconPackMdi;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.Locale;
+import java.util.ArrayList;
 
 public class AppData extends Application {
     FireStoreHandler fireStoreHandler;
     FireBaseAuthHandler fireBaseAuthHandler;
-    @Nullable
-    private IconPack iconPack;
+    ArrayList<Icon> icons;
+
     @Override
     public void onCreate() {
         super.onCreate();
         fireBaseAuthHandler = new FireBaseAuthHandler(getApplicationContext());
         fireStoreHandler = new FireStoreHandler(getApplicationContext());
         printHashKey();
-        loadIconPack();
-
+        icons = new ArrayList<>();
+        loadIcons();
     }
 
-
-    @Nullable
-    public IconPack getIconPack() {
-        return iconPack != null ? iconPack : loadIconPack();
+    public void loadIcons() {
+        fireStoreHandler.loadIcons(icons);
     }
 
-    private IconPack loadIconPack() {
-        // Create an icon pack loader with application context.
-        IconPackLoader loader = new IconPackLoader(this);
-        // Create an icon pack and load all drawables.
-        IconPack parentIconPack = IconPackFa.createFontAwesomeIconPack(loader);
-        parentIconPack.loadDrawables(loader.getDrawableLoader());
-        iconPack = loader.load(R.xml.icons, R.xml.tags, Collections.singletonList(Locale.ENGLISH), parentIconPack);
-        iconPack.loadDrawables(loader.getDrawableLoader());
-        return iconPack;
+    public ArrayList<Icon> getIcons(){
+        return icons;
     }
 
     public void printHashKey() {
