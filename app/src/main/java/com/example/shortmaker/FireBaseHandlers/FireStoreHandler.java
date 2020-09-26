@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.example.shortmaker.DataClasses.Icon;
+import com.example.shortmaker.DataClasses.Shortcut;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -22,6 +23,8 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import io.opencensus.metrics.export.Summary;
+
 import static android.content.ContentValues.TAG;
 
 public class FireStoreHandler {
@@ -33,6 +36,8 @@ public class FireStoreHandler {
     private CollectionReference usersRef;
     private CollectionReference iconsRef;
 
+    private String userKey;
+
     private boolean iconsLoaded;
 
     private Context context;
@@ -43,6 +48,14 @@ public class FireStoreHandler {
         usersRef = db.collection(USERS);
         iconsRef = db.collection(ICONS);
         iconsLoaded = false;
+    }
+
+    public void setUserKey(FirebaseUser user) {
+        userKey = user.getEmail() + user.getUid();
+    }
+
+    public String getUserKey() {
+        return userKey;
     }
 
     public void createUserIfNotExists(FirebaseUser user) {
@@ -88,5 +101,31 @@ public class FireStoreHandler {
                     });
         }
     }
+
+    public void loadShortcuts(final FireStoreCallback callback) {
+        final ArrayList<Shortcut> shortcuts = new ArrayList<>();
+        usersRef.document(userKey).collection("Shortcuts").get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        for (QueryDocumentSnapshot snapshot : queryDocumentSnapshots) {
+                            shortcuts.add(snapshot.toObject(Shortcut.class));
+                        }
+                        callback.onCallBack(shortcuts, true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onCallBack(shortcuts, false);
+                    }
+                });
+
+    }
+
+    public interface FireStoreCallback {
+        void onCallBack(ArrayList<Shortcut> shortcutsList, Boolean success);
+    }
+
 
 }
