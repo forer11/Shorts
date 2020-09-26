@@ -26,9 +26,9 @@ import com.example.shortmaker.Adapters.DraggableGridAdapter;
 import com.example.shortmaker.AppData;
 import com.example.shortmaker.DialogFragments.ChooseIconDialog;
 import com.example.shortmaker.DataClasses.Shortcut;
+import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
-import com.opensooq.supernova.gligar.GligarPicker;
 
 import org.jetbrains.annotations.Nullable;
 
@@ -52,25 +52,42 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     private EditText editText;
     private View phoneCallDialogLayout;
     private AlertDialog makeCallDialog;
+    AppData appData;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        shortcuts = new ArrayList<>();
-        shortcuts.add(new Shortcut("Sport",
-                "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1",
-                false));
-        shortcuts.add(new Shortcut("Study", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
-        shortcuts.add(new Shortcut("Driving", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
-        shortcuts.add(new Shortcut("Party", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
-        shortcuts.add(new Shortcut("Cooking", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
-        setRecyclerView();
-
+        appData = (AppData) getApplicationContext();
+        getUserDataAndLoadRecyclerview();
+//        shortcuts.add(new Shortcut("Sport",
+//                "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1",
+//                false));
+//        shortcuts.add(new Shortcut("Study", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
+//        shortcuts.add(new Shortcut("Driving", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
+//        shortcuts.add(new Shortcut("Party", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
+//        shortcuts.add(new Shortcut("Cooking", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
         setToolbar();
 
+        setAddShortcutButton();
+//        setMakeCallDialog();
+    }
+
+    private void getUserDataAndLoadRecyclerview() {
+        appData.fireStoreHandler.setUserKey(appData.fireBaseAuthHandler.user);
+        appData.fireStoreHandler.loadShortcuts(new FireStoreHandler.FireStoreCallback() {
+            @Override
+            public void onCallBack(ArrayList<Shortcut> shortcutsList, Boolean success) {
+                if (success) {
+                    shortcuts = shortcutsList;
+                    setRecyclerView();
+                }
+            }
+        });
+    }
+
+    private void setAddShortcutButton() {
         MovableFloatingActionButton addShortcut = findViewById(R.id.addShortcut);
         addShortcut.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +95,6 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 showCreateShortcutDialog();
             }
         });
-//        setMakeCallDialog();
     }
 
 
@@ -178,8 +194,6 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 Toast.makeText(MainActivity.this,
                         "position = " + position,
                         Toast.LENGTH_SHORT).show();
-                AppData appData = (AppData) getApplicationContext();
-                System.out.println("yay");
             }
         });
     }

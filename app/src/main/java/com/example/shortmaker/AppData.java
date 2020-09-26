@@ -8,6 +8,7 @@ import android.util.Base64;
 import android.util.Log;
 
 import com.example.shortmaker.DataClasses.Icon;
+import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.FireBaseHandlers.FireBaseAuthHandler;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 
