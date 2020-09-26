@@ -53,12 +53,7 @@ public class SetActionsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_actions);
         if (getIntent().getExtras() != null) {
-            Bitmap bitmap = (Bitmap) this.getIntent().getParcelableExtra("shortcutIcon");
-            String title = getIntent().getStringExtra("shortcutName");
-            TextView shortcutTitle = findViewById(R.id.shortcutTitle);
-            shortcutIcon = findViewById(R.id.shortcutIcon);
-            shortcutTitle.setText(title);
-            shortcutIcon.setImageBitmap(bitmap);
+            getShortcutData();
         }
 
         MovableFloatingActionButton changeIconButton = findViewById(R.id.changeIcon);
@@ -71,6 +66,19 @@ public class SetActionsActivity extends AppCompatActivity
         MovableFloatingActionButton addActionButton = findViewById(R.id.addAction);
         showAddActionDialog(addActionButton);
 
+        setRecyclerView();
+    }
+
+    private void getShortcutData() {
+        Bitmap bitmap = (Bitmap) this.getIntent().getParcelableExtra("shortcutIcon");
+        String title = getIntent().getStringExtra("shortcutName");
+        TextView shortcutTitle = findViewById(R.id.shortcutTitle);
+        shortcutIcon = findViewById(R.id.shortcutIcon);
+        shortcutTitle.setText(title);
+        shortcutIcon.setImageBitmap(bitmap);
+    }
+
+    private void setRecyclerView() {
         ArrayList<Action> exampleList = new ArrayList<>();
         exampleList.add(new ActionWaze(this));
         exampleList.add(new ActionSpotify(this));
@@ -90,36 +98,6 @@ public class SetActionsActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 showNoticeDialog();
-
-//                SearchDialog dialogCompact = new SearchDialog(SetActionsActivity.this, "Search action",
-//                        "Search for an action", null, createSampleData(),
-//                        new SearchResultListener<Action>() {
-//                            @Override
-//                            public void onSelected(BaseSearchDialogCompat dialog,
-//                                                   Action item, int position) {
-//                                switch (item.getTitle()){
-//                                    //TODO - add more actions here and update the action in the activity recycler view
-//                                    case "Waze action":
-//                                        wazeActionHandler();
-//                                        break;
-//                                    case "Spotify action":
-//                                        spotifyActionHandler();
-//                                        break;
-//                                    case "Set alarm clock action":
-//                                        alarmClockActionHandler();
-//                                        break;
-//                                    case "Send text message action":
-//                                        textMessageActionHandler();
-//                                        break;
-//                                    case "Sound settings action":
-//                                        soundSettingActionHandler();
-//                                        break;
-//                                }
-//                                dialog.dismiss();
-//                            }
-//                        });
-//                dialogCompact.show();
-
             }
         });
     }
@@ -129,59 +107,6 @@ public class SetActionsActivity extends AppCompatActivity
         DialogFragment dialog = new ChooseActionDialog();
 
         dialog.show(getSupportFragmentManager(), "choose action dialog");
-    }
-
-
-    private void soundSettingActionHandler() {
-        ActionSoundSettings textMessage = new ActionSoundSettings(SetActionsActivity.this);
-        ActionDialog dialogFragment = textMessage.getDialog();
-        if (dialogFragment != null) {
-            dialogFragment.show(getSupportFragmentManager(), "sound settings dialog");
-        }
-    }
-
-    private void textMessageActionHandler() {
-        ActionSendTextMessage textMessage = new ActionSendTextMessage(SetActionsActivity.this);
-        ActionDialog dialogFragment = textMessage.getDialog();
-        if (dialogFragment != null) {
-            dialogFragment.show(getSupportFragmentManager(), "text message dialog");
-        }
-    }
-
-    private void alarmClockActionHandler() {
-        ActionAlarmClock alarmClock = new ActionAlarmClock(SetActionsActivity.this);
-        ActionDialog dialogFragment = alarmClock.getDialog();
-        if (dialogFragment != null) {
-            dialogFragment.show(getSupportFragmentManager(), "alarm clock dialog");
-        }
-    }
-
-    private void spotifyActionHandler() {
-        ActionSpotify spotify = new ActionSpotify(SetActionsActivity.this);
-        ActionDialog dialogFragment = spotify.getDialog();
-        if (dialogFragment != null) {
-            dialogFragment.show(getSupportFragmentManager(), "spotify dialog");
-        }
-    }
-
-    private void wazeActionHandler() {
-        ActionWaze waze = new ActionWaze(SetActionsActivity.this);
-        ActionDialog dialogFragment = waze.getDialog();
-        if (dialogFragment != null) {
-            dialogFragment.show(getSupportFragmentManager(), "waze dialog");
-        }
-    }
-
-
-    private ArrayList<Action> createSampleData() {
-        ArrayList<Action> items = new ArrayList<>();
-        items.add(new ActionWaze(SetActionsActivity.this));
-        items.add(new ActionSpotify(SetActionsActivity.this));
-        items.add(new ActionAlarmClock(SetActionsActivity.this));
-        items.add(new ActionPhoneCall(SetActionsActivity.this));
-        items.add(new ActionSendTextMessage(SetActionsActivity.this));
-        items.add(new ActionSoundSettings(SetActionsActivity.this));
-        return items;
     }
 
     private void showIconPickerDialog() {
