@@ -1,9 +1,7 @@
 package com.example.shortmaker.Adapters;
 
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
@@ -17,8 +15,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.R;
 
@@ -72,11 +72,19 @@ public class DraggableGridAdapter extends RecyclerView
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
         setAnimatedGradientBackground(holder);
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(context);
+        circularProgressDrawable.setStrokeWidth(10f);
+        circularProgressDrawable.setCenterRadius(60f);
+        circularProgressDrawable.start();
         holder.shortcut_image.setImageResource(R.drawable.richi);
         Glide.with(context)
-                .load("")
-                .placeholder(shortcut.getDrawable())
+                .load(Uri.parse(shortcut.getImageUrl()))
+                .diskCacheStrategy(DiskCacheStrategy.DATA)
+                .error(R.drawable.broken_image)
+                .fallback(R.drawable.broken_image)
+                .placeholder(circularProgressDrawable)
                 .into(holder.shortcut_image);
+        //TODO Carmel do we still need it?
         if (shortcuts.get(position).isTintNeeded()) {
             holder.shortcut_image.setColorFilter(Color.argb(255, 255,
                     255, 255), PorterDuff.Mode.SRC_IN);
@@ -121,7 +129,7 @@ public class DraggableGridAdapter extends RecyclerView
                     if (longClickListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            longClickListener.onItemLongClick(v,position);
+                            longClickListener.onItemLongClick(v, position);
                         }
                     }
                     return true;
