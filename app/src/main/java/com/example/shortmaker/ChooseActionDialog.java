@@ -1,18 +1,22 @@
 package com.example.shortmaker;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Actions.ActionAlarmClock;
 import com.example.shortmaker.Actions.ActionPhoneCall;
@@ -72,17 +76,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment {
         androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.choose_action_dialog,null);
-
-
-        ArrayList<Action> items  = createSampleData();
-        RecyclerView mRecyclerView = view.findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
-        RecyclerView.Adapter mAdapter = new ChooseActionAdapter(items);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-
-
+        setRecyclerView(view);
         builder.setTitle("Choose an action")
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
@@ -99,4 +93,81 @@ public class ChooseActionDialog extends AppCompatDialogFragment {
         builder.setView(view);
         return builder.create();
     }
+
+    private void setRecyclerView(View view) {
+        final ArrayList<Action> items  = createSampleData();
+        RecyclerView mRecyclerView = view.findViewById(R.id.recyclerView);
+        mRecyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
+        ChooseActionAdapter mAdapter = new ChooseActionAdapter(items);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setAdapter(mAdapter);
+        itemClickHandler(items, mAdapter);
+    }
+
+    private void itemClickHandler(final ArrayList<Action> items, ChooseActionAdapter mAdapter) {
+        mAdapter.setOnItemClickListener(new ChooseActionAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                switch (items.get(position).getTitle()){
+                        case "Waze action":
+                            wazeActionHandler();
+                            break;
+                        case "Spotify action":
+                            spotifyActionHandler();
+                            break;
+                        case "Set alarm clock action":
+                            alarmClockActionHandler();
+                            break;
+                        case "Send text message action":
+                            textMessageActionHandler();
+                            break;
+                        case "Sound settings action":
+                            soundSettingActionHandler();
+                            break;
+                    }
+            }
+        });
+    }
+
+    private void soundSettingActionHandler() {
+        ActionSoundSettings textMessage = new ActionSoundSettings(context);
+        ActionDialog dialogFragment = textMessage.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(((FragmentActivity)context).getSupportFragmentManager(), "sound settings dialog");
+        }
+    }
+
+    private void textMessageActionHandler() {
+        ActionSendTextMessage textMessage = new ActionSendTextMessage(context);
+        ActionDialog dialogFragment = textMessage.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(((FragmentActivity)context).getSupportFragmentManager(), "text message dialog");
+        }
+    }
+
+    private void alarmClockActionHandler() {
+        ActionAlarmClock alarmClock = new ActionAlarmClock(context);
+        ActionDialog dialogFragment = alarmClock.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(((FragmentActivity)context).getSupportFragmentManager(), "alarm clock dialog");
+        }
+    }
+
+    private void spotifyActionHandler() {
+        ActionSpotify spotify = new ActionSpotify(context);
+        ActionDialog dialogFragment = spotify.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(((FragmentActivity)context).getSupportFragmentManager(), "spotify dialog");
+        }
+    }
+
+    private void wazeActionHandler() {
+        ActionWaze waze = new ActionWaze(context);
+        ActionDialog dialogFragment = waze.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(((FragmentActivity)context).getSupportFragmentManager(), "waze dialog");
+        }
+    }
+
 }
