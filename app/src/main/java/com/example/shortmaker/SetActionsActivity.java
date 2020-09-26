@@ -2,11 +2,16 @@ package com.example.shortmaker;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,10 +39,11 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
-import ir.mirrajabi.searchdialog.core.SearchResultListener;
 
-public class SetActionsActivity extends AppCompatActivity implements IconDialog.Callback, ActionDialog.DialogListener {
+
+public class SetActionsActivity extends AppCompatActivity
+        implements IconDialog.Callback, ActionDialog.DialogListener,
+        ChooseActionDialog.ChooseActionDialogListener {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private ImageView shortcutIcon;
@@ -83,38 +89,48 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
         addActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SearchDialog dialogCompact = new SearchDialog(SetActionsActivity.this, "Search action",
-                        "Search for an action", null, createSampleData(),
-                        new SearchResultListener<Action>() {
-                            @Override
-                            public void onSelected(BaseSearchDialogCompat dialog,
-                                                   Action item, int position) {
-                                switch (item.getTitle()){
-                                    //TODO - add more actions here and update the action in the activity recycler view
-                                    case "Waze action":
-                                        wazeActionHandler();
-                                        break;
-                                    case "Spotify action":
-                                        spotifyActionHandler();
-                                        break;
-                                    case "Set alarm clock action":
-                                        alarmClockActionHandler();
-                                        break;
-                                    case "Send text message action":
-                                        textMessageActionHandler();
-                                        break;
-                                    case "Sound settings action":
-                                        soundSettingActionHandler();
-                                        break;
-                                }
-                                dialog.dismiss();
-                            }
-                        });
-                dialogCompact.show();
+                showNoticeDialog();
+
+//                SearchDialog dialogCompact = new SearchDialog(SetActionsActivity.this, "Search action",
+//                        "Search for an action", null, createSampleData(),
+//                        new SearchResultListener<Action>() {
+//                            @Override
+//                            public void onSelected(BaseSearchDialogCompat dialog,
+//                                                   Action item, int position) {
+//                                switch (item.getTitle()){
+//                                    //TODO - add more actions here and update the action in the activity recycler view
+//                                    case "Waze action":
+//                                        wazeActionHandler();
+//                                        break;
+//                                    case "Spotify action":
+//                                        spotifyActionHandler();
+//                                        break;
+//                                    case "Set alarm clock action":
+//                                        alarmClockActionHandler();
+//                                        break;
+//                                    case "Send text message action":
+//                                        textMessageActionHandler();
+//                                        break;
+//                                    case "Sound settings action":
+//                                        soundSettingActionHandler();
+//                                        break;
+//                                }
+//                                dialog.dismiss();
+//                            }
+//                        });
+//                dialogCompact.show();
 
             }
         });
     }
+
+    public void showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new ChooseActionDialog();
+
+        dialog.show(getSupportFragmentManager(), "choose action dialog");
+    }
+
 
     private void soundSettingActionHandler() {
         ActionSoundSettings textMessage = new ActionSoundSettings(SetActionsActivity.this);
@@ -197,5 +213,15 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
     @Override
     public void applyUserInfo(ArrayList<String> data) {
         Toast.makeText(this, data.get(0), Toast.LENGTH_SHORT).show(); //TODO - update in waze action the address
+    }
+
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+
     }
 }
