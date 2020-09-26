@@ -48,4 +48,9 @@ public class ActionPhoneCall implements Action, Searchable {
     public String getTitle() {
         return "Make a phone call action";
     }
+
+    @Override
+    public int getImageResource() {
+        return 0;
+    }
 }

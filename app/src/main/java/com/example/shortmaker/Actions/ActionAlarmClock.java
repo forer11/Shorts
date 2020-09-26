@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.SpotifyDialog;
+import com.example.shortmaker.R;
 
 import java.util.List;
 
@@ -49,6 +50,11 @@ public class ActionAlarmClock implements Action, Searchable {
     @Override
     public String getTitle() {
         return "Set alarm clock action";
+    }
+
+    @Override
+    public int getImageResource() {
+        return R.drawable.alarm_clock_icon;
     }
 
 

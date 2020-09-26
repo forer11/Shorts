@@ -9,6 +9,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.WazeDialog;
+import com.example.shortmaker.R;
 
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class ActionWaze implements Action, Searchable {
             // Launch Waze to look for Hawaii:.
             // we can also give the following uri :  "https://waze.com/ul?ll=40.761043,-73.980545&navigate=yes" for it to navigate automatically
             //TODO - change to user defined address
-            openOrInstallWaze("https://waze.com/ul?ll=40.761043,-73.980545&navigate=yes");
+            openOrInstallWaze("https://waze.com/ul?q=" + address);
         } catch (ActivityNotFoundException ex) {
             // If Waze is not installed, open it in Google Play:
             openOrInstallWaze("market://details?id=com.waze");
@@ -63,5 +64,10 @@ public class ActionWaze implements Action, Searchable {
     @Override
     public String getTitle() {
         return "Waze action";
+    }
+
+    @Override
+    public int getImageResource() {
+        return R.drawable.waze_icon;
     }
 }

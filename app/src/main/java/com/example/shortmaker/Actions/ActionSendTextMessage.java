@@ -8,6 +8,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.TextMessageDialog;
+import com.example.shortmaker.R;
 
 import java.util.List;
 
@@ -21,10 +22,9 @@ public class ActionSendTextMessage implements Action, Searchable {
     private TextMessageDialog dialog;
     private boolean sendThroughWhatsapp;
 
-    public ActionSendTextMessage(Context context,boolean sendThroughWhatsapp) {
+    public ActionSendTextMessage(Context context) {
         this.context = context;
         this.dialog = new TextMessageDialog();
-        this.sendThroughWhatsapp = sendThroughWhatsapp;
     }
 
 
@@ -54,5 +54,10 @@ public class ActionSendTextMessage implements Action, Searchable {
     @Override
     public String getTitle() {
         return "Send text message action";
+    }
+
+    @Override
+    public int getImageResource() {
+        return R.drawable.text_message_icon;
     }
 }
