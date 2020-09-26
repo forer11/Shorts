@@ -42,7 +42,7 @@ import java.util.List;
 
 
 public class SetActionsActivity extends AppCompatActivity
-        implements IconDialog.Callback, ActionDialog.DialogListener,
+        implements ActionDialog.DialogListener,
         ChooseActionDialog.ChooseActionDialogListener {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
@@ -115,24 +115,6 @@ public class SetActionsActivity extends AppCompatActivity
         IconDialog iconDialog = dialog != null ? dialog
                 : IconDialog.newInstance(new IconDialogSettings.Builder().build());
         iconDialog.show(getSupportFragmentManager(), ICON_DIALOG_TAG);
-    }
-
-
-    @Nullable
-    @Override
-    public IconPack getIconDialogIconPack() {
-        return ((AppData) getApplication()).getIconPack();
-    }
-
-    @Override
-    public void onIconDialogIconsSelected(@NonNull IconDialog dialog, @NonNull List<Icon> icons) {
-        shortcutIcon.setImageDrawable(icons.get(0).getDrawable());
-    }
-
-
-    @Override
-    public void onIconDialogCancelled() {
-
     }
 
     @Override
