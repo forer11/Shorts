@@ -6,6 +6,8 @@ import android.content.Intent;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
+import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
+import com.example.shortmaker.ActionDialogs.TextMessageDialog;
 
 import java.util.List;
 
@@ -16,10 +18,12 @@ public class ActionSendTextMessage implements Action, Searchable {
     public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
 
     private Context context;
+    private TextMessageDialog dialog;
     private boolean sendThroughWhatsapp;
 
     public ActionSendTextMessage(Context context,boolean sendThroughWhatsapp) {
         this.context = context;
+        this.dialog = new TextMessageDialog();
         this.sendThroughWhatsapp = sendThroughWhatsapp;
     }
 
@@ -38,7 +42,7 @@ public class ActionSendTextMessage implements Action, Searchable {
 
     @Override
     public ActionDialog getDialog() {
-        return null;
+        return dialog;
     }
 
 

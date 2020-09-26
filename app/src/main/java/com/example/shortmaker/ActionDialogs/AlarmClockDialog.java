@@ -20,7 +20,9 @@ import java.util.ArrayList;
 public class AlarmClockDialog extends ActionDialog{
 
 
-    private EditText editTextAddress;
+    private EditText hour;
+    private EditText minutes;
+
 
     @NonNull
     @Override
@@ -29,12 +31,13 @@ public class AlarmClockDialog extends ActionDialog{
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.alarm_clock_dialog,null);
 
-        editTextAddress = view.findViewById(R.id.editText);
+        hour = view.findViewById(R.id.hour);
+        minutes = view.findViewById(R.id.minutes);
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.alarm_clock_gif).into(imageView);
 
         builder.setView(view)
-                .setTitle("Open Spotify")
+                .setTitle("Set alarm clock")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -44,9 +47,11 @@ public class AlarmClockDialog extends ActionDialog{
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String address = editTextAddress.getText().toString();
+                        String desiredHour = hour.getText().toString();
+                        String desiredMinutes = minutes.getText().toString();
                         ArrayList<String> results = new ArrayList<>();
-                        results.add(address);
+                        results.add(desiredHour);
+                        results.add(desiredMinutes);
                         listener.applyUserInfo(results);
                     }
                 });

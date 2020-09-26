@@ -12,19 +12,19 @@
         android:id="@+id/imageView"/>
 
     <EditText
-        android:id="@+id/hour"
+        android:id="@+id/whoToSendTo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView"
         android:layout_marginTop="20dp"
-        android:hint="At which hour to wake you up?" />
+        android:hint="Write here the number to send it to" />
 
     <EditText
-        android:id="@+id/minutes"
+        android:id="@+id/message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/hour"
+        android:layout_below="@+id/whoToSendTo"
         android:layout_marginTop="20dp"
-        android:hint="and the minutes?" />
+        android:hint="Write here your message" />
 
 </RelativeLayout>
