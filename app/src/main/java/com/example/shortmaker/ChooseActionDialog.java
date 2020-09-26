@@ -77,19 +77,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.choose_action_dialog,null);
         setRecyclerView(view);
-        builder.setTitle("Choose an action")
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the positive button event back to the host activity
-                        listener.onDialogPositiveClick(ChooseActionDialog.this);
-                    }
-                })
-                .setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // Send the negative button event back to the host activity
-                        listener.onDialogNegativeClick(ChooseActionDialog.this);
-                    }
-                });
+        builder.setTitle("Choose an action");
         builder.setView(view);
         return builder.create();
     }
@@ -109,6 +97,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment {
         mAdapter.setOnItemClickListener(new ChooseActionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                dismiss();
                 switch (items.get(position).getTitle()){
                         case "Waze action":
                             wazeActionHandler();
