@@ -17,24 +17,28 @@ import com.example.shortmaker.R;
 
 import java.util.ArrayList;
 
+public class TextMessageDialog extends ActionDialog {
 
-public class WazeDialog extends ActionDialog {
 
-    private EditText editTextAddress;
+    private EditText whoToSendTo;
+    private EditText message;
+
+
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.waze_dialog,null);
+        View view = layoutInflater.inflate(R.layout.text_message_dialog,null);
 
-        editTextAddress = view.findViewById(R.id.editText);
+        whoToSendTo = view.findViewById(R.id.whoToSendTo);
+        message = view.findViewById(R.id.message);
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.waze_gif).into(imageView);
+        Glide.with(this).load(R.drawable.text_message_gif).into(imageView);
 
         builder.setView(view)
-                .setTitle("Where to set Waze to")
+                .setTitle("Send Text Message")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -44,11 +48,12 @@ public class WazeDialog extends ActionDialog {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String address = editTextAddress.getText().toString();
+                        String whoToSend = whoToSendTo.getText().toString();
+                        String theMessage = message.getText().toString();
                         ArrayList<String> results = new ArrayList<>();
-                        results.add(address);
+                        results.add(whoToSend);
+                        results.add(theMessage);
                         listener.applyUserInfo(results);
-
                     }
                 });
 
@@ -56,7 +61,9 @@ public class WazeDialog extends ActionDialog {
         return builder.create();
     }
 
-    public interface WazeDialogListener {
+
+
+    public interface TextMessageDialogListener {
         void applyText(String address);
     }
 }

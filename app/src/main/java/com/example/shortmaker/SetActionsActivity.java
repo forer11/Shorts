@@ -4,10 +4,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,7 +18,6 @@ import com.example.shortmaker.Actions.ActionSendTextMessage;
 import com.example.shortmaker.Actions.ActionSoundSettings;
 import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
-import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
 import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
@@ -29,11 +26,9 @@ import com.maltaisn.icondialog.pack.IconPack;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import ir.mirrajabi.searchdialog.SimpleSearchDialogCompat;
 import ir.mirrajabi.searchdialog.core.BaseSearchDialogCompat;
 import ir.mirrajabi.searchdialog.core.SearchResultListener;
 
@@ -90,7 +85,10 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
                                         spotifyActionHandler();
                                         break;
                                     case "Set alarm clock action":
-                                        AlarmClockActionHandler();
+                                        alarmClockActionHandler();
+                                        break;
+                                    case "Send text message action":
+                                        textMessageActionHandler();
                                         break;
                                 }
                                 dialog.dismiss();
@@ -102,7 +100,15 @@ public class SetActionsActivity extends AppCompatActivity implements IconDialog.
         });
     }
 
-    private void AlarmClockActionHandler() {
+    private void textMessageActionHandler() {
+        ActionSendTextMessage textMessage = new ActionSendTextMessage(SetActionsActivity.this,false);
+        ActionDialog dialogFragment = textMessage.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(getSupportFragmentManager(), "text message dialog");
+        }
+    }
+
+    private void alarmClockActionHandler() {
         ActionAlarmClock alarmClock = new ActionAlarmClock(SetActionsActivity.this);
         ActionDialog dialogFragment = alarmClock.getDialog();
         if (dialogFragment != null) {
