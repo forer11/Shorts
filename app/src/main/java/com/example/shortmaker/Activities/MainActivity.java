@@ -40,16 +40,11 @@ import java.util.Objects;
 
 public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuItemClickListener,
         ChooseIconDialog.OnIconPick {
-    private static final String ICON_DIALOG_TAG = "icon-dialog";
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make action phone call";
     public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
     public static final int PICKER_REQUEST_CODE = 10;
     public static final int NO_POSITION = -1;
-    public static final int KAWAII_ICON_CATEGORY = 202020;
-    public static final int PUSHEEN_ICON_CATEGORY = 303030;
-
-    public static final String DRIVING_CONFIGURATION = "Driving";
 
     List<Shortcut> shortcuts;
     private DraggableGridAdapter adapter;
@@ -245,7 +240,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 dialog.show(getSupportFragmentManager(), "choose action dialog");
                 return true;
             case R.id.action_popup_load_icon:
-                new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();
+                //new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();
                 return true;
             default:
                 return false;
