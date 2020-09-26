@@ -1,4 +1,4 @@
-package com.example.shortmaker;
+package com.example.shortmaker.DialogFragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -26,7 +26,9 @@ import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.ChooseActionAdapter;
 import com.example.shortmaker.Adapters.ChooseIconAdapter;
+import com.example.shortmaker.AppData;
 import com.example.shortmaker.DataClasses.Icon;
+import com.example.shortmaker.R;
 
 import org.jetbrains.annotations.NotNull;
 

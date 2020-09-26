@@ -30,7 +30,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.android.actions" android:resource="@xml/actions" />
-        <activity android:name=".SetActionsActivity"></activity>
+        <activity android:name=".Activities.SetActionsActivity"></activity>
 
         <receiver
             android:name=".MyReceiver"
@@ -41,10 +41,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".TextToSpeachActivity"></activity>
-        <activity android:name=".MainActivity" />
+        <activity android:name=".Activities.TextToSpeachActivity"></activity>
+        <activity android:name=".Activities.MainActivity" />
         <activity
-            android:name=".OpeningScreenActivity"
+            android:name=".Activities.OpeningScreenActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -52,9 +52,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BaseMenuActivity" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".ActivateBluetoothActivity" />
+        <activity android:name=".Activities.BaseMenuActivity" />
+        <activity android:name=".Activities.LoginActivity" />
+        <activity android:name=".Activities.ActivateBluetoothActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

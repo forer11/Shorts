@@ -1,13 +1,10 @@
-package com.example.shortmaker;
+package com.example.shortmaker.DialogFragments;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
@@ -24,8 +21,8 @@ import com.example.shortmaker.Actions.ActionSendTextMessage;
 import com.example.shortmaker.Actions.ActionSoundSettings;
 import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
-import com.example.shortmaker.Adapters.ActionAdapter;
 import com.example.shortmaker.Adapters.ChooseActionAdapter;
+import com.example.shortmaker.R;
 
 import java.util.ArrayList;
 
