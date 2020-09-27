@@ -26,6 +26,7 @@ import com.example.shortmaker.DialogFragments.ChooseActionDialog;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
 
@@ -66,14 +67,7 @@ public class SetActionsActivity extends AppCompatActivity
             });
         }
 
-        MovableFloatingActionButton changeIconButton = findViewById(R.id.changeIcon);
-        changeIconButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showIconPickerDialog();
-            }
-        });
-        MovableFloatingActionButton addActionButton = findViewById(R.id.addAction);
+        FloatingActionButton addActionButton = findViewById(R.id.addAction);
         showAddActionDialog(addActionButton);
 
     }
@@ -94,7 +88,7 @@ public class SetActionsActivity extends AppCompatActivity
         mRecyclerView.setAdapter(mAdapter);
     }
 
-    private void showAddActionDialog(MovableFloatingActionButton addActionButton) {
+    private void showAddActionDialog(FloatingActionButton addActionButton) {
         addActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
