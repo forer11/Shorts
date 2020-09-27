@@ -7,10 +7,8 @@ import androidx.annotation.NonNull;
 
 import com.example.shortmaker.DataClasses.Icon;
 import com.example.shortmaker.DataClasses.Shortcut;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -23,13 +21,15 @@ import com.google.firebase.firestore.SetOptions;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import io.opencensus.metrics.export.Summary;
-
 import static android.content.ContentValues.TAG;
 
 public class FireStoreHandler {
     private static final String USERS = "Users";
     private static final String ICONS = "Icons";
+    private static final String SHORTCUTS = "Shortcuts";
+    public static final String DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/" +
+            "shortmaker-dbb76.appspot.com/o/icons%2Fshortcut.png?alt=media&token=73eea0f1-e6a8-" +
+            "4057-b6e8-4098e9b56c14";
 
 
     private FirebaseFirestore db;
@@ -104,7 +104,7 @@ public class FireStoreHandler {
 
     public void loadShortcuts(final FireStoreCallback callback) {
         final ArrayList<Shortcut> shortcuts = new ArrayList<>();
-        usersRef.document(userKey).collection("Shortcuts").get()
+        usersRef.document(userKey).collection(SHORTCUTS).get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -123,8 +123,54 @@ public class FireStoreHandler {
 
     }
 
+    public void addShortcut(final Shortcut shortcut, final SingleShortcutCallback callback) {
+        usersRef.document(userKey).collection(SHORTCUTS).add(shortcut)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        String id = documentReference.getId();
+                        shortcut.setId(id);
+                        usersRef.document(userKey).collection(SHORTCUTS)
+                                .document(id)
+                                .set(shortcut, SetOptions.merge());
+                        callback.onAddedShortcut(id, shortcut, true);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onAddedShortcut(null, null, false);
+                    }
+                });
+    }
+
+    public void getShortcut(String id, final SingleShortcutCallback callback) {
+        usersRef.document(userKey).collection(SHORTCUTS).document(id).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        Shortcut shortcut = documentSnapshot.toObject(Shortcut.class);
+                        if (shortcut != null) {
+                            callback.onAddedShortcut(shortcut.getId(), shortcut, true);
+                        } else {
+                            callback.onAddedShortcut(null, null, false);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        callback.onAddedShortcut(null, null, false);
+                    }
+                });
+    }
+
     public interface FireStoreCallback {
         void onCallBack(ArrayList<Shortcut> shortcutsList, Boolean success);
+    }
+
+    public interface SingleShortcutCallback {
+        void onAddedShortcut(String id, Shortcut shortcut, Boolean success);
     }
 
 

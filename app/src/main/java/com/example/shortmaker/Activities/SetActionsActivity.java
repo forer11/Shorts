@@ -19,7 +19,10 @@ import com.example.shortmaker.Actions.ActionSoundSettings;
 import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.ActionAdapter;
+import com.example.shortmaker.AppData;
+import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.DialogFragments.ChooseActionDialog;
+import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
 import com.maltaisn.icondialog.IconDialog;
@@ -33,14 +36,30 @@ public class SetActionsActivity extends AppCompatActivity
         ChooseActionDialog.ChooseActionDialogListener {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
+    private Shortcut currentShortcut;
     private ImageView shortcutIcon;
+    AppData appData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_actions);
+        appData = (AppData) getApplicationContext();
+
         if (getIntent().getExtras() != null) {
-            getShortcutData();
+            String id = getIntent().getStringExtra("shortcutId");
+            appData.fireStoreHandler.getShortcut(id, new FireStoreHandler.SingleShortcutCallback() {
+                @Override
+                public void onAddedShortcut(String id, Shortcut shortcut, Boolean success) {
+                    if (success) { //TODO check failure
+                        currentShortcut = shortcut;
+                        setRecyclerView();
+                        TextView shortcutTitle = findViewById(R.id.shortcutTitle);
+                        shortcutIcon = findViewById(R.id.shortcutIcon);
+                        shortcutTitle.setText(shortcut.getTitle());
+                    }
+                }
+            });
         }
 
         MovableFloatingActionButton changeIconButton = findViewById(R.id.changeIcon);
@@ -53,15 +72,8 @@ public class SetActionsActivity extends AppCompatActivity
         MovableFloatingActionButton addActionButton = findViewById(R.id.addAction);
         showAddActionDialog(addActionButton);
 
-        setRecyclerView();
     }
 
-    private void getShortcutData() {
-        String title = getIntent().getStringExtra("shortcutName");
-        TextView shortcutTitle = findViewById(R.id.shortcutTitle);
-        shortcutIcon = findViewById(R.id.shortcutIcon);
-        shortcutTitle.setText(title);
-    }
 
     private void setRecyclerView() {
         ArrayList<Action> exampleList = new ArrayList<>();

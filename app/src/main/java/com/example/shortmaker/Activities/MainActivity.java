@@ -209,15 +209,30 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 .withFirstButtonListner(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String shortcutName = flatDialog.getFirstTextField();
+                        final String shortcutName = flatDialog.getFirstTextField();
                         if (shortcutName.equals("")) {
-                            Toast.makeText(MainActivity.this, "Please enter a valid name", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(MainActivity.this,
+                                    "Please enter a valid name",
+                                    Toast.LENGTH_SHORT).show();
                         } else {
-                            Intent intent = new Intent(getBaseContext(), SetActionsActivity.class);
-                            intent.putExtra("shortcutName", shortcutName);
-                            startActivity(intent);
 
-                            //TODO - add to the grid the new shortcut
+                            Shortcut shortcut = new Shortcut(shortcutName,
+                                    FireStoreHandler.DEFAULT_IMAGE_URL);
+                            appData.fireStoreHandler.addShortcut(shortcut,
+                                    new FireStoreHandler.SingleShortcutCallback() {
+                                        @Override
+                                        public void onAddedShortcut(String id,
+                                                                    Shortcut shortcut1,
+                                                                    Boolean success) {
+                                            if (success) { //TODO if not successful
+                                                Intent intent = new Intent(getBaseContext(),
+                                                        SetActionsActivity.class);
+                                                intent.putExtra("shortcutId", id);
+                                                startActivity(intent);
+                                                flatDialog.dismiss();
+                                            }
+                                        }
+                                    });
                         }
                     }
                 })

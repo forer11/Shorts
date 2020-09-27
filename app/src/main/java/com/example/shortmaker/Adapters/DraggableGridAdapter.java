@@ -82,12 +82,6 @@ public class DraggableGridAdapter extends RecyclerView
                 .fallback(R.drawable.broken_image)
                 .placeholder(circularProgressDrawable)
                 .into(holder.shortcut_image);
-        //TODO Carmel do we still need it?
-        if (shortcuts.get(position).isTintNeeded()) {
-            holder.shortcut_image.setColorFilter(Color.argb(255, 255,
-                    255, 255), PorterDuff.Mode.SRC_IN);
-        }
-
     }
 
     @NotNull

@@ -2,22 +2,28 @@ package com.example.shortmaker.DataClasses;
 
 import android.graphics.drawable.Drawable;
 
-public class Shortcut {
+import com.example.shortmaker.Actions.Action;
 
-    private boolean tintNeeded;
+import java.util.ArrayList;
+
+public class Shortcut {
 
     private String title;
 
     private String imageUrl;
 
+    private String id;
+
+    private ArrayList<Action> actions;
+
     public Shortcut() {
         /* empty public constructor for FireStore */
     }
 
-    public Shortcut(String title, String imageUrl, boolean tintNeeded) {
+    public Shortcut(String title, String imageUrl) {
         this.title = title;
         this.imageUrl = imageUrl;
-        this.tintNeeded = tintNeeded;
+        actions = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -37,11 +43,20 @@ public class Shortcut {
         return this.imageUrl;
     }
 
-    public boolean isTintNeeded() {
-        return tintNeeded;
+
+    public String getId() {
+        return id;
     }
 
-    public void setTintNeeded(boolean tintNeeded) {
-        this.tintNeeded = tintNeeded;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public ArrayList<Action> getActions() {
+        return actions;
+    }
+
+    public void setActions(ArrayList<Action> actions) {
+        this.actions = actions;
     }
 }
