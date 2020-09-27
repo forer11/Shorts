@@ -24,8 +24,10 @@ import android.widget.Toast;
 import com.example.flatdialoglibrary.dialog.FlatDialog;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
 import com.example.shortmaker.AppData;
+import com.example.shortmaker.DialogFragments.ChooseActionDialog;
 import com.example.shortmaker.DialogFragments.ChooseIconDialog;
 import com.example.shortmaker.DataClasses.Shortcut;
+import com.example.shortmaker.DialogFragments.CreateShortcutDialog;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
 import com.example.shortmaker.Views.MovableFloatingActionButton;
@@ -39,7 +41,8 @@ import java.util.Objects;
 
 
 public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuItemClickListener,
-        ChooseIconDialog.OnIconPick {
+        ChooseIconDialog.OnIconPick
+      {
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make action phone call";
     public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
@@ -198,51 +201,11 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     }
 
     private void showCreateShortcutDialog() {
-        final FlatDialog flatDialog = new FlatDialog(MainActivity.this);
-        flatDialog.setTitle("Add Shortcut")
-                .setIcon(R.drawable.shortcut)
-                .setSubtitle("Choose the shortcut name")
-                .setFirstTextFieldHint("shortcut name")
-                .setFirstButtonText("OK")
-                .setSecondButtonText("CANCEL")
-                .withFirstButtonListner(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        final String shortcutName = flatDialog.getFirstTextField();
-                        if (shortcutName.equals("")) {
-                            Toast.makeText(MainActivity.this,
-                                    "Please enter a valid name",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            Shortcut shortcut = new Shortcut(shortcutName,
-                                    FireStoreHandler.DEFAULT_IMAGE_URL);
-                            appData.fireStoreHandler.addShortcut(shortcut,
-                                    new FireStoreHandler.SingleShortcutCallback() {
-                                        @Override
-                                        public void onAddedShortcut(String id,
-                                                                    Shortcut shortcut1,
-                                                                    Boolean success) {
-                                            if (success) { //TODO if not successful
-                                                Intent intent = new Intent(getBaseContext(),
-                                                        SetActionsActivity.class);
-                                                intent.putExtra("shortcutId", id);
-                                                startActivity(intent);
-                                                flatDialog.dismiss();
-                                            }
-                                        }
-                                    });
-                        }
-                    }
-                })
-                .withSecondButtonListner(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        flatDialog.dismiss();
-                    }
-                })
-                .show();
+        // Create an instance of the dialog fragment and show it
+        DialogFragment dialog = new CreateShortcutDialog();
+        dialog.show(getSupportFragmentManager(), "choose action dialog");
     }
+
 
 
     private void showPopupMenu(View view) {
@@ -346,4 +309,4 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
         super.onResume();
         getUserDataAndLoadRecyclerview();
     }
-}
+      }
