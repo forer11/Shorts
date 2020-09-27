@@ -60,7 +60,6 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appData = (AppData) getApplicationContext();
-        getUserDataAndLoadRecyclerview();
 //        shortcuts.add(new Shortcut("Sport",
 //                "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1",
 //                false));
@@ -336,7 +335,15 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
 
     @Override
     public void onIconPick(String iconLink) {
-        shortcuts.get(lastPosition).setImageUrl(iconLink);
+        Shortcut shortcut = shortcuts.get(lastPosition);
+        shortcut.setImageUrl(iconLink);
         adapter.notifyItemChanged(lastPosition);
+        appData.fireStoreHandler.updateShortcut(shortcut);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getUserDataAndLoadRecyclerview();
     }
 }

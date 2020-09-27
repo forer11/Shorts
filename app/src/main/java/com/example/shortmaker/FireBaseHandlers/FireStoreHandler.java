@@ -144,6 +144,23 @@ public class FireStoreHandler {
                 });
     }
 
+    public void updateShortcut(Shortcut shortcut) {
+        usersRef.document(userKey).collection(SHORTCUTS).document(shortcut.getId())
+                .set(shortcut, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        //TODO
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        //TODO
+                    }
+                });
+    }
+
     public void getShortcut(String id, final SingleShortcutCallback callback) {
         usersRef.document(userKey).collection(SHORTCUTS).document(id).get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
