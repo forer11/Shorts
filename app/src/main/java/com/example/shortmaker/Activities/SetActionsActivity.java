@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Actions.ActionAlarmClock;
@@ -57,6 +58,9 @@ public class SetActionsActivity extends AppCompatActivity
                         TextView shortcutTitle = findViewById(R.id.shortcutTitle);
                         shortcutIcon = findViewById(R.id.shortcutIcon);
                         shortcutTitle.setText(shortcut.getTitle());
+                        Glide.with(SetActionsActivity.this)
+                                .load(shortcut.getImageUrl())
+                                .into(shortcutIcon);
                     }
                 }
             });
