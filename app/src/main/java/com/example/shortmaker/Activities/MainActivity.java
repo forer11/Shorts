@@ -39,6 +39,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import kotlin.text.MatchGroup;
+
 
 public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuItemClickListener,
         ChooseIconDialog.OnIconPick {
@@ -83,15 +85,19 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 if (success) {
                     shortcuts.clear();
                     shortcuts.addAll(shortcutsList);
-                    int i = 0;
-                    for (Shortcut shortcut : shortcuts) {
-                        shortcut.setPos(i++);
-                        appData.fireStoreHandler.updateShortcut(shortcut);
-                    }
+                    setNewPositions();
                     setRecyclerView();
                 }
             }
         });
+    }
+
+    private void setNewPositions() {
+        int i = 0;
+        for (Shortcut shortcut : shortcuts) {
+            shortcut.setPos(i++);
+            appData.fireStoreHandler.updateShortcut(shortcut);
+        }
     }
 
     private void setAddShortcutButton() {
@@ -299,15 +305,22 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
             popupMenu.dismiss();
             int fromPos = viewHolder.getAdapterPosition();
             int toPos = target.getAdapterPosition();
-            int tempPos = shortcuts.get(toPos).getPos();
-            shortcuts.get(toPos).setPos(shortcuts.get(fromPos).getPos());
-            shortcuts.get(fromPos).setPos(tempPos);
-            appData.fireStoreHandler.updateShortcut(shortcuts.get(toPos));
-            appData.fireStoreHandler.updateShortcut(shortcuts.get(fromPos));
             Collections.swap(shortcuts, fromPos, toPos);
-            Objects.requireNonNull(recyclerView.getAdapter()).notifyItemMoved(fromPos, toPos);
+            setNewPositions();
+            moveViews(recyclerView, fromPos, toPos);
 
             return false;
+        }
+
+        private void moveViews(@NonNull RecyclerView recyclerView, int fromPos, int toPos) {
+            Objects.requireNonNull(recyclerView.getAdapter()).notifyItemMoved(fromPos, toPos);
+            if (Math.abs(toPos - fromPos) > 1) {
+                if (toPos < fromPos) {
+                    Objects.requireNonNull(recyclerView.getAdapter()).notifyItemMoved(toPos + 1, fromPos);
+                } else {
+                    Objects.requireNonNull(recyclerView.getAdapter()).notifyItemMoved(toPos - 1, fromPos);
+                }
+            }
         }
 
         @Override
