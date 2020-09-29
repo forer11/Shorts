@@ -305,11 +305,23 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
             popupMenu.dismiss();
             int fromPos = viewHolder.getAdapterPosition();
             int toPos = target.getAdapterPosition();
+            swapShortcutPos(fromPos, toPos);
+
             Collections.swap(shortcuts, fromPos, toPos);
-            setNewPositions();
             moveViews(recyclerView, fromPos, toPos);
 
             return false;
+        }
+
+        private void swapShortcutPos(int fromPos, int toPos) {
+            Shortcut fromShortcut = shortcuts.get(fromPos);
+            Shortcut toShortcut = shortcuts.get(toPos);
+
+            int tempPos = fromShortcut.getPos();
+            fromShortcut.setPos(toShortcut.getPos());
+            toShortcut.setPos(tempPos);
+            appData.fireStoreHandler.updateShortcut(fromShortcut);
+            appData.fireStoreHandler.updateShortcut(toShortcut);
         }
 
         private void moveViews(@NonNull RecyclerView recyclerView, int fromPos, int toPos) {
