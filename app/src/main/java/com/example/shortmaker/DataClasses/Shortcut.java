@@ -14,6 +14,8 @@ public class Shortcut {
 
     private String id;
 
+    private int pos;
+
     private ArrayList<Action> actions;
 
     public Shortcut() {
@@ -58,5 +60,13 @@ public class Shortcut {
 
     public void setActions(ArrayList<Action> actions) {
         this.actions = actions;
+    }
+
+    public int getPos() {
+        return pos;
+    }
+
+    public void setPos(int pos) {
+        this.pos = pos;
     }
 }

@@ -27,18 +27,25 @@ import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class CreateShortcutDialog extends AppCompatDialogFragment {
 
     private Context context;
+    private int pos;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        pos = Objects.requireNonNull(getArguments()).getInt("pos");
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context=context;
+        this.context = context;
     }
 
     @NonNull
@@ -69,6 +76,7 @@ public class CreateShortcutDialog extends AppCompatDialogFragment {
                         } else {
                             Shortcut shortcut = new Shortcut(title,
                                     FireStoreHandler.DEFAULT_IMAGE_URL);
+                            shortcut.setPos(pos);
                             appData.fireStoreHandler.addShortcut(shortcut,
                                     new FireStoreHandler.SingleShortcutCallback() {
                                         @Override
@@ -89,7 +97,6 @@ public class CreateShortcutDialog extends AppCompatDialogFragment {
                 });
         return builder.create();
     }
-
 
 
 }

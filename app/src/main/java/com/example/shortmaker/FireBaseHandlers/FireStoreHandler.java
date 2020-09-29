@@ -2,6 +2,7 @@ package com.example.shortmaker.FireBaseHandlers;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -104,7 +105,7 @@ public class FireStoreHandler {
 
     public void loadShortcuts(final FireStoreCallback callback) {
         final ArrayList<Shortcut> shortcuts = new ArrayList<>();
-        usersRef.document(userKey).collection(SHORTCUTS).get()
+        usersRef.document(userKey).collection(SHORTCUTS).orderBy("pos").get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -178,6 +179,24 @@ public class FireStoreHandler {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         callback.onAddedShortcut(null, null, false);
+                    }
+                });
+    }
+
+    public void deleteShortcut(String id, final String title) {
+        usersRef.document(userKey).collection(SHORTCUTS).document(id).delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(context, "Deleted " + title, Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(context,
+                                "Failed to delete" + title,
+                                Toast.LENGTH_SHORT).show();
                     }
                 });
     }

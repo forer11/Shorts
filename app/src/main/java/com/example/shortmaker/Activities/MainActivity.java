@@ -41,8 +41,7 @@ import java.util.Objects;
 
 
 public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuItemClickListener,
-        ChooseIconDialog.OnIconPick
-      {
+        ChooseIconDialog.OnIconPick {
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make action phone call";
     public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
@@ -63,13 +62,6 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         appData = (AppData) getApplicationContext();
-//        shortcuts.add(new Shortcut("Sport",
-//                "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1",
-//                false));
-//        shortcuts.add(new Shortcut("Study", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
-//        shortcuts.add(new Shortcut("Driving", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
-//        shortcuts.add(new Shortcut("Party", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
-//        shortcuts.add(new Shortcut("Cooking", "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fcooking.png?alt=media&token=1d91c224-ee6d-421b-87ae-8cc7427a26f1", false));
         setToolbar();
 
         setAddShortcutButton();
@@ -83,6 +75,11 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
             public void onCallBack(ArrayList<Shortcut> shortcutsList, Boolean success) {
                 if (success) {
                     shortcuts = shortcutsList;
+                    int i = 0;
+                    for (Shortcut shortcut : shortcuts) {
+                        shortcut.setPos(i++);
+                        appData.fireStoreHandler.updateShortcut(shortcut);
+                    }
                     setRecyclerView();
                 }
             }
@@ -203,9 +200,11 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     private void showCreateShortcutDialog() {
         // Create an instance of the dialog fragment and show it
         DialogFragment dialog = new CreateShortcutDialog();
+        Bundle args = new Bundle();
+        args.putInt("pos", shortcuts.size());
+        dialog.setArguments(args);
         dialog.show(getSupportFragmentManager(), "choose action dialog");
     }
-
 
 
     private void showPopupMenu(View view) {
@@ -224,7 +223,9 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 return true;
             case R.id.action_popup_delete:
                 //TODO - delete selected item
-                shortcuts.get(lastPosition).setTitle("malol");
+                Shortcut shortcut = shortcuts.get(lastPosition);
+                appData.fireStoreHandler.deleteShortcut(shortcut.getId(), shortcut.getTitle());
+                getUserDataAndLoadRecyclerview();
                 return true;
             case R.id.action_popup_change_icon:
                 DialogFragment dialog = new ChooseIconDialog();
@@ -281,9 +282,14 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
         public boolean onMove(@NonNull RecyclerView recyclerView,
                               @NonNull RecyclerView.ViewHolder viewHolder,
                               @NonNull RecyclerView.ViewHolder target) {
+
             int fromPos = viewHolder.getAdapterPosition();
             int toPos = target.getAdapterPosition();
-
+            int tempPos = shortcuts.get(toPos).getPos();
+            shortcuts.get(toPos).setPos(shortcuts.get(fromPos).getPos());
+            shortcuts.get(fromPos).setPos(tempPos);
+            appData.fireStoreHandler.updateShortcut(shortcuts.get(toPos));
+            appData.fireStoreHandler.updateShortcut(shortcuts.get(fromPos));
             Collections.swap(shortcuts, fromPos, toPos);
             Objects.requireNonNull(recyclerView.getAdapter()).notifyItemMoved(fromPos, toPos);
 
@@ -309,4 +315,4 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
         super.onResume();
         getUserDataAndLoadRecyclerview();
     }
-      }
+}
