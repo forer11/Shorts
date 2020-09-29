@@ -231,10 +231,11 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     public boolean onMenuItemClick(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_popup_edit:
-                //TODO - edit selected item
+                Intent intent = new Intent(this, SetActionsActivity.class);
+                intent.putExtra("shortcutId", shortcuts.get(lastPosition).getId());
+                startActivity(intent);
                 return true;
             case R.id.action_popup_delete:
-                //TODO - delete selected item
                 Shortcut shortcut = shortcuts.get(lastPosition);
                 appData.fireStoreHandler.deleteShortcut(shortcut.getId(), shortcut.getTitle());
                 getUserDataAndLoadRecyclerview();
