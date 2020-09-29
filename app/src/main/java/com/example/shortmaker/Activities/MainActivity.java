@@ -30,7 +30,6 @@ import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.DialogFragments.CreateShortcutDialog;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
-import com.example.shortmaker.Views.MovableFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jetbrains.annotations.Nullable;
