@@ -19,6 +19,7 @@ import android.view.MenuItem;
 
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.flatdialoglibrary.dialog.FlatDialog;
@@ -68,7 +69,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
         setObjects();
         setToolbar();
         setAddShortcutButton();
-//        setMakeCallDialog();
+
     }
 
     private void setObjects() {
@@ -87,6 +88,8 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                     shortcuts.addAll(shortcutsList);
                     setNewPositions();
                     setRecyclerView();
+                    ProgressBar progressBar = findViewById(R.id.progressBar);
+                    progressBar.setVisibility(View.INVISIBLE);
                 }
             }
         });
@@ -110,58 +113,6 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
         });
     }
 
-
-//    private void setMakeCallDialog() {
-//        phoneCallDialogLayout = getLayoutInflater().inflate(R.layout.phone_call_dialog, null);
-//        editText = phoneCallDialogLayout.findViewById(R.id.edit_text_number);
-//        showAlertDialogMakeCall();
-//    }
-//
-//
-//    public void showAlertDialogMakeCall() {
-//        // Create an alert builder
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(PHONE_CALL_DIALOG_TITLE);
-//        // set the custom layout
-//        builder.setView(phoneCallDialogLayout);
-//        // add action button
-//        builder.setPositiveButton(PHONE_CALL_DIALOG_POS_BTN, new DialogInterface.OnClickListener() {
-//            @Override
-//            public void onClick(DialogInterface dialog, int which) {
-//                // send data from the AlertDialog to the Activity
-//                makePhoneCall(editText.getText().toString());
-//            }
-//        }).setIcon(R.drawable.ic_phone);
-//        // create and show the alert dialog
-//        makeCallDialog = builder.create();
-//    }
-//
-//
-//    private void makePhoneCall(String number) {
-//        if (number.trim().length() > 0) {
-//            if (ContextCompat.checkSelfPermission(MainActivity.this,
-//                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//                ActivityCompat.requestPermissions(MainActivity.this,
-//                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
-//            } else {
-//                String dial = "tel:" + number;
-//                startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-//            }
-//        } else {
-//            Toast.makeText(MainActivity.this, "Enter Phone Number", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-//
-//    @Override
-//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-//        if (requestCode == REQUEST_CALL) {
-//            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                makePhoneCall(editText.getText().toString());
-//            } else {
-//                Toast.makeText(this, "Permission DENIED", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
