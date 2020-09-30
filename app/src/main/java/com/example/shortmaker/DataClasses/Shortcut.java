@@ -1,6 +1,5 @@
 package com.example.shortmaker.DataClasses;
 
-import android.graphics.drawable.Drawable;
 
 import com.example.shortmaker.Actions.Action;
 
@@ -69,4 +68,5 @@ public class Shortcut {
     public void setPos(int pos) {
         this.pos = pos;
     }
+
 }

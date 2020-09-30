@@ -36,7 +36,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public class TextToSpeachActivity extends AppCompatActivity {
+public class TextToSpeechActivity extends AppCompatActivity {
 
     private static final int MY_PERMISSIONS_REQUEST_RECEIVE_SMS = 0;
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
@@ -145,13 +145,13 @@ public class TextToSpeachActivity extends AppCompatActivity {
 
                     if (result == TextToSpeech.LANG_MISSING_DATA
                             || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                        Toast.makeText(TextToSpeachActivity.this, "Language not supported", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(TextToSpeechActivity.this, "Language not supported", Toast.LENGTH_SHORT).show();
                     } else {
                         //everything went well
                         buttonSpeak.setEnabled(true);
                     }
                 } else {
-                    Toast.makeText(TextToSpeachActivity.this, "Initialization failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(TextToSpeechActivity.this, "Initialization failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
