@@ -37,8 +37,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
     }
 
     public interface ChooseActionDialogListener {
-        void onDialogPositiveClick(ArrayList<String> data);
-        void onDialogNegativeClick(ArrayList<String> data);
+//        void onDialogPositiveClick(ArrayList<String> data);
     }
 
     // Use this instance of the interface to deliver action events
@@ -119,17 +118,16 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
                         case "Sound settings action":
                             soundSettingActionHandler();
                             break;
-                    case "Make a phone call action":
-                        phoneCallActionHandler();
-                        break;
-                    case "Set timer action":
-                        setTimerActionHandler();
-                        break;
-                    case "Activate wifi action":
-                        activateWifiActionHandler();
-                        break;
+                        case "Make a phone call action":
+                            phoneCallActionHandler();
+                            break;
+                        case "Set timer action":
+                            setTimerActionHandler();
+                            break;
+                        case "Activate wifi action":
+                            activateWifiActionHandler();
+                            break;
                     }
-
             }
         });
     }
