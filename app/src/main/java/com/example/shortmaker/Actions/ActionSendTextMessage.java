@@ -3,10 +3,7 @@ package com.example.shortmaker.Actions;
 import android.content.Context;
 import android.content.Intent;
 
-import androidx.fragment.app.DialogFragment;
-
 import com.example.shortmaker.ActionDialogs.ActionDialog;
-import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.TextMessageDialog;
 import com.example.shortmaker.R;
 
@@ -58,6 +55,6 @@ public class ActionSendTextMessage implements Action, Searchable {
 
     @Override
     public int getImageResource() {
-        return R.drawable.text_message_icon;
+        return R.drawable.text_message;
     }
 }

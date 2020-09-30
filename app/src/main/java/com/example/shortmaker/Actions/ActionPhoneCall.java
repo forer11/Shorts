@@ -1,20 +1,32 @@
 package com.example.shortmaker.Actions;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 
-import androidx.fragment.app.DialogFragment;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
+import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
+import com.example.shortmaker.ActionDialogs.PhoneCallDialog;
+import com.example.shortmaker.R;
 
 import java.util.List;
 
 import ir.mirrajabi.searchdialog.core.Searchable;
 
-public class ActionPhoneCall implements Action, Searchable {
+public class ActionPhoneCall implements Action, Searchable,  ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
@@ -23,9 +35,27 @@ public class ActionPhoneCall implements Action, Searchable {
     private View phoneCallDialogLayout;
     private AlertDialog makeCallDialog;
     private Context context;
+    private PhoneCallDialog dialog;
 
     public ActionPhoneCall(Context context) {
         this.context=context;
+        this.dialog = new PhoneCallDialog();
+    }
+
+    
+    private void makePhoneCall(String number) {
+        if (number.trim().length() > 0) {
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions((Activity)context,
+                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
+            } else {
+                String dial = "tel:" + number;
+                context.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
+            }
+        } else {
+            Toast.makeText(context, "Enter Phone Number", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -36,7 +66,7 @@ public class ActionPhoneCall implements Action, Searchable {
 
     @Override
     public ActionDialog getDialog() {
-        return null;
+        return dialog;
     }
 
     @Override
@@ -51,6 +81,17 @@ public class ActionPhoneCall implements Action, Searchable {
 
     @Override
     public int getImageResource() {
-        return 0;
+        return R.drawable.phone_icon;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CALL) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                makePhoneCall(editText.getText().toString());
+            } else {
+                Toast.makeText(context, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }

@@ -26,13 +26,18 @@ import com.example.shortmaker.R;
 
 import java.util.ArrayList;
 
-public class ChooseActionDialog extends AppCompatDialogFragment {
+public class ChooseActionDialog extends AppCompatDialogFragment implements ActionDialog.DialogListener {
 
     private Context context;
 
+    @Override
+    public void applyUserInfo(ArrayList<String> data) {
+        //TODO - here we need to update the corresponding action with user input i.e - data
+    }
+
     public interface ChooseActionDialogListener {
-        void onDialogPositiveClick(DialogFragment dialog);
-        void onDialogNegativeClick(DialogFragment dialog);
+        void onDialogPositiveClick(ArrayList<String> data);
+        void onDialogNegativeClick(ArrayList<String> data);
     }
 
     // Use this instance of the interface to deliver action events
@@ -111,9 +116,20 @@ public class ChooseActionDialog extends AppCompatDialogFragment {
                         case "Sound settings action":
                             soundSettingActionHandler();
                             break;
+                    case "Make a phone call action":
+                        phoneCallActionHandler();
+                        break;
                     }
             }
         });
+    }
+
+    private void phoneCallActionHandler() {
+        ActionPhoneCall phoneCall = new ActionPhoneCall(context);
+        ActionDialog dialogFragment = phoneCall.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(((FragmentActivity)context).getSupportFragmentManager(), "phone call dialog");
+        }
     }
 
     private void soundSettingActionHandler() {
