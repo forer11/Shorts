@@ -18,6 +18,7 @@ import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Actions.ActionAlarmClock;
 import com.example.shortmaker.Actions.ActionPhoneCall;
 import com.example.shortmaker.Actions.ActionSendTextMessage;
+import com.example.shortmaker.Actions.ActionSetTimer;
 import com.example.shortmaker.Actions.ActionSoundSettings;
 import com.example.shortmaker.Actions.ActionSpotify;
 import com.example.shortmaker.Actions.ActionWaze;
@@ -66,6 +67,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
         items.add(new ActionSpotify(context));
         items.add(new ActionAlarmClock(context));
         items.add(new ActionPhoneCall(context));
+        items.add(new ActionSetTimer(context));
         items.add(new ActionSendTextMessage(context));
         items.add(new ActionSoundSettings(context));
         return items;
@@ -119,9 +121,21 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
                     case "Make a phone call action":
                         phoneCallActionHandler();
                         break;
+                    case "Set timer action":
+                        setTimerActionHandler();
+                        break;
                     }
+
             }
         });
+    }
+
+    private void setTimerActionHandler() {
+        ActionSetTimer setTimer = new ActionSetTimer(context);
+        ActionDialog dialogFragment = setTimer.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(((FragmentActivity)context).getSupportFragmentManager(), "set timer dialog");
+        }
     }
 
     private void phoneCallActionHandler() {
