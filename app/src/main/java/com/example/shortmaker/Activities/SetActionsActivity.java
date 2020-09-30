@@ -5,27 +5,17 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
-import com.example.shortmaker.ActionDialogs.WazeDialog;
 import com.example.shortmaker.Actions.Action;
-import com.example.shortmaker.Actions.ActionAlarmClock;
-import com.example.shortmaker.Actions.ActionSendTextMessage;
-import com.example.shortmaker.Actions.ActionSoundSettings;
-import com.example.shortmaker.Actions.ActionSpotify;
-import com.example.shortmaker.Actions.ActionWaze;
 import com.example.shortmaker.Adapters.ActionAdapter;
 import com.example.shortmaker.AppData;
 import com.example.shortmaker.DataClasses.Shortcut;
@@ -48,7 +38,6 @@ public class SetActionsActivity extends AppCompatActivity
     private ImageView shortcutIcon;
     AppData appData;
     private ArrayList<Action> actions;
-
     private EditText shortcutTitle;
 
     @Override
@@ -56,34 +45,49 @@ public class SetActionsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_actions);
         appData = (AppData) getApplicationContext();
-
         if (getIntent().getExtras() != null) {
             String id = getIntent().getStringExtra("shortcutId");
             appData.fireStoreHandler.getShortcut(id, new FireStoreHandler.SingleShortcutCallback() {
                 @Override
                 public void onAddedShortcut(String id, Shortcut shortcut, Boolean success) {
                     if (success) { //TODO check failure
-                        currentShortcut = shortcut;
-                        setRecyclerView();
-                        shortcutTitle = findViewById(R.id.shortcutTitle);
-                        final ImageButton updateTitleButton = findViewById(R.id.updateButton);
-                        final ImageButton clearTitleButton = findViewById(R.id.cancelButton);
-                        titleOnFocuseChange(updateTitleButton, clearTitleButton);
-                        updateTitle(updateTitleButton, clearTitleButton);
-                        clearTitleUpdate(updateTitleButton, clearTitleButton);
-                        shortcutIcon = findViewById(R.id.shortcutIcon);
-                        shortcutTitle.setText(shortcut.getTitle());
-                        Glide.with(SetActionsActivity.this)
-                                .load(shortcut.getImageUrl())
-                                .into(shortcutIcon);
+                        addedShortcutHandler(shortcut);
                     }
                 }
             });
         }
-
         FloatingActionButton addActionButton = findViewById(R.id.addAction);
         showAddActionDialog(addActionButton);
 
+    }
+
+    private void addedShortcutHandler(Shortcut shortcut) {
+        currentShortcut = shortcut;
+        setRecyclerView();
+        ShortcutTitleHandler(shortcut);
+        shortcutIcon = findViewById(R.id.shortcutIcon);
+        Glide.with(SetActionsActivity.this)
+                .load(shortcut.getImageUrl())
+                .into(shortcutIcon);
+        shortcutIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //TODO - Lior - change icon
+            }
+        });
+    }
+
+
+
+
+    private void ShortcutTitleHandler(Shortcut shortcut) {
+        shortcutTitle = findViewById(R.id.shortcutTitle);
+        shortcutTitle.setText(shortcut.getTitle());
+        final ImageButton updateTitleButton = findViewById(R.id.updateButton);
+        final ImageButton clearTitleButton = findViewById(R.id.cancelButton);
+        titleOnFocusChange(updateTitleButton, clearTitleButton);
+        updateTitle(updateTitleButton, clearTitleButton);
+        clearTitleUpdate(updateTitleButton, clearTitleButton);
     }
 
     private void clearTitleUpdate(final ImageButton updateTitleButton, final ImageButton clearTitleButton) {
@@ -116,7 +120,7 @@ public class SetActionsActivity extends AppCompatActivity
         hideKeybaord(v);
     }
 
-    private void titleOnFocuseChange(final ImageButton updateTitleButton, final ImageButton clearTitleButton) {
+    private void titleOnFocusChange(final ImageButton updateTitleButton, final ImageButton clearTitleButton) {
         shortcutTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
