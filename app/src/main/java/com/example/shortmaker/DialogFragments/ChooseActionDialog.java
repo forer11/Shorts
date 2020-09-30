@@ -8,13 +8,13 @@ import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.Actions.Action;
+import com.example.shortmaker.Actions.ActionActivateWifi;
 import com.example.shortmaker.Actions.ActionAlarmClock;
 import com.example.shortmaker.Actions.ActionPhoneCall;
 import com.example.shortmaker.Actions.ActionSendTextMessage;
@@ -70,6 +70,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
         items.add(new ActionSetTimer(context));
         items.add(new ActionSendTextMessage(context));
         items.add(new ActionSoundSettings(context));
+        items.add(new ActionActivateWifi(context));
         return items;
     }
 
@@ -124,10 +125,21 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
                     case "Set timer action":
                         setTimerActionHandler();
                         break;
+                    case "Activate wifi action":
+                        activateWifiActionHandler();
+                        break;
                     }
 
             }
         });
+    }
+
+    private void activateWifiActionHandler() {
+        ActionActivateWifi wifi = new ActionActivateWifi(context);
+        ActionDialog dialogFragment = wifi.getDialog();
+        if (dialogFragment != null) {
+            dialogFragment.show(((FragmentActivity)context).getSupportFragmentManager(), "activate wifi dialog");
+        }
     }
 
     private void setTimerActionHandler() {
