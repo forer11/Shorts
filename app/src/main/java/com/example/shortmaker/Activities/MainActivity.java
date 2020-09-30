@@ -112,7 +112,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
 
 
 //    private void setMakeCallDialog() {
-//        phoneCallDialogLayout = getLayoutInflater().inflate(R.layout.phone_call_dialog_layout, null);
+//        phoneCallDialogLayout = getLayoutInflater().inflate(R.layout.phone_call_dialog, null);
 //        editText = phoneCallDialogLayout.findViewById(R.id.edit_text_number);
 //        showAlertDialogMakeCall();
 //    }

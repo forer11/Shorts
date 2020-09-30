@@ -73,6 +73,7 @@ public class SetActionsActivity extends AppCompatActivity
 
 
     private void setRecyclerView() {
+        //TODO - here we need to get the actions the user already has from fire store (if there are any)
         ArrayList<Action> exampleList = new ArrayList<>();
         exampleList.add(new ActionWaze(this));
         exampleList.add(new ActionSpotify(this));
@@ -117,12 +118,12 @@ public class SetActionsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onDialogPositiveClick(DialogFragment dialog) {
-
+    public void onDialogPositiveClick(ArrayList<String> data) {
+        //TODO - update the recycler view with the new action the user added and send the data from its input
     }
 
     @Override
-    public void onDialogNegativeClick(DialogFragment dialog) {
+    public void onDialogNegativeClick(ArrayList<String> data) {
 
     }
 }
