@@ -2,6 +2,7 @@ package com.example.shortmaker.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,6 +40,7 @@ public class SetActionsActivity extends AppCompatActivity
     AppData appData;
     private ArrayList<Action> actions;
     private EditText shortcutTitle;
+    private RecyclerView.Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,27 +125,30 @@ public class SetActionsActivity extends AppCompatActivity
         shortcutTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                shortcutTitle.setText("");
-                updateTitleButton.setVisibility(View.VISIBLE);
-                clearTitleButton.setVisibility(View.VISIBLE);
+                hideKeybaord(v);
+                if (hasFocus) {
+                    shortcutTitle.setText("");
+                    updateTitleButton.setVisibility(View.VISIBLE);
+                    clearTitleButton.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
 
 
     private void hideKeybaord(View v) {
-        InputMethodManager inputMethodManager = (InputMethodManager)getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(),0);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
     }
 
     private void setRecyclerView() {
         actions = currentShortcut.getActions();
-        RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        RecyclerView.Adapter adapter = new ActionAdapter(actions);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(adapter);
+        adapter = new ActionAdapter(actions);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setAdapter(adapter);
     }
 
     private void showAddActionDialog(FloatingActionButton addActionButton) {
@@ -171,4 +176,15 @@ public class SetActionsActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public void onChoseAction(Action action,int position) {
+        ActionDialog actionDialog = action.getDialog();
+        if (actionDialog != null) {
+            actionDialog.show(this.getSupportFragmentManager(), action.getTitle() + " dialog");
+        }
+        ArrayList<Action> curActions = currentShortcut.getActions();
+        curActions.add(action);
+        adapter.notifyItemChanged(position);
+        appData.fireStoreHandler.updateShortcut(currentShortcut);
+    }
 }
