@@ -9,24 +9,26 @@ import androidx.fragment.app.DialogFragment;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.SpotifyDialog;
+import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.R;
 
 import java.util.List;
 
 import ir.mirrajabi.searchdialog.core.Searchable;
 
-public class ActionAlarmClock implements Action, Searchable {
+public class ActionAlarmClock implements Action {
 
-    private Context context;
     private AlarmClockDialog dialog;
 
-    public ActionAlarmClock(Context context) {
-        this.context = context;
+    public String getTitle() {
+        return ActionFactory.ALARM_CLOCK_ACTION_TITLE;
+    }
+    public ActionAlarmClock() {
         this.dialog = new AlarmClockDialog();
     }
 
     @Override
-    public void activate() {
+    public void activate(Context context) {
         //TODO - we can decide a constant hour to set the alarm clock to
         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
                 .putExtra(AlarmClock.EXTRA_HOUR,10) //hours in 24 hours format
@@ -46,16 +48,5 @@ public class ActionAlarmClock implements Action, Searchable {
     public void setData(List<String> data) {
 
     }
-
-    @Override
-    public String getTitle() {
-        return "Set alarm clock action";
-    }
-
-    @Override
-    public int getImageResource() {
-        return R.drawable.alarm_clock_icon;
-    }
-
 
 }

@@ -8,6 +8,7 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.SetTimerDialog;
 import com.example.shortmaker.ActionDialogs.TextMessageDialog;
+import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.R;
 
 import java.util.List;
@@ -15,17 +16,19 @@ import java.util.List;
 public class ActionSetTimer implements Action {
 
 
-    private Context context;
     private SetTimerDialog dialog;
 
-    public ActionSetTimer(Context context) {
-        this.context = context;
+    public String getTitle() {
+        return ActionFactory.TIMER_ACTION_TITLE;
+    }
+
+    public ActionSetTimer() {
         this.dialog = new SetTimerDialog();
     }
 
 
     @Override
-    public void activate() {
+    public void activate(Context context) {
         Intent intent = new Intent(AlarmClock.ACTION_SET_TIMER)
                 .putExtra(AlarmClock.EXTRA_MESSAGE, "message")
                 .putExtra(AlarmClock.EXTRA_LENGTH, 20)
@@ -43,15 +46,5 @@ public class ActionSetTimer implements Action {
     @Override
     public void setData(List<String> data) {
 
-    }
-
-    @Override
-    public String getTitle() {
-        return "Set timer action";
-    }
-
-    @Override
-    public int getImageResource() {
-        return R.drawable.timer_icon;
     }
 }

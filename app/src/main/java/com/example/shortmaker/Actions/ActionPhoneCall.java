@@ -20,13 +20,14 @@ import androidx.core.content.ContextCompat;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.PhoneCallDialog;
+import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.R;
 
 import java.util.List;
 
 import ir.mirrajabi.searchdialog.core.Searchable;
 
-public class ActionPhoneCall implements Action, Searchable,  ActivityCompat.OnRequestPermissionsResultCallback {
+public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make a phone call";
@@ -34,16 +35,18 @@ public class ActionPhoneCall implements Action, Searchable,  ActivityCompat.OnRe
     private EditText editText;
     private View phoneCallDialogLayout;
     private AlertDialog makeCallDialog;
-    private Context context;
     private PhoneCallDialog dialog;
 
-    public ActionPhoneCall(Context context) {
-        this.context=context;
+    public String getTitle() {
+        return ActionFactory.PHONE_CALL_ACTION_TITLE;
+    }
+
+    public ActionPhoneCall() {
         this.dialog = new PhoneCallDialog();
     }
 
     
-    private void makePhoneCall(String number) {
+    private void makePhoneCall(Context context,String number) {
         if (number.trim().length() > 0) {
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
@@ -60,8 +63,8 @@ public class ActionPhoneCall implements Action, Searchable,  ActivityCompat.OnRe
 
 
     @Override
-    public void activate() {
-
+    public void activate(Context context) {
+        makePhoneCall(context,""); //TODO - see how to arrange it
     }
 
     @Override
@@ -74,23 +77,14 @@ public class ActionPhoneCall implements Action, Searchable,  ActivityCompat.OnRe
 
     }
 
-    @Override
-    public String getTitle() {
-        return "Make a phone call action";
-    }
-
-    @Override
-    public int getImageResource() {
-        return R.drawable.phone_icon;
-    }
-
+    //TODO - transfer to main
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CALL) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                makePhoneCall(editText.getText().toString());
+//                makePhoneCall(editText.getText().toString());
             } else {
-                Toast.makeText(context, "Permission DENIED", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "Permission DENIED", Toast.LENGTH_SHORT).show();
             }
         }
     }
