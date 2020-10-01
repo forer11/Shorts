@@ -32,10 +32,8 @@ public class ActionFactory {
                     new ActionObj(ActionFactory.SPOTIFY_ACTION_TITLE, R.drawable.spotify_icon),
                     new ActionObj(ActionFactory.ALARM_CLOCK_ACTION_TITLE, R.drawable.alarm_clock_icon),
                     new ActionObj(ActionFactory.PHONE_CALL_ACTION_TITLE, R.drawable.phone_icon),
-                    new ActionObj(ActionFactory.PHONE_CALL_ACTION_TITLE, R.drawable.phone_icon),
                     new ActionObj(ActionFactory.TIMER_ACTION_TITLE, R.drawable.timer_icon),
                     new ActionObj(ActionFactory.TEXT_MESSAGE_ACTION_TITLE, R.drawable.text_message),
-                    new ActionObj(ActionFactory.SOUND_MODE_ACTION_TITLE, R.drawable.sound_mode_icon),
                     new ActionObj(ActionFactory.SOUND_MODE_ACTION_TITLE, R.drawable.sound_mode_icon),
                     new ActionObj(ActionFactory.WIFI_ACTION_TITLE, R.drawable.wifi_icon)
             ));
@@ -44,7 +42,7 @@ public class ActionFactory {
     public static Action getAction(String actionTitle) {
         switch (actionTitle) {
             case WAZE_ACTION_TITLE:
-                return new ActionWaze();
+                return new ActionWaze(1);
             case SPOTIFY_ACTION_TITLE:
                 return new ActionSpotify();
             case ALARM_CLOCK_ACTION_TITLE:

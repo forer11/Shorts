@@ -16,7 +16,9 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Adapters.ChooseActionAdapter;
+import com.example.shortmaker.AppData;
 import com.example.shortmaker.DataClasses.ActionObj;
+import com.example.shortmaker.DataClasses.Icon;
 import com.example.shortmaker.R;
 
 import java.util.ArrayList;
@@ -31,7 +33,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
     }
 
     public interface ChooseActionDialogListener {
-//        void onDialogPositiveClick(ArrayList<String> data); // TODO - check what kind of interface we want here
+        void onChoseAction(Action action,int position);
     }
 
     // Use this instance of the interface to deliver action events
@@ -67,13 +69,13 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
 
     private void setRecyclerView(View view) {
         final ArrayList<ActionObj> items = ActionFactory.actionObjArrayList;
-        RecyclerView mRecyclerView = view.findViewById(R.id.recyclerView);
-        mRecyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(context);
-        ChooseActionAdapter mAdapter = new ChooseActionAdapter(items);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
-        itemClickHandler(items, mAdapter);
+        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView.setHasFixedSize(true);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
+        ChooseActionAdapter adapter = new ChooseActionAdapter(items);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+        itemClickHandler(items, adapter);
     }
 
     private void itemClickHandler(final ArrayList<ActionObj> items, ChooseActionAdapter chooseActionAdapter) {
@@ -82,11 +84,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
             public void onItemClick(int position) {
                 dismiss();
                 Action action = ActionFactory.getAction(items.get(position).getTitle());
-                ActionDialog actionDialog = action.getDialog();
-                if (actionDialog != null) {
-                    actionDialog.show(((FragmentActivity) context).getSupportFragmentManager(), items.get(position).getTitle()+ " dialog");
-
-                }
+                listener.onChoseAction(action,position);
             }
         });
     }
