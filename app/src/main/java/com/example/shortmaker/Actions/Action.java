@@ -19,6 +19,4 @@ public interface Action {
 
     void setData(List<String> data);
 
-    String getTitle();
-
 }

@@ -2,7 +2,6 @@ package com.example.shortmaker.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,9 +15,11 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
+import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Adapters.ActionAdapter;
 import com.example.shortmaker.AppData;
+import com.example.shortmaker.DataClasses.ActionData;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.DialogFragments.ChooseActionDialog;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
@@ -28,6 +29,7 @@ import com.maltaisn.icondialog.IconDialog;
 import com.maltaisn.icondialog.IconDialogSettings;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class SetActionsActivity extends AppCompatActivity
@@ -38,7 +40,7 @@ public class SetActionsActivity extends AppCompatActivity
     private Shortcut currentShortcut;
     private ImageView shortcutIcon;
     AppData appData;
-    private ArrayList<Action> actions;
+    private ArrayList<ActionData> actions;
     private EditText shortcutTitle;
     private RecyclerView.Adapter adapter;
 
@@ -118,14 +120,14 @@ public class SetActionsActivity extends AppCompatActivity
         shortcutTitle.setText(currentShortcut.getTitle());
         updateTitleButton.setVisibility(View.INVISIBLE);
         clearTitleButton.setVisibility(View.INVISIBLE);
-        hideKeybaord(v);
+        hideKeyboard(v);
     }
 
     private void titleOnFocusChange(final ImageButton updateTitleButton, final ImageButton clearTitleButton) {
         shortcutTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                hideKeybaord(v);
+                hideKeyboard(v);
                 if (hasFocus) {
                     shortcutTitle.setText("");
                     updateTitleButton.setVisibility(View.VISIBLE);
@@ -136,13 +138,13 @@ public class SetActionsActivity extends AppCompatActivity
     }
 
 
-    private void hideKeybaord(View v) {
+    private void hideKeyboard(View v) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
     }
 
     private void setRecyclerView() {
-        actions = currentShortcut.getActions();
+        actions = currentShortcut.getActionDataList();
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
@@ -177,14 +179,27 @@ public class SetActionsActivity extends AppCompatActivity
 
 
     @Override
-    public void onChoseAction(Action action,int position) {
-        ActionDialog actionDialog = action.getDialog();
+    public void onChoseAction(final ActionData action, int position) {
+        ActionDialog actionDialog = Objects
+                .requireNonNull(ActionFactory.getAction(action.getTitle())).getDialog();
         if (actionDialog != null) {
             actionDialog.show(this.getSupportFragmentManager(), action.getTitle() + " dialog");
+            actionDialog.setNewDialogListener(new ActionDialog.DialogListener() {
+                @Override
+                public void applyUserInfo(ArrayList<String> data) {
+                    action.setData(data);
+                    addAction(action);
+                }
+            });
         }
-        ArrayList<Action> curActions = currentShortcut.getActions();
-        curActions.add(action);
-        adapter.notifyItemChanged(position);
+        else {
+            addAction(action);
+        }
+    }
+
+    private void addAction(ActionData action) {
+        currentShortcut.getActionDataList().add(action);
+        adapter.notifyItemInserted(currentShortcut.getActionDataList().size() - 1);
         appData.fireStoreHandler.updateShortcut(currentShortcut);
     }
 }
