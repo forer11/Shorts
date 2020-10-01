@@ -8,7 +8,6 @@ import android.view.View;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,9 +15,7 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Adapters.ChooseActionAdapter;
-import com.example.shortmaker.AppData;
-import com.example.shortmaker.DataClasses.ActionObj;
-import com.example.shortmaker.DataClasses.Icon;
+import com.example.shortmaker.DataClasses.ActionData;
 import com.example.shortmaker.R;
 
 import java.util.ArrayList;
@@ -33,7 +30,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
     }
 
     public interface ChooseActionDialogListener {
-        void onChoseAction(Action action,int position);
+        void onChoseAction(ActionData action,int position);
     }
 
     // Use this instance of the interface to deliver action events
@@ -68,7 +65,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
     }
 
     private void setRecyclerView(View view) {
-        final ArrayList<ActionObj> items = ActionFactory.actionObjArrayList;
+        final ArrayList<ActionData> items = ActionFactory.ACTION_DATA_ARRAY_LIST;
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
@@ -78,13 +75,12 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
         itemClickHandler(items, adapter);
     }
 
-    private void itemClickHandler(final ArrayList<ActionObj> items, ChooseActionAdapter chooseActionAdapter) {
+    private void itemClickHandler(final ArrayList<ActionData> items, ChooseActionAdapter chooseActionAdapter) {
         chooseActionAdapter.setOnItemClickListener(new ChooseActionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
                 dismiss();
-                Action action = ActionFactory.getAction(items.get(position).getTitle());
-                listener.onChoseAction(action,position);
+                listener.onChoseAction(items.get(position),position);
             }
         });
     }

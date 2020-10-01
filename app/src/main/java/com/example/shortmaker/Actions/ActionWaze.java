@@ -22,12 +22,10 @@ public class ActionWaze implements Action {
 
     private String address;
     private WazeDialog dialog;
-    private ArrayList<String> data;
 
 
     public ActionWaze() {
         this.dialog = new WazeDialog();
-        this.data = new ArrayList<>();
     }
 
     @Override
@@ -52,12 +50,6 @@ public class ActionWaze implements Action {
     public void setData(List<String> data) {
         address = data.get(0);
     }
-
-    @Override
-    public String getTitle() {
-        return ActionFactory.WAZE_ACTION_TITLE;
-    }
-
 
     private void openOrInstallWaze(String uri) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));

@@ -15,14 +15,8 @@ abstract public class ActionDialog extends AppCompatDialogFragment {
         void applyUserInfo(ArrayList<String> data);
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        try {
-            listener = (ActionDialog.DialogListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + "must implement DialogListener");
-        }
+    public void setNewDialogListener(DialogListener listener){
+        this.listener = listener;
     }
 }
 

@@ -2,6 +2,7 @@ package com.example.shortmaker.DataClasses;
 
 
 import com.example.shortmaker.Actions.Action;
+import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
 
@@ -15,6 +16,9 @@ public class Shortcut {
 
     private int pos;
 
+    private ArrayList<ActionData> actionDataList;
+
+    @Exclude
     private ArrayList<Action> actions;
 
     public Shortcut() {
@@ -25,6 +29,7 @@ public class Shortcut {
         this.title = title;
         this.imageUrl = imageUrl;
         actions = new ArrayList<>();
+        actionDataList = new ArrayList<>();
     }
 
     public String getTitle() {
@@ -53,10 +58,12 @@ public class Shortcut {
         this.id = id;
     }
 
+    @Exclude
     public ArrayList<Action> getActions() {
         return actions;
     }
 
+    @Exclude
     public void setActions(ArrayList<Action> actions) {
         this.actions = actions;
     }
@@ -69,4 +76,11 @@ public class Shortcut {
         this.pos = pos;
     }
 
+    public ArrayList<ActionData> getActionDataList() {
+        return actionDataList;
+    }
+
+    public void setActionDataList(ArrayList<ActionData> actionDataList) {
+        this.actionDataList = actionDataList;
+    }
 }

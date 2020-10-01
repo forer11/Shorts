@@ -38,7 +38,7 @@ public class WazeDialog extends ActionDialog {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        dismiss();
                     }
                 })
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -48,6 +48,7 @@ public class WazeDialog extends ActionDialog {
                         ArrayList<String> results = new ArrayList<>();
                         results.add(address);
                         listener.applyUserInfo(results);
+                        dismiss();
                     }
                 });
 

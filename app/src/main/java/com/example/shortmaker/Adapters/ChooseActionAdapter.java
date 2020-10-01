@@ -9,14 +9,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.shortmaker.DataClasses.ActionObj;
+import com.example.shortmaker.DataClasses.ActionData;
 import com.example.shortmaker.R;
 
 import java.util.ArrayList;
 
 public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapter.ActionViewHolder> {
 
-    private ArrayList<ActionObj> offeredActionsList;
+    private ArrayList<ActionData> offeredActionsList;
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
@@ -48,7 +48,7 @@ public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapte
             });
         }
     }
-    public ChooseActionAdapter(ArrayList<ActionObj> actionsObjList) {
+    public ChooseActionAdapter(ArrayList<ActionData> actionsObjList) {
         offeredActionsList = actionsObjList;
     }
     @Override
@@ -60,7 +60,7 @@ public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ActionViewHolder holder, int position) {
-        ActionObj currentItem = offeredActionsList.get(position);
+        ActionData currentItem = offeredActionsList.get(position);
         holder.actionIcon.setImageResource(currentItem.getIconPath());
         holder.actionTitle.setText(currentItem.getTitle());
     }
