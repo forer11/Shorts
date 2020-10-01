@@ -10,31 +10,34 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.SpotifyDialog;
+import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.R;
 
 import java.util.List;
 
 import ir.mirrajabi.searchdialog.core.Searchable;
 
-public class ActionSpotify implements Action, Searchable {
+public class ActionSpotify implements Action {
 
     public static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
-    private Context context;
     private SpotifyDialog dialog;
 
-    public ActionSpotify(Context context) {
+    public String getTitle() {
+        return ActionFactory.SPOTIFY_ACTION_TITLE;
+    }
 
-        this.context = context;
+    public ActionSpotify() {
+
         this.dialog = new SpotifyDialog();
     }
 
     @Override
-    public void activate() {
-        boolean isSpotifyInstalled = checkIfSpotifyInstalled();
+    public void activate(Context context) {
+        boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
         if (isSpotifyInstalled) {
-            launchSpotify();
+            launchSpotify(context);
         } else {
-            installSpotify();
+            installSpotify(context);
         }
     }
 
@@ -48,7 +51,7 @@ public class ActionSpotify implements Action, Searchable {
 
     }
 
-    private void installSpotify() {
+    private void installSpotify(Context context) {
         final String referrer = "adjust_campaign=PACKAGE_NAME&adjust_tracker=ndjczk&utm_source=adjust_preinstall";
         try {
             Uri uri = Uri.parse("market://details")
@@ -67,7 +70,7 @@ public class ActionSpotify implements Action, Searchable {
         }
     }
 
-    private void launchSpotify() {
+    private void launchSpotify(Context context) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //TODO - we can generally open spotify with "spotify:open" and not a specific album
         // we can delete the ":play: from the uri in order for the song not to be played automatically
@@ -78,7 +81,7 @@ public class ActionSpotify implements Action, Searchable {
 
     }
 
-    private boolean checkIfSpotifyInstalled() {
+    private boolean checkIfSpotifyInstalled(Context context) {
         PackageManager pm = context.getPackageManager();
         boolean isSpotifyInstalled;
         try {
@@ -88,16 +91,6 @@ public class ActionSpotify implements Action, Searchable {
             isSpotifyInstalled = false;
         }
         return isSpotifyInstalled;
-    }
-
-    @Override
-    public String getTitle() {
-        return "Spotify action";
-    }
-
-    @Override
-    public int getImageResource() {
-        return R.drawable.spotify_icon;
     }
 
 }

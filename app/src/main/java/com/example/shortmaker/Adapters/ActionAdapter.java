@@ -8,38 +8,54 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.Actions.Action;
+import com.example.shortmaker.DataClasses.ActionObj;
 import com.example.shortmaker.R;
 
 import java.util.ArrayList;
-public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ExampleViewHolder> {
-    private ArrayList<Action> mExampleList;
-    public static class ExampleViewHolder extends RecyclerView.ViewHolder {
-        public ImageView mImageView;
-        public TextView mTextView1;
-        public ExampleViewHolder(View itemView) {
+
+public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionViewHolder> {
+    private ArrayList<Action> actions;
+
+    public static class ActionViewHolder extends RecyclerView.ViewHolder {
+        public ImageView actionIcon;
+        public TextView actionTitle;
+
+        public ActionViewHolder(View itemView) {
             super(itemView);
-            mImageView = itemView.findViewById(R.id.imageView);
-            mTextView1 = itemView.findViewById(R.id.textView);
+            actionIcon = itemView.findViewById(R.id.imageView);
+            actionTitle = itemView.findViewById(R.id.textView);
         }
     }
-    public ActionAdapter(ArrayList<Action> exampleList) {
-        mExampleList = exampleList;
+
+    public ActionAdapter(ArrayList<Action> actions) {
+        this.actions = actions;
     }
+
     @Override
-    public ExampleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.action_item_recycler_view, parent, false);
-        ExampleViewHolder evh = new ExampleViewHolder(v);
+        ActionViewHolder evh = new ActionViewHolder(v);
         return evh;
     }
+
     @Override
-    public void onBindViewHolder(ExampleViewHolder holder, int position) {
-        Action currentItem = mExampleList.get(position);
-        holder.mImageView.setImageResource(currentItem.getImageResource());
-        holder.mTextView1.setText(currentItem.getTitle());
+    public void onBindViewHolder(ActionViewHolder holder, int position) {
+        Action currentItem = actions.get(position);
+        for(ActionObj actionObj : ActionFactory.actionObjArrayList){
+            if(actionObj.getTitle().equals(currentItem.getTitle())){
+                ActionObj currentActionObj = actionObj;
+                holder.actionIcon.setImageResource(currentActionObj.getIconPath());
+                holder.actionTitle.setText(currentActionObj.getTitle());
+                break;
+            }
+        }
+
     }
+
     @Override
     public int getItemCount() {
-        return mExampleList.size();
+        return actions.size();
     }
 }

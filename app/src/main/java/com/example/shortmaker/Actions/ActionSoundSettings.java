@@ -11,34 +11,37 @@ import androidx.fragment.app.DialogFragment;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.SoundSettingsDialog;
+import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.R;
 
 import java.util.List;
 
 import ir.mirrajabi.searchdialog.core.Searchable;
 
-public class ActionSoundSettings implements Action, Searchable {
+public class ActionSoundSettings implements Action {
 
     public static final int SILENT_MODE = 0;
     public static final int VIBRATE_MODE = 1;
     public static final int RING_MODE = 2;
-    private Context context;
     private int mode;
     private SoundSettingsDialog dialog;
 
+    public String getTitle() {
+        return ActionFactory.SOUND_MODE_ACTION_TITLE;
+    }
 
-    public ActionSoundSettings(Context context) {
-        this.context = context;
+
+    public ActionSoundSettings() {
         this.dialog = new SoundSettingsDialog();
     }
 
 
     @Override
-    public void activate() {
+    public void activate(Context context) {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         switch (mode) {
             case SILENT_MODE:
-                putPhoneOnSilent(audioManager);
+                putPhoneOnSilent(audioManager,context);
                 break;
             case VIBRATE_MODE:
                 audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
@@ -59,7 +62,7 @@ public class ActionSoundSettings implements Action, Searchable {
 
     }
 
-    private void putPhoneOnSilent(AudioManager audioManager) {
+    private void putPhoneOnSilent(AudioManager audioManager,Context context) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -71,15 +74,5 @@ public class ActionSoundSettings implements Action, Searchable {
         } else {
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
         }
-    }
-
-    @Override
-    public String getTitle() {
-        return "Sound settings action";
-    }
-
-    @Override
-    public int getImageResource() {
-        return R.drawable.sound_mode_icon;
     }
 }

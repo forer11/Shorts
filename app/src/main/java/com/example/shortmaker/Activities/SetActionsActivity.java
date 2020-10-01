@@ -63,6 +63,7 @@ public class SetActionsActivity extends AppCompatActivity
 
     private void addedShortcutHandler(Shortcut shortcut) {
         currentShortcut = shortcut;
+
         setRecyclerView();
         ShortcutTitleHandler(shortcut);
         shortcutIcon = findViewById(R.id.shortcutIcon);
@@ -76,8 +77,6 @@ public class SetActionsActivity extends AppCompatActivity
             }
         });
     }
-
-
 
 
     private void ShortcutTitleHandler(Shortcut shortcut) {
@@ -138,31 +137,25 @@ public class SetActionsActivity extends AppCompatActivity
     }
 
     private void setRecyclerView() {
-        //TODO - here we need to get the actions the user already has from fire store (if there are any)
         actions = currentShortcut.getActions();
         RecyclerView mRecyclerView = findViewById(R.id.recyclerView);
         mRecyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        RecyclerView.Adapter mAdapter = new ActionAdapter(actions);
+        RecyclerView.Adapter adapter = new ActionAdapter(actions);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(adapter);
     }
 
     private void showAddActionDialog(FloatingActionButton addActionButton) {
         addActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showNoticeDialog();
+                DialogFragment dialog = new ChooseActionDialog();
+                dialog.show(getSupportFragmentManager(), "choose action dialog");
             }
         });
     }
 
-    public void showNoticeDialog() {
-        // Create an instance of the dialog fragment and show it
-        DialogFragment dialog = new ChooseActionDialog();
-
-        dialog.show(getSupportFragmentManager(), "choose action dialog");
-    }
 
     private void showIconPickerDialog() {
         // If dialog is already added to fragment manager, get it. If not, create action new instance.

@@ -5,28 +5,31 @@ import android.content.Intent;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.TextMessageDialog;
+import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.R;
 
 import java.util.List;
 
 import ir.mirrajabi.searchdialog.core.Searchable;
 
-public class ActionSendTextMessage implements Action, Searchable {
+public class ActionSendTextMessage implements Action {
 
     public static final String WHATSAPP_PACKAGE_NAME = "com.whatsapp";
 
-    private Context context;
     private TextMessageDialog dialog;
     private boolean sendThroughWhatsapp;
 
-    public ActionSendTextMessage(Context context) {
-        this.context = context;
+    public String getTitle() {
+        return ActionFactory.TEXT_MESSAGE_ACTION_TITLE;
+    }
+
+    public ActionSendTextMessage() {
         this.dialog = new TextMessageDialog();
     }
 
 
     @Override
-    public void activate() {
+    public void activate(Context context) {
         Intent sendIntent = new Intent();
         if (sendThroughWhatsapp) {
             sendIntent.setPackage(WHATSAPP_PACKAGE_NAME);
@@ -46,15 +49,5 @@ public class ActionSendTextMessage implements Action, Searchable {
     @Override
     public void setData(List<String> data) {
 
-    }
-
-    @Override
-    public String getTitle() {
-        return "Send text message action";
-    }
-
-    @Override
-    public int getImageResource() {
-        return R.drawable.text_message;
     }
 }
