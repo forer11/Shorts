@@ -2,11 +2,15 @@ package com.example.shortmaker.DataClasses;
 
 import java.util.ArrayList;
 
+import bolts.Bolts;
+
 public class ActionData {
 
     private String title;
     private int iconPath;
-    public ArrayList<String> data;
+    private ArrayList<String> data;
+    /* True by default */
+    private Boolean isActivated;
 
 
     public ActionData() {
@@ -15,6 +19,7 @@ public class ActionData {
     public ActionData(String title, int iconPath) {
         this.title = title;
         this.iconPath = iconPath;
+        isActivated = true;
     }
 
     public void setTitle(String title) {
@@ -39,5 +44,13 @@ public class ActionData {
 
     public int getIconPath() {
         return iconPath;
+    }
+
+    public Boolean getIsActivated() {
+        return isActivated;
+    }
+
+    public void setIsActivated(Boolean activated) {
+        isActivated = activated;
     }
 }

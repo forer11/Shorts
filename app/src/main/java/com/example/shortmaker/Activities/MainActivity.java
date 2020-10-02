@@ -23,8 +23,11 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.flatdialoglibrary.dialog.FlatDialog;
+import com.example.shortmaker.ActionFactory;
+import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
 import com.example.shortmaker.AppData;
+import com.example.shortmaker.DataClasses.ActionData;
 import com.example.shortmaker.DialogFragments.ChooseActionDialog;
 import com.example.shortmaker.DialogFragments.ChooseIconDialog;
 import com.example.shortmaker.DataClasses.Shortcut;
@@ -159,6 +162,16 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
         adapter.setOnItemClickListener(new DraggableGridAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                Shortcut shortcut = shortcuts.get(position);
+                for (ActionData actionData : shortcut.getActionDataList()) {
+                    if (actionData.getIsActivated()) {
+                        Action action = ActionFactory.getAction(actionData.getTitle());
+                        if (action != null) {
+                            action.setData(actionData.getData());
+                            action.activate(getBaseContext());
+                        }
+                    }
+                }
                 Toast.makeText(MainActivity.this,
                         "position = " + position,
                         Toast.LENGTH_SHORT).show();

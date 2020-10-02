@@ -5,40 +5,33 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-
-import androidx.fragment.app.DialogFragment;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.SpotifyDialog;
-import com.example.shortmaker.ActionFactory;
-import com.example.shortmaker.R;
 
 import java.util.List;
 
-import ir.mirrajabi.searchdialog.core.Searchable;
-
 public class ActionSpotify implements Action {
 
-    public static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
+    private static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
     private SpotifyDialog dialog;
 
-    public String getTitle() {
-        return ActionFactory.SPOTIFY_ACTION_TITLE;
-    }
-
     public ActionSpotify() {
-
         this.dialog = new SpotifyDialog();
     }
 
     @Override
     public void activate(Context context) {
-        boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
-        if (isSpotifyInstalled) {
-            launchSpotify(context);
-        } else {
-            installSpotify(context);
-        }
+        Log.v("YAY", "Spotify activated");
+        Toast.makeText(context, "Spotify activated", Toast.LENGTH_SHORT).show();
+//        boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
+//        if (isSpotifyInstalled) {
+//            launchSpotify(context);
+//        } else {
+//            installSpotify(context);
+//        }
     }
 
     @Override

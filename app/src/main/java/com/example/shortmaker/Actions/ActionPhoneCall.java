@@ -4,28 +4,22 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
-
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
-import com.example.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.example.shortmaker.ActionDialogs.PhoneCallDialog;
-import com.example.shortmaker.ActionFactory;
-import com.example.shortmaker.R;
 
 import java.util.List;
-
-import ir.mirrajabi.searchdialog.core.Searchable;
 
 public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissionsResultCallback {
 
@@ -37,20 +31,15 @@ public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissi
     private AlertDialog makeCallDialog;
     private PhoneCallDialog dialog;
 
-    public String getTitle() {
-        return ActionFactory.PHONE_CALL_ACTION_TITLE;
-    }
-
     public ActionPhoneCall() {
         this.dialog = new PhoneCallDialog();
     }
 
-    
-    private void makePhoneCall(Context context,String number) {
+    private void makePhoneCall(Context context, String number) {
         if (number.trim().length() > 0) {
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions((Activity)context,
+                ActivityCompat.requestPermissions((Activity) context,
                         new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
             } else {
                 String dial = "tel:" + number;
@@ -64,7 +53,10 @@ public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissi
 
     @Override
     public void activate(Context context) {
-        makePhoneCall(context,""); //TODO - see how to arrange it
+        Log.v("YAY", "Phone call activated");
+        Toast.makeText(context, "Phone call activated", Toast.LENGTH_SHORT).show();
+
+//        makePhoneCall(context, ""); //TODO - see how to arrange it
     }
 
     @Override
