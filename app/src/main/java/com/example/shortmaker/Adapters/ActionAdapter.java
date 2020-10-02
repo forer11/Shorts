@@ -9,14 +9,15 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shortmaker.ActionFactory;
-import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.DataClasses.ActionData;
 import com.example.shortmaker.R;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
 public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionViewHolder> {
-    private ArrayList<ActionData> actions;
+    private ArrayList<ActionData> actionDataList;
 
     public static class ActionViewHolder extends RecyclerView.ViewHolder {
         public ImageView actionIcon;
@@ -29,25 +30,26 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         }
     }
 
-    public ActionAdapter(ArrayList<ActionData> actions) {
-        this.actions = actions;
+    public ActionAdapter(ArrayList<ActionData> actionDataList) {
+        this.actionDataList = actionDataList;
     }
 
+    @NotNull
     @Override
     public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.action_item_recycler_view, parent, false);
-        ActionViewHolder evh = new ActionViewHolder(v);
-        return evh;
+        View v = LayoutInflater
+                .from(parent.getContext())
+                .inflate(R.layout.action_item_recycler_view, parent, false);
+        return new ActionViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(ActionViewHolder holder, int position) {
-        ActionData currentItem = actions.get(position);
-        for(ActionData actionData : ActionFactory.ACTION_DATA_ARRAY_LIST){
-            if(actionData.getTitle().equals(currentItem.getTitle())){
-                ActionData currentActionData = actionData;
-                holder.actionIcon.setImageResource(currentActionData.getIconPath());
-                holder.actionTitle.setText(currentActionData.getTitle());
+    public void onBindViewHolder(@NotNull ActionViewHolder holder, int position) {
+        ActionData currentItem = actionDataList.get(position);
+        for (ActionData actionData : ActionFactory.ACTION_DATA_ARRAY_LIST) {
+            if (actionData.getTitle().equals(currentItem.getTitle())) {
+                holder.actionIcon.setImageResource(actionData.getIconPath());
+                holder.actionTitle.setText(actionData.getTitle());
                 break;
             }
         }
@@ -56,6 +58,6 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
 
     @Override
     public int getItemCount() {
-        return actions.size();
+        return actionDataList.size();
     }
 }

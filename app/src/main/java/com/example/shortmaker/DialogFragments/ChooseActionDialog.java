@@ -13,12 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionFactory;
-import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Adapters.ChooseActionAdapter;
 import com.example.shortmaker.DataClasses.ActionData;
 import com.example.shortmaker.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ChooseActionDialog extends AppCompatDialogFragment implements ActionDialog.DialogListener {
 
@@ -30,32 +32,22 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
     }
 
     public interface ChooseActionDialogListener {
-        void onChoseAction(ActionData action,int position);
+        void onChoseAction(ActionData action, int position);
     }
 
     // Use this instance of the interface to deliver action events
     ChooseActionDialogListener listener;
 
-    // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.context = context;
-        // Verify that the host activity implements the callback interface
-        try {
-            // Instantiate the NoticeDialogListener so we can send events to the host
-            listener = (ChooseActionDialogListener) context;
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(ChooseActionDialog.this.toString()
-                    + " must implement NoticeDialogListener");
-        }
+    public void setNewChooseActionDialogListener(ChooseActionDialogListener listener) {
+        this.listener = listener;
     }
 
+    @NotNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Build the dialog and set up the button click handlers
-        androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        androidx.appcompat.app.AlertDialog.Builder builder = new AlertDialog
+                .Builder(Objects.requireNonNull(getActivity()));
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.choose_action_dialog, null);
         setRecyclerView(view);
@@ -75,12 +67,13 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
         itemClickHandler(items, adapter);
     }
 
-    private void itemClickHandler(final ArrayList<ActionData> items, ChooseActionAdapter chooseActionAdapter) {
+    private void itemClickHandler(final ArrayList<ActionData> items,
+                                  ChooseActionAdapter chooseActionAdapter) {
         chooseActionAdapter.setOnItemClickListener(new ChooseActionAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                listener.onChoseAction(items.get(position), position);
                 dismiss();
-                listener.onChoseAction(items.get(position),position);
             }
         });
     }

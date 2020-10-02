@@ -5,6 +5,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,7 +17,6 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionFactory;
-import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Adapters.ActionAdapter;
 import com.example.shortmaker.AppData;
 import com.example.shortmaker.DataClasses.ActionData;
@@ -25,30 +25,33 @@ import com.example.shortmaker.DialogFragments.ChooseActionDialog;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.maltaisn.icondialog.IconDialog;
-import com.maltaisn.icondialog.IconDialogSettings;
 
 import java.util.ArrayList;
 import java.util.Objects;
 
 
-public class SetActionsActivity extends AppCompatActivity
-        implements ActionDialog.DialogListener,
-        ChooseActionDialog.ChooseActionDialogListener {
+public class SetActionsActivity extends AppCompatActivity {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private Shortcut currentShortcut;
-    private ImageView shortcutIcon;
     AppData appData;
-    private ArrayList<ActionData> actions;
     private EditText shortcutTitle;
     private RecyclerView.Adapter adapter;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_set_actions);
         appData = (AppData) getApplicationContext();
+        getShortcutObject();
+        FloatingActionButton addActionButton = findViewById(R.id.addAction);
+        showAddActionDialog(addActionButton);
+
+    }
+
+    private void getShortcutObject() {
         if (getIntent().getExtras() != null) {
             String id = getIntent().getStringExtra("shortcutId");
             appData.fireStoreHandler.getShortcut(id, new FireStoreHandler.SingleShortcutCallback() {
@@ -60,9 +63,6 @@ public class SetActionsActivity extends AppCompatActivity
                 }
             });
         }
-        FloatingActionButton addActionButton = findViewById(R.id.addAction);
-        showAddActionDialog(addActionButton);
-
     }
 
     private void addedShortcutHandler(Shortcut shortcut) {
@@ -70,7 +70,11 @@ public class SetActionsActivity extends AppCompatActivity
 
         setRecyclerView();
         ShortcutTitleHandler(shortcut);
-        shortcutIcon = findViewById(R.id.shortcutIcon);
+        shortcutImageHandler(shortcut);
+    }
+
+    private void shortcutImageHandler(Shortcut shortcut) {
+        ImageView shortcutIcon = findViewById(R.id.shortcutIcon);
         Glide.with(SetActionsActivity.this)
                 .load(shortcut.getImageUrl())
                 .into(shortcutIcon);
@@ -140,15 +144,15 @@ public class SetActionsActivity extends AppCompatActivity
 
     private void hideKeyboard(View v) {
         InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        inputMethodManager.hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
+        Objects.requireNonNull(inputMethodManager)
+                .hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
     }
 
     private void setRecyclerView() {
-        actions = currentShortcut.getActionDataList();
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
-        adapter = new ActionAdapter(actions);
+        adapter = new ActionAdapter(currentShortcut.getActionDataList());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -157,44 +161,36 @@ public class SetActionsActivity extends AppCompatActivity
         addActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment dialog = new ChooseActionDialog();
+                ChooseActionDialog dialog = new ChooseActionDialog();
                 dialog.show(getSupportFragmentManager(), "choose action dialog");
+                setActionDialogListener(dialog);
+            }
+
+            private void setActionDialogListener(ChooseActionDialog dialog) {
+                dialog.setNewChooseActionDialogListener(new ChooseActionDialog
+                        .ChooseActionDialogListener() {
+                    @Override
+                    public void onChoseAction(final ActionData action, int position) {
+                        ActionDialog actionDialog = Objects
+                                .requireNonNull(ActionFactory
+                                        .getAction(action.getTitle())).getDialog();
+                        if (actionDialog != null) {
+                            actionDialog.show(getSupportFragmentManager(),
+                                    action.getTitle() + " dialog");
+                            actionDialog.setNewDialogListener(new ActionDialog.DialogListener() {
+                                @Override
+                                public void applyUserInfo(ArrayList<String> data) {
+                                    action.setData(data);
+                                    addAction(action);
+                                }
+                            });
+                        } else {
+                            addAction(action);
+                        }
+                    }
+                });
             }
         });
-    }
-
-
-    private void showIconPickerDialog() {
-        // If dialog is already added to fragment manager, get it. If not, create action new instance.
-        IconDialog dialog = (IconDialog) getSupportFragmentManager().findFragmentByTag(ICON_DIALOG_TAG);
-        IconDialog iconDialog = dialog != null ? dialog
-                : IconDialog.newInstance(new IconDialogSettings.Builder().build());
-        iconDialog.show(getSupportFragmentManager(), ICON_DIALOG_TAG);
-    }
-
-    @Override
-    public void applyUserInfo(ArrayList<String> data) {
-        Toast.makeText(this, data.get(0), Toast.LENGTH_SHORT).show(); //TODO - update in waze action the address
-    }
-
-
-    @Override
-    public void onChoseAction(final ActionData action, int position) {
-        ActionDialog actionDialog = Objects
-                .requireNonNull(ActionFactory.getAction(action.getTitle())).getDialog();
-        if (actionDialog != null) {
-            actionDialog.show(this.getSupportFragmentManager(), action.getTitle() + " dialog");
-            actionDialog.setNewDialogListener(new ActionDialog.DialogListener() {
-                @Override
-                public void applyUserInfo(ArrayList<String> data) {
-                    action.setData(data);
-                    addAction(action);
-                }
-            });
-        }
-        else {
-            addAction(action);
-        }
     }
 
     private void addAction(ActionData action) {
