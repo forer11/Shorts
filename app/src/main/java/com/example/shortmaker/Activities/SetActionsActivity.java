@@ -1,7 +1,9 @@
 package com.example.shortmaker.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -27,6 +29,7 @@ import com.example.shortmaker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 
@@ -155,6 +158,8 @@ public class SetActionsActivity extends AppCompatActivity {
         adapter = new ActionAdapter(currentShortcut.getActionDataList());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setAdapter(adapter);
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+        itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
     private void showAddActionDialog(FloatingActionButton addActionButton) {
@@ -198,4 +203,29 @@ public class SetActionsActivity extends AppCompatActivity {
         adapter.notifyItemInserted(currentShortcut.getActionDataList().size() - 1);
         appData.fireStoreHandler.updateShortcut(currentShortcut);
     }
+
+    ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper
+            .SimpleCallback(ItemTouchHelper.UP
+            | ItemTouchHelper.DOWN
+            | ItemTouchHelper.START
+            | ItemTouchHelper.END, 0) {
+        @Override
+        public boolean onMove(@NonNull RecyclerView recyclerView,
+                              @NonNull RecyclerView.ViewHolder viewHolder,
+                              @NonNull RecyclerView.ViewHolder target) {
+
+            int fromPos = viewHolder.getAdapterPosition();
+            int toPos = target.getAdapterPosition();
+
+            Collections.swap(currentShortcut.getActionDataList(), fromPos, toPos);
+            appData.fireStoreHandler.updateShortcut(currentShortcut);
+            Objects.requireNonNull(recyclerView.getAdapter()).notifyItemMoved(fromPos, toPos);
+
+            return false;
+        }
+
+        @Override
+        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+        }
+    };
 }
