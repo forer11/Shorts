@@ -18,15 +18,35 @@ import java.util.ArrayList;
 
 public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionViewHolder> {
     private ArrayList<ActionData> actionDataList;
+    private OnItemLongClickListener longClickListener;
+
+    public interface OnItemLongClickListener {
+        void onItemLongClick(View view, int position);
+    }
+
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.longClickListener = listener;
+    }
+
 
     public static class ActionViewHolder extends RecyclerView.ViewHolder {
         public ImageView actionIcon;
         public TextView actionTitle;
 
-        public ActionViewHolder(View itemView) {
+        public ActionViewHolder(View itemView, final OnItemLongClickListener longClickListener) {
             super(itemView);
             actionIcon = itemView.findViewById(R.id.imageView);
             actionTitle = itemView.findViewById(R.id.textView);
+
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    if (longClickListener != null) {
+                        longClickListener.onItemLongClick(v, getAdapterPosition());
+                    }
+                    return true;
+                }
+            });
         }
     }
 
@@ -37,10 +57,10 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
     @NotNull
     @Override
     public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater
+        View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.action_item_recycler_view, parent, false);
-        return new ActionViewHolder(v);
+        return new ActionViewHolder(view, longClickListener);
     }
 
     @Override

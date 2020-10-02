@@ -1,13 +1,5 @@
 package com.example.shortmaker.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -15,6 +7,12 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
@@ -39,19 +37,15 @@ public class SetActionsActivity extends AppCompatActivity {
     private Shortcut currentShortcut;
     AppData appData;
     private EditText shortcutTitle;
-    private RecyclerView.Adapter adapter;
-    private Context context;
+    private ActionAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
         setContentView(R.layout.activity_set_actions);
         appData = (AppData) getApplicationContext();
         getShortcutObject();
-        FloatingActionButton addActionButton = findViewById(R.id.addAction);
-        showAddActionDialog(addActionButton);
-
+        showAddActionDialog();
     }
 
     private void getShortcutObject() {
@@ -160,9 +154,17 @@ public class SetActionsActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
+        adapter.setOnItemLongClickListener(new ActionAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                Toast.makeText(SetActionsActivity.this, "Malol make me a menu" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    private void showAddActionDialog(FloatingActionButton addActionButton) {
+    private void showAddActionDialog() {
+        FloatingActionButton addActionButton = findViewById(R.id.addAction);
         addActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
