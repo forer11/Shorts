@@ -178,7 +178,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                         Action action = ActionFactory.getAction(actionData.getTitle());
                         if (action != null) {
                             action.setData(actionData.getData());
-                            action.activate(getBaseContext());
+                            action.activate(getBaseContext(), MainActivity.this);
                         }
                     }
                 }
