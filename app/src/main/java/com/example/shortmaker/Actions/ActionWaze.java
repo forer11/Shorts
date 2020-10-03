@@ -1,5 +1,7 @@
 package com.example.shortmaker.Actions;
 
+import android.app.Activity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,18 +24,14 @@ public class ActionWaze implements Action {
     }
 
     @Override
-    public void activate(Context context) {
+    public void activate(Context context, Activity activity) {
         Log.v("YAY", "Waze activated");
-        Toast.makeText(context, "Waze activated" + address, Toast.LENGTH_SHORT).show();
-//        try {
-//            // Launch Waze to look for Hawaii:.
-//            // we can also give the following uri :  "https://waze.com/ul?ll=40.761043,-73.980545&navigate=yes" for it to navigate automatically
-//            //TODO - change to user defined address
-//            openOrInstallWaze("https://waze.com/ul?q=" + address);
-//        } catch (ActivityNotFoundException ex) {
-//            // If Waze is not installed, open it in Google Play:
-//            openOrInstallWaze("market://details?id=com.waze");
-//        }
+        try {
+            openOrInstallWaze("https://waze.com/ul?q=" + address+"&navigate=yes",activity);
+        } catch (ActivityNotFoundException ex) {
+            // If Waze is not installed, open it in Google Play:
+            openOrInstallWaze("market://details?id=com.waze",activity);
+        }
     }
 
     @Override
@@ -46,7 +44,9 @@ public class ActionWaze implements Action {
         address = data.get(0);
     }
 
-    private void openOrInstallWaze(String uri) {
+    private void openOrInstallWaze(String uri,Activity activity) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        activity.startActivity(intent);
+
     }
 }

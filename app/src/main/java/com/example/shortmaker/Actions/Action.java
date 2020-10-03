@@ -1,5 +1,6 @@
 package com.example.shortmaker.Actions;
 
+import android.app.Activity;
 import android.content.Context;
 
 import androidx.fragment.app.DialogFragment;
@@ -13,7 +14,7 @@ import ir.mirrajabi.searchdialog.core.Searchable;
 
 public interface Action {
 
-    void activate(Context context);
+    void activate(Context context, Activity activity);
 
     ActionDialog getDialog();
 

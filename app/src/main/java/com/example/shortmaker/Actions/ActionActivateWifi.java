@@ -1,5 +1,6 @@
 package com.example.shortmaker.Actions;
 
+import android.app.Activity;
 import android.content.Context;
 import android.net.wifi.WifiManager;
 import android.util.Log;
@@ -21,7 +22,7 @@ public class ActionActivateWifi implements Action {
 
 
     @Override
-    public void activate(Context context) {
+    public void activate(Context context , Activity activity) {
         Log.v("YAY", "Wifi activated");
         Toast.makeText(context, "Wifi activated", Toast.LENGTH_SHORT).show();
 

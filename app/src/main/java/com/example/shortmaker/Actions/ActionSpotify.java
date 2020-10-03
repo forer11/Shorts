@@ -1,5 +1,6 @@
 package com.example.shortmaker.Actions;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -17,21 +18,21 @@ public class ActionSpotify implements Action {
 
     private static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
     private SpotifyDialog dialog;
+    private String artist;
 
     public ActionSpotify() {
         this.dialog = new SpotifyDialog();
     }
 
     @Override
-    public void activate(Context context) {
+    public void activate(Context context , Activity activity) {
         Log.v("YAY", "Spotify activated");
-        Toast.makeText(context, "Spotify activated", Toast.LENGTH_SHORT).show();
-//        boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
-//        if (isSpotifyInstalled) {
-//            launchSpotify(context);
-//        } else {
-//            installSpotify(context);
-//        }
+        boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
+        if (isSpotifyInstalled) {
+            launchSpotify(context,activity);
+        } else {
+            installSpotify(activity);
+        }
     }
 
     @Override
@@ -41,10 +42,10 @@ public class ActionSpotify implements Action {
 
     @Override
     public void setData(List<String> data) {
-
+        artist = data.get(0);
     }
 
-    private void installSpotify(Context context) {
+    private void installSpotify(Activity activity) {
         final String referrer = "adjust_campaign=PACKAGE_NAME&adjust_tracker=ndjczk&utm_source=adjust_preinstall";
         try {
             Uri uri = Uri.parse("market://details")
@@ -52,25 +53,25 @@ public class ActionSpotify implements Action {
                     .appendQueryParameter("id", SPOTIFY_PACKAGE_NAME)
                     .appendQueryParameter("referrer", referrer)
                     .build();
-            context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
         } catch (ActivityNotFoundException ignored) {
             Uri uri = Uri.parse("https://play.google.com/store/apps/details")
                     .buildUpon()
                     .appendQueryParameter("id", SPOTIFY_PACKAGE_NAME)
                     .appendQueryParameter("referrer", referrer)
                     .build();
-            context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
         }
     }
 
-    private void launchSpotify(Context context) {
+    private void launchSpotify(Context context,Activity activity) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //TODO - we can generally open spotify with "spotify:open" and not a specific album
         // we can delete the ":play: from the uri in order for the song not to be played automatically
         intent.setData(Uri.parse("spotify:album:0sNOF9WDwhWunNAHPD3Baj:play"));
         intent.putExtra(Intent.EXTRA_REFERRER,
                 Uri.parse("android-app://" + context.getPackageName()));
-        context.startActivity(intent);
+        activity.startActivity(intent);
 
     }
 
