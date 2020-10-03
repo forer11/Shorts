@@ -35,7 +35,7 @@ public class ChooseIconAdapter extends RecyclerView.Adapter<ChooseIconAdapter.Ic
 
     public ChooseIconAdapter(Context context, AppData appData) {
         this.context = context;
-        this.icons = appData.getIcons();
+        this.icons = new ArrayList<>(appData.getIcons());
         this.fullIconsList = new ArrayList<>(this.icons);
     }
 
