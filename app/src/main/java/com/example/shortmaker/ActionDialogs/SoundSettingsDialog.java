@@ -78,10 +78,4 @@ public class SoundSettingsDialog extends ActionDialog {
 
         return builder.create();
     }
-
-
-
-    public interface SoundSettingsDialogListener {
-        void applyText(String address);
-    }
 }

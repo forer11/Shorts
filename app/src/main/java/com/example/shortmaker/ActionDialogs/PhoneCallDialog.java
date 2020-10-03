@@ -53,10 +53,4 @@ public class PhoneCallDialog extends ActionDialog  {
 
         return builder.create();
     }
-
-
-
-    public interface PhoneCallDialogListener {
-        void applyText(String address);
-    }
 }

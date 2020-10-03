@@ -51,11 +51,4 @@ public class WifiDialog extends ActionDialog{
 
         return builder.create();
     }
-
-
-
-    public interface WifiDialogListener {
-        void applyText(String address);
-    }
-
 }
