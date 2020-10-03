@@ -68,7 +68,7 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
         // Build the dialog and set up the button click handlers
         AlertDialog.Builder builder = new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.choose_action_dialog, null);
+        View view = layoutInflater.inflate(R.layout.choose_icon_dialog, null);
         setRecyclerView(view);
         searchEditText = view.findViewById(R.id.search_edit_text);
         searchEditText.addTextChangedListener(new TextWatcher() {
