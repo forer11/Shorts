@@ -52,7 +52,7 @@ public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissi
 
 
     @Override
-    public void activate(Context context) {
+    public void activate(Context context , Activity activity) {
         Log.v("YAY", "Phone call activated");
         Toast.makeText(context, "Phone call activated", Toast.LENGTH_SHORT).show();
 

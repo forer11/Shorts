@@ -1,5 +1,6 @@
 package com.example.shortmaker.Actions;
 
+import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -27,23 +28,22 @@ public class ActionSoundSettings implements Action {
 
 
     @Override
-    public void activate(Context context) {
+    public void activate(Context context , Activity activity) {
         Log.v("YAY", "sound setting activated");
-        Toast.makeText(context, "sound setting activated", Toast.LENGTH_SHORT).show();
-//        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-//        if (audioManager != null) {
-//            switch (mode) {
-//                case SILENT_MODE:
-//                    putPhoneOnSilent(audioManager, context);
-//                    break;
-//                case VIBRATE_MODE:
-//                    audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-//                    break;
-//                case RING_MODE:
-//                    audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-//                    break;
-//            }
-//        }
+        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        if (audioManager != null) {
+            switch (mode) {
+                case SILENT_MODE:
+                    putPhoneOnSilent(audioManager, context);
+                    break;
+                case VIBRATE_MODE:
+                    audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+                    break;
+                case RING_MODE:
+                    audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+                    break;
+            }
+        }
     }
 
     @Override
@@ -53,7 +53,7 @@ public class ActionSoundSettings implements Action {
 
     @Override
     public void setData(List<String> data) {
-
+        mode = Integer.parseInt(data.get(0));
     }
 
     private void putPhoneOnSilent(AudioManager audioManager, Context context) {
