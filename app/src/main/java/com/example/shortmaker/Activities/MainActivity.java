@@ -222,7 +222,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 return true;
             case R.id.action_popup_change_icon:
                 DialogFragment dialog = new ChooseIconDialog();
-                dialog.show(getSupportFragmentManager(), "choose action dialog");
+                dialog.show(getSupportFragmentManager(), "choose icon dialog");
                 return true;
             case R.id.action_popup_load_icon:
                 //new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();

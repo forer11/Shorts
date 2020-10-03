@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +23,7 @@ import com.example.shortmaker.AppData;
 import com.example.shortmaker.DataClasses.ActionData;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.DialogFragments.ChooseActionDialog;
+import com.example.shortmaker.DialogFragments.ChooseIconDialog;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -31,13 +33,14 @@ import java.util.Collections;
 import java.util.Objects;
 
 
-public class SetActionsActivity extends AppCompatActivity {
+public class SetActionsActivity extends AppCompatActivity implements ChooseIconDialog.OnIconPick {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     private Shortcut currentShortcut;
     AppData appData;
     private EditText shortcutTitle;
     private ActionAdapter adapter;
+    private ImageView shortcutIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,16 +74,21 @@ public class SetActionsActivity extends AppCompatActivity {
     }
 
     private void shortcutImageHandler(Shortcut shortcut) {
-        ImageView shortcutIcon = findViewById(R.id.shortcutIcon);
-        Glide.with(SetActionsActivity.this)
-                .load(shortcut.getImageUrl())
-                .into(shortcutIcon);
+        shortcutIcon = findViewById(R.id.shortcutIcon);
+        setShortcutImage(shortcut);
         shortcutIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO - Lior - change icon
+                DialogFragment dialog = new ChooseIconDialog();
+                dialog.show(getSupportFragmentManager(), "choose icon dialog");
             }
         });
+    }
+
+    private void setShortcutImage(Shortcut shortcut) {
+        Glide.with(SetActionsActivity.this)
+                .load(shortcut.getImageUrl())
+                .into(shortcutIcon);
     }
 
 
@@ -240,4 +248,12 @@ public class SetActionsActivity extends AppCompatActivity {
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
         }
     };
+
+    @Override
+    public void onIconPick(String iconLink) {
+        currentShortcut.setImageUrl(iconLink);
+        appData.fireStoreHandler.updateShortcut(currentShortcut);
+        setShortcutImage(currentShortcut);
+
+    }
 }
