@@ -28,16 +28,6 @@
             android:textColor="#706C6C"
             android:textSize="20sp"
             />
-        <Switch
-            android:id="@+id/is_enabled_switch"
-            android:paddingTop="25dp"
-            android:paddingBottom="25dp"
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>
