@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -70,6 +71,23 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.choose_icon_dialog, null);
         setRecyclerView(view);
+        builder.setView(view);
+        setSearchEditText(view);
+        setExitButton(view);
+        return builder.create();
+    }
+
+    private void setExitButton(View view) {
+        ImageButton exitButton = view.findViewById(R.id.exit_button);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
+
+    private void setSearchEditText(View view) {
         searchEditText = view.findViewById(R.id.search_edit_text);
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -85,9 +103,6 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
                 adapter.getFilter().filter(s.toString());
             }
         });
-        builder.setTitle("Choose an Icon");
-        builder.setView(view);
-        return builder.create();
     }
 
     private void setRecyclerView(View view) {

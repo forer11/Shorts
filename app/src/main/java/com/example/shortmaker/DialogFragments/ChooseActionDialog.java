@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
@@ -50,10 +51,20 @@ public class ChooseActionDialog extends AppCompatDialogFragment implements Actio
                 .Builder(Objects.requireNonNull(getActivity()));
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.choose_action_dialog, null);
+        setExitClickListener(view);
         setRecyclerView(view);
-        builder.setTitle("Choose an action");
         builder.setView(view);
         return builder.create();
+    }
+
+    private void setExitClickListener(View view) {
+        ImageButton exitButton = view.findViewById(R.id.exit_button);
+        exitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 
     private void setRecyclerView(View view) {
