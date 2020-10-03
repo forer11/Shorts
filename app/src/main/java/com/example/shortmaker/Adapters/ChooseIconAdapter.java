@@ -5,6 +5,8 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -20,17 +22,21 @@ import com.example.shortmaker.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class ChooseIconAdapter extends RecyclerView.Adapter<ChooseIconAdapter.IconItemHolder> {
+public class ChooseIconAdapter extends RecyclerView.Adapter<ChooseIconAdapter.IconItemHolder>
+        implements Filterable {
 
     private OnIconClickListener listener;
     private Context context;
     private ArrayList<Icon> icons;
+    private ArrayList<Icon> fullIconsList;
 
 
     public ChooseIconAdapter(Context context, AppData appData) {
         this.context = context;
         this.icons = appData.getIcons();
+        this.fullIconsList = new ArrayList<>(this.icons);
     }
 
     public interface OnIconClickListener {
@@ -106,4 +112,44 @@ public class ChooseIconAdapter extends RecyclerView.Adapter<ChooseIconAdapter.Ic
             });
         }
     }
+
+    /*********************** Search implementation ******************************/
+
+    @Override
+    public Filter getFilter() {
+        return IconsFilter;
+    }
+
+    private Filter IconsFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Icon> filteredIcons = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredIcons.addAll(fullIconsList);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Icon icon : fullIconsList) {
+                    ArrayList<String> category = icon.getCategory();
+                    for (String subTitle : category) {
+                        if (subTitle.toLowerCase().contains(filterPattern)) {
+                            filteredIcons.add(icon);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredIcons;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            icons.clear();
+            icons.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
