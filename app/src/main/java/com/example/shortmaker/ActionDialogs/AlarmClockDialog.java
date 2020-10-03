@@ -59,10 +59,4 @@ public class AlarmClockDialog extends ActionDialog{
 
         return builder.create();
     }
-
-
-
-    public interface AlarmClockDialogListener {
-        void applyText(String address);
-    }
 }

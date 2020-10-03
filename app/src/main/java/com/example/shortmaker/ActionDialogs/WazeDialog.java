@@ -55,8 +55,4 @@ public class WazeDialog extends ActionDialog {
 
         return builder.create();
     }
-
-    public interface WazeDialogListener {
-        void applyText(String address);
-    }
 }

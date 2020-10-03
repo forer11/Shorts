@@ -54,10 +54,4 @@ public class SpotifyDialog extends ActionDialog {
 
         return builder.create();
     }
-
-
-
-    public interface SpotifyDialogListener {
-        void applyText(String address);
-    }
 }

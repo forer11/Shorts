@@ -94,29 +94,37 @@ public class SetActionsActivity extends AppCompatActivity {
         clearTitleUpdate(updateTitleButton, clearTitleButton);
     }
 
-    private void clearTitleUpdate(final ImageButton updateTitleButton, final ImageButton clearTitleButton) {
+    private void clearTitleUpdate(final ImageButton updateTitleButton,
+                                  final ImageButton clearTitleButton) {
         clearTitleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateTitleView(v, updateTitleButton, clearTitleButton);
-                Toast.makeText(SetActionsActivity.this, "Title update cancelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SetActionsActivity.this,
+                        "Title update cancelled",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateTitle(final ImageButton updateTitleButton, final ImageButton clearTitleButton) {
+    private void updateTitle(final ImageButton updateTitleButton,
+                             final ImageButton clearTitleButton) {
         updateTitleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 currentShortcut.setTitle(shortcutTitle.getText().toString());
                 appData.fireStoreHandler.updateShortcut(currentShortcut);
                 updateTitleView(v, updateTitleButton, clearTitleButton);
-                Toast.makeText(SetActionsActivity.this, "Title changed successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(SetActionsActivity.this,
+                        "Title changed successfully",
+                        Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    private void updateTitleView(View v, ImageButton updateTitleButton, ImageButton clearTitleButton) {
+    private void updateTitleView(View v,
+                                 ImageButton updateTitleButton,
+                                 ImageButton clearTitleButton) {
         shortcutTitle.clearFocus();
         shortcutTitle.setText(currentShortcut.getTitle());
         updateTitleButton.setVisibility(View.INVISIBLE);
@@ -124,7 +132,8 @@ public class SetActionsActivity extends AppCompatActivity {
         hideKeyboard(v);
     }
 
-    private void titleOnFocusChange(final ImageButton updateTitleButton, final ImageButton clearTitleButton) {
+    private void titleOnFocusChange(final ImageButton updateTitleButton,
+                                    final ImageButton clearTitleButton) {
         shortcutTitle.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -140,7 +149,8 @@ public class SetActionsActivity extends AppCompatActivity {
 
 
     private void hideKeyboard(View v) {
-        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
         Objects.requireNonNull(inputMethodManager)
                 .hideSoftInputFromWindow(v.getApplicationWindowToken(), 0);
     }

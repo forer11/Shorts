@@ -59,11 +59,4 @@ public class SetTimerDialog extends ActionDialog{
 
         return builder.create();
     }
-
-
-
-    public interface SetTimerDialogListener {
-        void applyText(String address);
-    }
-
 }

@@ -60,10 +60,4 @@ public class TextMessageDialog extends ActionDialog {
 
         return builder.create();
     }
-
-
-
-    public interface TextMessageDialogListener {
-        void applyText(String address);
-    }
 }
