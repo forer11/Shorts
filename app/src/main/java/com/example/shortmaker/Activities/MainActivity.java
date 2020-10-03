@@ -64,7 +64,8 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     AppData appData;
     private PopupMenu popupMenu;
     private ItemTouchHelper itemTouchHelper;
-    private RecyclerView recyclerView;
+    private RecyclerView recyclerView = null;
+    private String searchText = "";
 
 
     @Override
@@ -93,7 +94,11 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 if (success) {
                     shortcuts.clear();
                     shortcuts.addAll(shortcutsList);
+                    fullShortcutsList.clear();
                     fullShortcutsList.addAll(shortcuts);
+                    if (recyclerView != null) {
+                        filterShortcuts(searchText);
+                    }
                     setNewPositions();
                     setRecyclerView();
                     ProgressBar progressBar = findViewById(R.id.progressBar);
@@ -254,15 +259,20 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                adapter.getFilter().filter(newText);
-                if (newText.equals("")) {
-                    itemTouchHelper.attachToRecyclerView(recyclerView);
-                } else {
-                    itemTouchHelper.attachToRecyclerView(null);
-                }
+                searchText = newText;
+                filterShortcuts(newText);
                 return false;
             }
         });
+    }
+
+    private void filterShortcuts(String newText) {
+        adapter.getFilter().filter(newText);
+        if (newText.equals("")) {
+            itemTouchHelper.attachToRecyclerView(recyclerView);
+        } else {
+            itemTouchHelper.attachToRecyclerView(null);
+        }
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper
