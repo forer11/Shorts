@@ -10,6 +10,8 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,15 +27,17 @@ import com.example.shortmaker.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class DraggableGridAdapter extends RecyclerView
         .Adapter<DraggableGridAdapter
-        .ShortcutItemHolder> {
+        .ShortcutItemHolder> implements Filterable {
 
     private Context context;
     private List<Shortcut> shortcuts;
+    private List<Shortcut> fullShortcutsList;
 
     private OnItemClickListener listener;
     private OnItemLongClickListener longClickListener;
@@ -55,9 +59,11 @@ public class DraggableGridAdapter extends RecyclerView
     }
 
 
-    public DraggableGridAdapter(Context context, List<Shortcut> shortcuts) {
+    public DraggableGridAdapter(Context context, List<Shortcut> shortcuts,
+                                List<Shortcut> fullShortcutsList) {
         this.context = context;
         this.shortcuts = shortcuts;
+        this.fullShortcutsList = fullShortcutsList;
     }
 
     @NonNull
@@ -153,4 +159,40 @@ public class DraggableGridAdapter extends RecyclerView
             });
         }
     }
+
+    /*********************** Search implementation ******************************/
+
+    @Override
+    public Filter getFilter() {
+        return shortcutsFilter;
+    }
+
+    private Filter shortcutsFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Shortcut> filteredShortcuts = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredShortcuts.addAll(fullShortcutsList);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Shortcut shortcut : fullShortcutsList) {
+                    if (shortcut.getTitle().toLowerCase().contains(filterPattern)) {
+                        filteredShortcuts.add(shortcut);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredShortcuts;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            shortcuts.clear();
+            shortcuts.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

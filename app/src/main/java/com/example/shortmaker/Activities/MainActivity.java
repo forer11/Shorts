@@ -55,6 +55,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     public static final int NO_POSITION = -1;
 
     List<Shortcut> shortcuts;
+    List<Shortcut> fullShortcutsList;
     private DraggableGridAdapter adapter;
     int lastPosition = NO_POSITION;
     private EditText editText;
@@ -62,6 +63,8 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     private AlertDialog makeCallDialog;
     AppData appData;
     private PopupMenu popupMenu;
+    private ItemTouchHelper itemTouchHelper;
+    private RecyclerView recyclerView;
 
 
     @Override
@@ -77,6 +80,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
 
     private void setObjects() {
         shortcuts = new ArrayList<>();
+        fullShortcutsList = new ArrayList<>();
         adapter = null;
         appData = (AppData) getApplicationContext();
     }
@@ -89,6 +93,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 if (success) {
                     shortcuts.clear();
                     shortcuts.addAll(shortcutsList);
+                    fullShortcutsList.addAll(shortcuts);
                     setNewPositions();
                     setRecyclerView();
                     ProgressBar progressBar = findViewById(R.id.progressBar);
@@ -134,14 +139,14 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     }
 
     private void setRecyclerView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView = findViewById(R.id.recyclerView);
         if (adapter == null) {
-            adapter = new DraggableGridAdapter(this, shortcuts);
+            adapter = new DraggableGridAdapter(this, shortcuts, fullShortcutsList);
             recyclerView.setLayoutManager(new GridLayoutManager(this, 3));
             recyclerView.setAdapter(adapter);
             setOnItemClickListener();
             setOnItemLongClickListener();
-            ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
+            itemTouchHelper = new ItemTouchHelper(simpleCallback);
             itemTouchHelper.attachToRecyclerView(recyclerView);
         } else {
             adapter.notifyDataSetChanged();
@@ -249,6 +254,12 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                adapter.getFilter().filter(newText);
+                if (newText.equals("")) {
+                    itemTouchHelper.attachToRecyclerView(recyclerView);
+                } else {
+                    itemTouchHelper.attachToRecyclerView(null);
+                }
                 return false;
             }
         });
@@ -272,6 +283,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
             swapShortcutPos(fromPos, toPos);
 
             Collections.swap(shortcuts, fromPos, toPos);
+            Collections.swap(fullShortcutsList, fromPos, toPos);
             moveViews(recyclerView, fromPos, toPos);
 
             return false;
