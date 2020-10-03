@@ -6,6 +6,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -188,6 +189,25 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
             @Override
             public void onItemLongClick(View view, int position) {
                 Toast.makeText(SetActionsActivity.this, "Malol make me a menu" + position, Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        setSwitchClick();
+    }
+
+    private void setSwitchClick() {
+        adapter.setOnSwitchClickListener(new ActionAdapter.OnSwitchClickListener() {
+
+            private int defaultSwitchSet = 0;
+
+            @Override
+            public void onSwitchClick(int position, boolean isChecked) {
+                if (defaultSwitchSet < currentShortcut.getActionDataList().size()) {
+                    defaultSwitchSet++;
+                } else {
+                    currentShortcut.getActionDataList().get(position).setIsActivated(isChecked);
+                    appData.fireStoreHandler.updateShortcut(currentShortcut);
+                }
             }
         });
     }

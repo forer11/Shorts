@@ -30,6 +30,7 @@ public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapte
     public static class ActionViewHolder extends RecyclerView.ViewHolder {
         public ImageView actionIcon;
         public TextView actionTitle;
+
         public ActionViewHolder(View itemView, final OnItemClickListener listener) {
             super(itemView);
             actionIcon = itemView.findViewById(R.id.imageView);
@@ -38,7 +39,7 @@ public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapte
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(listener != null) {
+                    if (listener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
                             listener.onItemClick(position);
@@ -48,12 +49,15 @@ public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapte
             });
         }
     }
+
     public ChooseActionAdapter(ArrayList<ActionData> actionsObjList) {
         offeredActionsList = actionsObjList;
     }
+
     @Override
     public ActionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.action_item_recycler_view, parent, false);
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.select_action_item_recycler_view, parent, false);
         ActionViewHolder evh = new ActionViewHolder(v, onItemClickListener);
         return evh;
     }
