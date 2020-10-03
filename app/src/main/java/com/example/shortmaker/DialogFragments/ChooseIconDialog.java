@@ -4,8 +4,12 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
@@ -39,6 +43,8 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
 
     private Context context;
     private OnIconPick callback;
+    private EditText searchEditText;
+    private ChooseIconAdapter adapter;
 
     public interface OnIconPick {
         public void onIconPick(String iconLink);
@@ -64,6 +70,21 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.choose_action_dialog, null);
         setRecyclerView(view);
+        searchEditText = view.findViewById(R.id.search_edit_text);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                adapter.getFilter().filter(s.toString());
+            }
+        });
         builder.setTitle("Choose an Icon");
         builder.setView(view);
         return builder.create();
@@ -71,8 +92,7 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
 
     private void setRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setHasFixedSize(true);
-        ChooseIconAdapter adapter = new ChooseIconAdapter(context, (AppData) context.getApplicationContext());
+        adapter = new ChooseIconAdapter(context, (AppData) context.getApplicationContext());
         recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         recyclerView.setAdapter(adapter);
         iconClickHandler(adapter);
