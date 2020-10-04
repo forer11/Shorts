@@ -23,6 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.flatdialoglibrary.dialog.FlatDialog;
+import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
@@ -32,6 +33,7 @@ import com.example.shortmaker.DialogFragments.ChooseActionDialog;
 import com.example.shortmaker.DialogFragments.ChooseIconDialog;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.DialogFragments.CreateShortcutDialog;
+import com.example.shortmaker.DialogFragments.DeleteShortcutDialog;
 import com.example.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.example.shortmaker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -216,9 +218,18 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                 startActivity(intent);
                 return true;
             case R.id.action_popup_delete:
-                Shortcut shortcut = shortcuts.get(lastPosition);
-                appData.fireStoreHandler.deleteShortcut(shortcut.getId(), shortcut.getTitle());
-                getUserDataAndLoadRecyclerview();
+                ActionDialog deleteShortcutDialog = new DeleteShortcutDialog();
+                deleteShortcutDialog.show(getSupportFragmentManager(),
+                        "Delete shortcut dialog dialog");
+                deleteShortcutDialog.setNewOnClickListener(new ActionDialog.OnClickListener() {
+                    @Override
+                    public void onClick() {
+                        Shortcut shortcut = shortcuts.get(lastPosition);
+                        appData.fireStoreHandler.deleteShortcut(shortcut.getId(),
+                                shortcut.getTitle());
+                        getUserDataAndLoadRecyclerview();
+                    }
+                });
                 return true;
             case R.id.action_popup_change_icon:
                 DialogFragment dialog = new ChooseIconDialog();
