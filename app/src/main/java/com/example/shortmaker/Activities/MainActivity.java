@@ -14,22 +14,24 @@ import android.app.AlertDialog;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.example.flatdialoglibrary.dialog.FlatDialog;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionFactory;
 import com.example.shortmaker.Actions.Action;
 import com.example.shortmaker.Adapters.DraggableGridAdapter;
 import com.example.shortmaker.AppData;
 import com.example.shortmaker.DataClasses.ActionData;
-import com.example.shortmaker.DialogFragments.ChooseActionDialog;
 import com.example.shortmaker.DialogFragments.ChooseIconDialog;
 import com.example.shortmaker.DataClasses.Shortcut;
 import com.example.shortmaker.DialogFragments.CreateShortcutDialog;
@@ -45,11 +47,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import kotlin.text.MatchGroup;
 
-
-public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuItemClickListener,
-        ChooseIconDialog.OnIconPick {
+public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.OnIconPick {
     private static final int REQUEST_CALL = 1;
     public static final String PHONE_CALL_DIALOG_TITLE = "Make action phone call";
     public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
@@ -64,10 +63,13 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
     private View phoneCallDialogLayout;
     private AlertDialog makeCallDialog;
     AppData appData;
-    private PopupMenu popupMenu;
     private ItemTouchHelper itemTouchHelper;
     private RecyclerView recyclerView = null;
     private String searchText = "";
+    private PopupWindow popupWindow;
+
+    public MainActivity() {
+    }
 
 
     @Override
@@ -202,22 +204,41 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
 
 
     private void showPopupMenu(View view) {
-        popupMenu = new PopupMenu(view.getContext(), view);
-        popupMenu.inflate(R.menu.popup_menu);
-        popupMenu.setOnMenuItemClickListener(this);
-        popupMenu.show();
+        LayoutInflater layoutInflater = getLayoutInflater();
+        View customView = layoutInflater.inflate(R.layout.popup_menu_horrizental, null);
+
+        LinearLayout editLayout, deleteLayout, copyLayout, swapIconLayout;
+        editLayout = customView.findViewById(R.id.edit_layout);
+        deleteLayout = customView.findViewById(R.id.delete_layout);
+        copyLayout = customView.findViewById(R.id.copy_layout);
+        swapIconLayout = customView.findViewById(R.id.swap_icon_layout);
+
+        setHorizontalMenuClickEvents(editLayout, deleteLayout, copyLayout, swapIconLayout);
+
+        popupWindow = new PopupWindow(customView,
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
+                true);
+        popupWindow.setOutsideTouchable(true);
+        popupWindow.setFocusable(true);
+
+        popupWindow.showAsDropDown(view);
     }
 
-
-    @Override
-    public boolean onMenuItemClick(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_popup_edit:
-                Intent intent = new Intent(this, SetActionsActivity.class);
+    private void setHorizontalMenuClickEvents(LinearLayout editLayout, LinearLayout deleteLayout, LinearLayout copyLayout, LinearLayout swapIconLayout) {
+        editLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this,
+                        SetActionsActivity.class);
                 intent.putExtra("shortcutId", shortcuts.get(lastPosition).getId());
                 startActivity(intent);
-                return true;
-            case R.id.action_popup_delete:
+                popupWindow.dismiss();
+            }
+        });
+
+        deleteLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 ActionDialog deleteShortcutDialog = new DeleteShortcutDialog();
                 deleteShortcutDialog.show(getSupportFragmentManager(),
                         "Delete shortcut dialog dialog");
@@ -230,17 +251,26 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                         getUserDataAndLoadRecyclerview();
                     }
                 });
-                return true;
-            case R.id.action_popup_change_icon:
+                popupWindow.dismiss();
+            }
+        });
+
+        copyLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                popupWindow.dismiss();
+            }
+        });
+
+        swapIconLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 DialogFragment dialog = new ChooseIconDialog();
                 dialog.show(getSupportFragmentManager(), "choose icon dialog");
-                return true;
-            case R.id.action_popup_load_icon:
-                //new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show();
-                return true;
-            default:
-                return false;
-        }
+                popupWindow.dismiss();
+                //new GligarPicker().limit(1).requestCode(PICKER_REQUEST_CODE).withActivity(this).show(); (icon load from camera)
+            }
+        });
     }
 
     private void setToolbar() {
@@ -298,7 +328,7 @@ public class MainActivity extends BaseMenuActivity implements PopupMenu.OnMenuIt
                               @NonNull RecyclerView.ViewHolder viewHolder,
                               @NonNull RecyclerView.ViewHolder target) {
 
-            popupMenu.dismiss();
+            popupWindow.dismiss();
             int fromPos = viewHolder.getAdapterPosition();
             int toPos = target.getAdapterPosition();
             swapShortcutPos(fromPos, toPos);
