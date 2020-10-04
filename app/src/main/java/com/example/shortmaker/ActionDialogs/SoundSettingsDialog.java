@@ -30,29 +30,7 @@ public class SoundSettingsDialog extends ActionDialog {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.sound_settings_dialog,null);
 
-        String[] modes = {"Silent Mode", "Vibrate Mode", "Ring Mode"};
-        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, modes);
-        // set Adapter
-        spinner.setAdapter(adapter);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-        //Register a callback to be invoked when an item in this AdapterView has been selected
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int position, long id) {
-                mode = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-
-        });
+        setModesSpinner(view);
 
 
         ImageView imageView = view.findViewById(R.id.imageView);
@@ -77,5 +55,31 @@ public class SoundSettingsDialog extends ActionDialog {
 
 
         return builder.create();
+    }
+
+    protected void setModesSpinner(View view) {
+        String[] modes = {"Silent Mode", "Vibrate Mode", "Ring Mode"};
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, modes);
+        // set Adapter
+        spinner.setAdapter(adapter);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+
+        //Register a callback to be invoked when an item in this AdapterView has been selected
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int position, long id) {
+                mode = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+
+            }
+
+        });
     }
 }
