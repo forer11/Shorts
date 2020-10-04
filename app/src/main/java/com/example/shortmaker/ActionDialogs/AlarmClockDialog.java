@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,11 +20,6 @@ import java.util.ArrayList;
 
 public class AlarmClockDialog extends ActionDialog{
 
-
-    private EditText hour;
-    private EditText minutes;
-
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -31,8 +27,8 @@ public class AlarmClockDialog extends ActionDialog{
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.alarm_clock_dialog,null);
 
-        hour = view.findViewById(R.id.hour);
-        minutes = view.findViewById(R.id.minutes);
+        final TimePicker timePicker = view.findViewById(R.id.timePicker);
+
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.alarm_clock_gif).into(imageView);
 
@@ -47,8 +43,8 @@ public class AlarmClockDialog extends ActionDialog{
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        String desiredHour = hour.getText().toString();
-                        String desiredMinutes = minutes.getText().toString();
+                        String desiredHour = Integer.toString(timePicker.getHour());
+                        String desiredMinutes =Integer.toString(timePicker.getMinute());
                         ArrayList<String> results = new ArrayList<>();
                         results.add(desiredHour);
                         results.add(desiredMinutes);
