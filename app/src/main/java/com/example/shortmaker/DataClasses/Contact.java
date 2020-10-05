@@ -9,10 +9,10 @@ public class Contact {
         contactNumber = text2;
     }
 
-    public String getText1() {
+    public String getContactName() {
         return contactName;
     }
-    public String getText2() {
+    public String getContactNum() {
         return contactNumber;
     }
 }

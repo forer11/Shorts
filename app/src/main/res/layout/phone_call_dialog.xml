@@ -11,35 +11,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
-    <LinearLayout
-        android:id="@+id/phone_num_layout"
-        android:layout_width="match_parent"
+
+    <EditText
+        android:id="@+id/phoneNum"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView"
-        android:orientation="horizontal">
+        android:layout_below="@id/imageView"
+        android:ems="10"
+        android:layout_weight="0.6"
+        android:hint="Enter phone number"
+        android:inputType="phone" />
 
-        <Spinner
-            android:id="@+id/prefixSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="#D6D1D1"
-            android:layout_weight="1.5"
-            android:gravity="start"
-
-            />
-
-        <EditText
-            android:id="@+id/phoneNum"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:ems="10"
-            android:layout_weight="0.6"
-            android:hint="Enter phone number"
-            android:inputType="phone" />
-
-    </LinearLayout>
 
     <EditText
         android:id="@+id/search_edit_text"
@@ -47,8 +29,9 @@
         android:layout_height="wrap_content"
         android:hint="Search contact"
         android:drawableLeft="@drawable/ic_baseline_search_24"
-        android:layout_below="@+id/phone_num_layout"
-        android:layout_margin="16dp"/>
+        android:layout_below="@+id/phoneNum"
+        android:layout_marginTop="10dp"
+       />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

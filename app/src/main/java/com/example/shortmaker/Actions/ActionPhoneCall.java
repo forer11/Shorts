@@ -66,8 +66,7 @@ public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissi
 
     @Override
     public void setData(List<String> data) {
-        String prefix = data.get(0);
-        number = prefix.concat(data.get(1));
+        number = data.get(1);
     }
 
     @Override
