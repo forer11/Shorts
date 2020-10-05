@@ -2,14 +2,13 @@ package com.example.shortmaker.Actions;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
-import android.widget.EditText;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,7 +19,6 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.PhoneCallDialog;
 
 import java.util.List;
-import java.util.Map;
 
 public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissionsResultCallback {
     private static final int REQUEST_CALL = 1;

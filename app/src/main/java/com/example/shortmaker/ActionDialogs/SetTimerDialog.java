@@ -34,9 +34,9 @@ public class SetTimerDialog extends ActionDialog {
     public static final int HOURS_MAX_VAL = 24;
     public static final int MINUTES_MAX_VAL = 60;
     public static final int SECONDS_MAX_VAL = 60;
-    protected String minute;
-    protected String hour;
-    protected String second;
+    protected String minute="0";
+    protected String hour="0";
+    protected String second="0";
 
     @NonNull
     @Override
@@ -117,7 +117,7 @@ public class SetTimerDialog extends ActionDialog {
     }
 
     protected void getUserInput() {
-        if (hour.equals("") || minute.equals("") || second.equals("")) {
+        if (hour.equals("0") && minute.equals("0") && second.equals("0")) {
             Toast.makeText(getContext(), "Please insert desired time", Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<String> results = new ArrayList<>();
