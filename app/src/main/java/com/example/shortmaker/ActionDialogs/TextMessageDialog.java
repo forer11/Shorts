@@ -37,6 +37,7 @@ public class TextMessageDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.text_message_gif).into(imageView);
 
+
         builder.setView(view)
                 .setTitle("Send Text Message")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
