@@ -1,7 +1,6 @@
 package com.example.shortmaker.Activities;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.DialogFragment;
@@ -13,7 +12,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 
+import android.graphics.Point;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -54,6 +56,8 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
     public static final int PICKER_REQUEST_CODE = 10;
     public static final int NO_POSITION = -1;
+    public static final int Y = 1;
+    public static final int X = 0;
 
     List<Shortcut> shortcuts;
     List<Shortcut> fullShortcutsList;
@@ -67,6 +71,8 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     private RecyclerView recyclerView = null;
     private String searchText = "";
     private PopupWindow popupWindow;
+    private int screenWidth;
+    private int screenHeight;
 
     public MainActivity() {
     }
@@ -76,11 +82,20 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        getScreenSize();
 
         setObjects();
         setToolbar();
         setAddShortcutButton();
 
+    }
+
+    private void getScreenSize() {
+        Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        screenWidth = size.x;
+        screenHeight = size.y;
     }
 
     private void setObjects() {
@@ -221,7 +236,18 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
 
-        popupWindow.showAsDropDown(view);
+        setPopupLocation(view);
+    }
+
+    private void setPopupLocation(View view) {
+        int[] location = {0, 0};
+        view.getLocationOnScreen(location);
+        if (location[Y] >= (screenHeight / 2)) {
+            int h = -view.getHeight();
+            popupWindow.showAsDropDown(view, 0, (int) Math.round(h * 1.71));
+        } else {
+            popupWindow.showAsDropDown(view);
+        }
     }
 
     private void setHorizontalMenuClickEvents(LinearLayout editLayout, LinearLayout deleteLayout, LinearLayout copyLayout, LinearLayout swapIconLayout) {
