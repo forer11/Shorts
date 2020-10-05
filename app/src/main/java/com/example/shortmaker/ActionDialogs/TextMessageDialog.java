@@ -37,6 +37,7 @@ public class TextMessageDialog extends ActionDialog {
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+
     private Map<String, String> contacts;
 
     private ArrayList<Contact> contactsList = new ArrayList<>();

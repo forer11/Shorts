@@ -5,13 +5,9 @@
     <item
         android:id="@+id/action_popup_edit"
         android:title="edit" />
+
     <item
         android:id="@+id/action_popup_delete"
         android:title="delete" />
-    <item
-        android:id="@+id/action_popup_change_icon"
-        android:title="change icon" />
-    <item
-        android:id="@+id/action_popup_load_icon"
-        android:title="load icon" />
+
 </menu>

@@ -1,8 +1,5 @@
 package com.example.shortmaker.ActionDialogs;
 
-import android.content.Context;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
 import java.util.ArrayList;
