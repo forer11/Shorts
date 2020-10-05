@@ -20,11 +20,11 @@ import com.example.shortmaker.ActionDialogs.ActionDialog;
 import com.example.shortmaker.ActionDialogs.PhoneCallDialog;
 
 import java.util.List;
+import java.util.Map;
 
 public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissionsResultCallback {
-    // Request code for READ_CONTACTS. It can be any number > 0.
-    public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
     private static final int REQUEST_CALL = 1;
+
     private PhoneCallDialog dialog;
     private String number;
     private Activity activity;
@@ -34,7 +34,7 @@ public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissi
         this.dialog = new PhoneCallDialog();
     }
 
-    private void makePhoneCall(Context context, Activity activity,String number) {
+    public void makePhoneCall(Context context, Activity activity,String number) {
         this.activity=activity;
         this.context=context;
         if (number.trim().length() > 0) {
@@ -69,6 +69,7 @@ public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissi
         number = data.get(1);
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == REQUEST_CALL) {
@@ -77,14 +78,6 @@ public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissi
             } else {
                 Toast.makeText(context, "Permission DENIED", Toast.LENGTH_SHORT).show();
             }
-        }else if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS){
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // Permission is granted
-                dialog.showContacts(activity);
-            } else {
-                Toast.makeText(activity, "Until you grant the permission, we cannot get the names", Toast.LENGTH_SHORT).show();
-            }
         }
-
     }
 }
