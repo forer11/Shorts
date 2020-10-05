@@ -8,33 +8,33 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:354049566538:android:22a3d72fbf14d58fd343b3",
+        "mobilesdk_app_id": "1:354049566538:android:acd144e251e010e3d343b3",
         "android_client_info": {
-          "package_name": "com.example.shortmaker"
+          "package_name": "com.shorts.shortmaker"
         }
       },
       "oauth_client": [
         {
-          "client_id": "354049566538-bl1i3i0b47o0fbspubg8nqrmcevahubv.apps.googleusercontent.com",
+          "client_id": "354049566538-7nrtntlgfivjgcb0917bbvet4knjfjs8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.shortmaker",
+            "package_name": "com.shorts.shortmaker",
             "certificate_hash": "9e840f992de264f2ebcf92411a0edd098d7d171b"
           }
         },
         {
-          "client_id": "354049566538-gttbf3ljevsjpvphn3242udq9nj7tl72.apps.googleusercontent.com",
+          "client_id": "354049566538-k73dgbk0mjvs13gmbgkjirp1je999omu.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.shortmaker",
+            "package_name": "com.shorts.shortmaker",
             "certificate_hash": "82a7b6fe9857496c6a9d74916a8abfd0da07b01d"
           }
         },
         {
-          "client_id": "354049566538-vu0lmf7p838vm0m9t50d7pajimocdu7d.apps.googleusercontent.com",
+          "client_id": "354049566538-cgstbvjgr9a3n4vqignu1iqm65liqeum.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.shortmaker",
+            "package_name": "com.shorts.shortmaker",
             "certificate_hash": "65e2504c5d76b46b15d6f991daad029e8fbf331d"
           }
         },

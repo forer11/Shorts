@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.shortmaker">
+    package="com.shorts.shortmaker">
 
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -27,7 +27,7 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:name=".AppData"
+        android:name="com.shorts.shortmaker.AppData"
         android:allowBackup="true"
         android:icon="@mipmap/teddy_bear"
         android:label="@string/app_name"
@@ -35,10 +35,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <meta-data android:name="com.google.android.actions" android:resource="@xml/actions" />
-        <activity android:name=".Activities.SetActionsActivity"></activity>
+        <activity android:name="com.shorts.shortmaker.Activities.SetActionsActivity"></activity>
 
         <receiver
-            android:name=".MyReceiver"
+            android:name="com.shorts.shortmaker.MyReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -46,10 +46,10 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Activities.TextToSpeechActivity"></activity>
-        <activity android:name=".Activities.MainActivity" />
+        <activity android:name="com.shorts.shortmaker.Activities.TextToSpeechActivity"></activity>
+        <activity android:name="com.shorts.shortmaker.Activities.MainActivity" />
         <activity
-            android:name=".Activities.OpeningScreenActivity"
+            android:name="com.shorts.shortmaker.Activities.OpeningScreenActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,9 +57,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Activities.BaseMenuActivity" />
-        <activity android:name=".Activities.LoginActivity" />
-        <activity android:name=".Activities.ActivateBluetoothActivity" />
+        <activity android:name="com.shorts.shortmaker.Activities.BaseMenuActivity" />
+        <activity android:name="com.shorts.shortmaker.Activities.LoginActivity" />
+        <activity android:name="com.shorts.shortmaker.Activities.ActivateBluetoothActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
