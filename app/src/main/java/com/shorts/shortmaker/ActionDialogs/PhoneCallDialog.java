@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRequestPermissionsResultCallback{
+public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRequestPermissionsResultCallback {
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -44,6 +44,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     private Map<String, String> contacts;
 
     private ArrayList<Contact> contactsList = new ArrayList<>();
+    private ArrayList<Contact> fullContactsList = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private ContactsAdapter adapter;
@@ -81,31 +82,23 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
+
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
             }
+
             @Override
             public void afterTextChanged(Editable s) {
-                filter(s.toString());
+                adapter.getFilter().filter(s.toString());
             }
         });
-    }
-
-
-    private void filter(String text) {
-        ArrayList<Contact> filteredList = new ArrayList<>();
-        for (Contact item : contactsList) {
-            if (item.getContactName().toLowerCase().contains(text.toLowerCase())) {
-                filteredList.add(item);
-            }
-        }
-        adapter.filterList(filteredList);
     }
 
     public void createContactsList() {
         contactsList = new ArrayList<>();
         for (Map.Entry<String, String> entry : contacts.entrySet()) {
             contactsList.add(new Contact(entry.getKey(), entry.getValue()));
+            fullContactsList.add(new Contact(entry.getKey(), entry.getValue()));
         }
 
     }
@@ -114,7 +107,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new ContactsAdapter(contactsList);
+        adapter = new ContactsAdapter(contactsList, fullContactsList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new ContactsAdapter.OnItemClickListener() {
@@ -158,8 +151,8 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-           getContactNames(activity);
-           createContactsList();
+            getContactNames(activity);
+            createContactsList();
         }
     }
 
@@ -199,12 +192,12 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-      if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS){
+        if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-               getContactNames(getActivity());
-               createContactsList();
-               adapter.notifyDataSetChanged();
+                getContactNames(getActivity());
+                createContactsList();
+                adapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(getActivity(), "Until you grant the permission, we cannot get the names", Toast.LENGTH_SHORT).show();
             }
