@@ -14,12 +14,8 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,12 +36,8 @@ import static com.example.shortmaker.Actions.ActionPhoneCall.PERMISSIONS_REQUEST
 
 public class PhoneCallDialog extends ActionDialog {
 
-    public static final int VALID_NUM_LENGTH = 7;
-    public static final String DEFAULT_PREFIX = "Choose prefix";
-    public static final String[] PREFIXES = new String[]{DEFAULT_PREFIX,"052", "054", "050"};
 
     private EditText phoneNum;
-    private int prefixIdx;
     private Map<String, String> contacts;
 
     private ArrayList<Contact> contactsList;
@@ -62,7 +54,6 @@ public class PhoneCallDialog extends ActionDialog {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         view = layoutInflater.inflate(R.layout.phone_call_dialog, null);
 
-        setPhonePrefixSpinner(view);
         phoneNum = view.findViewById(R.id.phoneNum);
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.phone_call_gif).into(imageView);
@@ -70,8 +61,15 @@ public class PhoneCallDialog extends ActionDialog {
 
         createContactsList();
         buildRecyclerView();
-        EditText editText = view.findViewById(R.id.search_edit_text);
-        editText.addTextChangedListener(new TextWatcher() {
+        setSearchContactBox();
+
+        buildDialog(builder, view);
+        return builder.create();
+    }
+
+    protected void setSearchContactBox() {
+        EditText searchContactEditText = view.findViewById(R.id.search_edit_text);
+        searchContactEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
@@ -83,17 +81,13 @@ public class PhoneCallDialog extends ActionDialog {
                 filter(s.toString());
             }
         });
-
-        buildDialog(builder, view);
-        return builder.create();
     }
-
 
 
     private void filter(String text) {
         ArrayList<Contact> filteredList = new ArrayList<>();
         for (Contact item : contactsList) {
-            if (item.getText1().toLowerCase().contains(text.toLowerCase())) {
+            if (item.getContactName().toLowerCase().contains(text.toLowerCase())) {
                 filteredList.add(item);
             }
         }
@@ -113,6 +107,12 @@ public class PhoneCallDialog extends ActionDialog {
         adapter = new ContactsAdapter(contactsList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new ContactsAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                phoneNum.setText(contactsList.get(position).getContactNum());
+            }
+        });
     }
 
     protected void buildDialog(AlertDialog.Builder builder, View view) {
@@ -135,39 +135,10 @@ public class PhoneCallDialog extends ActionDialog {
     protected void getUserInput() {
         String numberToCall = phoneNum.getText().toString();
         ArrayList<String> results = new ArrayList<>();
-        if(PREFIXES[prefixIdx].equals(DEFAULT_PREFIX) || numberToCall.length()!= VALID_NUM_LENGTH){
-            Toast.makeText(getContext(), "Please ensert a valid number", Toast.LENGTH_SHORT).show();
-        } else {
-            results.add(PREFIXES[prefixIdx]);
-            results.add(numberToCall);
-            listener.applyUserInfo(results);
-        }
+        results.add(numberToCall);
+        listener.applyUserInfo(results);
     }
 
-    private void setPhonePrefixSpinner(View view) {
-        Spinner spinner = (Spinner) view.findViewById(R.id.prefixSpinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, PREFIXES);
-        // set Adapter
-        spinner.setAdapter(adapter);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        //Register a callback to be invoked when an item in this AdapterView has been selected
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int position, long id) {
-                prefixIdx = position;
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-
-        });
-    }
 
     public void showContacts(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(Manifest.permission.READ_CONTACTS)
