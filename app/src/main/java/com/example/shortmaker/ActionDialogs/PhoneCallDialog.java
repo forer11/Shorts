@@ -35,7 +35,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class PhoneCallDialog extends ActionDialog implements  ActivityCompat.OnRequestPermissionsResultCallback{
+public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRequestPermissionsResultCallback{
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -53,6 +53,7 @@ public class PhoneCallDialog extends ActionDialog implements  ActivityCompat.OnR
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        showContacts(getActivity());
 
     }
 
@@ -67,7 +68,6 @@ public class PhoneCallDialog extends ActionDialog implements  ActivityCompat.OnR
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.phone_call_gif).into(imageView);
 
-        showContacts(getActivity());
         buildRecyclerView();
         setSearchContactBox();
 
