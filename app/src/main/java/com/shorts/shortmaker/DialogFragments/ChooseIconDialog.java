@@ -22,6 +22,7 @@ import com.shorts.shortmaker.R;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ChooseIconDialog extends AppCompatDialogFragment {
@@ -30,6 +31,7 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
     private OnIconPick callback;
     private EditText searchEditText;
     private ChooseIconAdapter adapter;
+    ArrayList<Icon> icons;
 
     public interface OnIconPick {
         public void onIconPick(String iconLink);
@@ -91,7 +93,9 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
 
     private void setRecyclerView(View view) {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        adapter = new ChooseIconAdapter(context, (AppData) context.getApplicationContext());
+        AppData appData = (AppData) context.getApplicationContext();
+        icons = new ArrayList<>(appData.getIcons());
+        adapter = new ChooseIconAdapter(context, appData, icons);
         recyclerView.setLayoutManager(new GridLayoutManager(context, 3));
         recyclerView.setAdapter(adapter);
         iconClickHandler(adapter);
@@ -101,7 +105,7 @@ public class ChooseIconDialog extends AppCompatDialogFragment {
         adapter.setOnIconClickListener(new ChooseIconAdapter.OnIconClickListener() {
             @Override
             public void onIconClick(int position) {
-                Icon icon = ((AppData) context.getApplicationContext()).getIcons().get(position);
+                Icon icon = icons.get(position);
                 callback.onIconPick(icon.getLink());
                 dismiss();
             }
