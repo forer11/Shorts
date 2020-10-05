@@ -91,12 +91,12 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     }
 
     private void getUserDataAndLoadRecyclerview() {
+        shortcuts.clear();
         appData.fireStoreHandler.setUserKey(appData.fireBaseAuthHandler.user);
         appData.fireStoreHandler.loadShortcuts(new FireStoreHandler.FireStoreCallback() {
             @Override
             public void onCallBack(ArrayList<Shortcut> shortcutsList, Boolean success) {
                 if (success) {
-                    shortcuts.clear();
                     shortcuts.addAll(shortcutsList);
                     fullShortcutsList.clear();
                     fullShortcutsList.addAll(shortcuts);
