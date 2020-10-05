@@ -1,11 +1,13 @@
 package com.example.shortmaker.Activities;
 
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -35,9 +37,14 @@ import java.util.Collections;
 import java.util.Objects;
 
 
-public class SetActionsActivity extends AppCompatActivity implements ChooseIconDialog.OnIconPick {
+public class SetActionsActivity extends AppCompatActivity implements ChooseIconDialog.OnIconPick,
+        PopupMenu.OnMenuItemClickListener {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
+    public static final int NO_POSITION = -1;
+
+    int lastPosition = NO_POSITION;
+
     private Shortcut currentShortcut;
     AppData appData;
     private EditText shortcutTitle;
@@ -195,11 +202,21 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
             @Override
             public void onItemLongClick(View view, int position) {
                 Toast.makeText(SetActionsActivity.this, "Malol make me a menu" + position, Toast.LENGTH_SHORT).show();
+                lastPosition = position;
+                showPopUpMenu(view);
             }
         });
 
         setSwitchClick();
     }
+
+    protected void showPopUpMenu(View view) {
+        PopupMenu popup = new PopupMenu(SetActionsActivity.this, view);
+        popup.setOnMenuItemClickListener(SetActionsActivity.this);
+        popup.inflate(R.menu.popup_menu);
+        popup.show();
+    }
+
 
     private void setSwitchClick() {
         adapter.setOnSwitchClickListener(new ActionAdapter.OnSwitchClickListener() {
@@ -233,32 +250,48 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                         .ChooseActionDialogListener() {
                     @Override
                     public void onChoseAction(final ActionData action, int position) {
-                        ActionDialog actionDialog = Objects
-                                .requireNonNull(ActionFactory
-                                        .getAction(action.getTitle())).getDialog();
-                        if (actionDialog != null) {
-                            actionDialog.show(getSupportFragmentManager(),
-                                    action.getTitle() + " dialog");
-                            actionDialog.setNewDialogListener(new ActionDialog.DialogListener() {
-                                @Override
-                                public void applyUserInfo(ArrayList<String> data) {
-                                    action.setData(data);
-                                    addAction(action);
-                                }
-                            });
-                        } else {
-                            addAction(action);
-                        }
+                        showActionDialog(action, false);
                     }
                 });
             }
         });
     }
 
-    private void addAction(ActionData action) {
-        currentShortcut.getActionDataList().add(action);
-        adapter.notifyItemInserted(currentShortcut.getActionDataList().size() - 1);
+    protected void showActionDialog(final ActionData action, final boolean edit) {
+        ActionDialog actionDialog = Objects
+                .requireNonNull(ActionFactory
+                        .getAction(action.getTitle())).getDialog();
+        if (actionDialog != null) {
+            actionDialog.show(getSupportFragmentManager(),
+                    action.getTitle() + " dialog");
+            actionDialog.setNewDialogListener(new ActionDialog.DialogListener() {
+                @Override
+                public void applyUserInfo(ArrayList<String> data) {
+                    action.setData(data);
+                    addAction(action,edit);
+                }
+            });
+        } else {
+            addAction(action,edit);
+        }
+    }
+
+    private void addAction(ActionData action, final boolean edit) {
+        if(edit){
+            editAction(action);
+        } else {
+            currentShortcut.getActionDataList().add(action);
+            adapter.notifyItemInserted(currentShortcut.getActionDataList().size() - 1);
+
+        }
         appData.fireStoreHandler.updateShortcut(currentShortcut);
+    }
+
+    private void editAction(ActionData action) {
+        currentShortcut.getActionDataList().remove(lastPosition);
+        adapter.notifyItemRemoved(lastPosition);
+        currentShortcut.getActionDataList().add(lastPosition,action);
+        adapter.notifyItemInserted(lastPosition);
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper
@@ -292,5 +325,26 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         appData.fireStoreHandler.updateShortcut(currentShortcut);
         setShortcutImage(currentShortcut);
 
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        ActionData actionData = currentShortcut.getActionDataList().get(lastPosition);
+        switch (item.getItemId()) {
+            case R.id.action_popup_edit:
+                showActionDialog(actionData, true);
+                return true;
+            case R.id.action_popup_delete:
+                removeAction(actionData);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    protected void removeAction(ActionData actionData) {
+        currentShortcut.getActionDataList().remove(actionData);
+        adapter.notifyDataSetChanged();
+        appData.fireStoreHandler.updateShortcut(currentShortcut);
     }
 }
