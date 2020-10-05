@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -30,9 +31,12 @@ import static android.media.CamcorderProfile.get;
 
 public class SetTimerDialog extends ActionDialog {
 
+    public static final int HOURS_MAX_VAL = 24;
+    public static final int MINUTES_MAX_VAL = 60;
+    public static final int SECONDS_MAX_VAL = 60;
     protected String minute;
     protected String hour;
-    protected String seconds;
+    protected String second;
 
     @NonNull
     @Override
@@ -41,17 +45,13 @@ public class SetTimerDialog extends ActionDialog {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.set_timer_dialog,null);
+        View view = layoutInflater.inflate(R.layout.set_timer_dialog, null);
 
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.timer_gif).into(imageView);
-        Button setTimerButton = view.findViewById(R.id.setTimer);
-        setTimerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showSetTimerDialog();
-            }
-        });
+
+        setPickers(view);
+
         builder.setView(view)
                 .setTitle("Set timer")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -63,35 +63,68 @@ public class SetTimerDialog extends ActionDialog {
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if(hour.equals("") || minute.equals("") || seconds.equals("")) {
-                            Toast.makeText(getContext(), "Please insert desired time", Toast.LENGTH_SHORT).show();
-                        }else{
-                            ArrayList<String> results = new ArrayList<>();
-                            results.add(hour);
-                            results.add(minute);
-                            results.add(seconds);
-                            listener.applyUserInfo(results);
-                        }
+                        getUserInput();
                     }
                 });
         return builder.create();
     }
 
+    protected void setPickers(View view) {
+        String[] hours = getPickerArray(HOURS_MAX_VAL);
+        String[] minutes = getPickerArray(MINUTES_MAX_VAL);
+        String[] seconds = getPickerArray(MINUTES_MAX_VAL);
+
+        NumberPicker hoursPicker = (NumberPicker) view.findViewById(R.id.hoursPicker);
+        NumberPicker minutesPicker = (NumberPicker) view.findViewById(R.id.minutesPicker);
+        NumberPicker secondsPicker = (NumberPicker) view.findViewById(R.id.secondsPicker);
+
+        setPicker(hours, hoursPicker, HOURS_MAX_VAL - 1,"Hours");
+        setPicker(minutes, minutesPicker, MINUTES_MAX_VAL - 1,"Minutes");
+        setPicker(seconds, secondsPicker, SECONDS_MAX_VAL - 1,"Seconds");
+    }
+
+
     @NotNull
-    private void showSetTimerDialog() {
-        Calendar calendar = Calendar.getInstance();
-        MyTimePickerDialog mTimePicker = new MyTimePickerDialog(getContext(), new MyTimePickerDialog.OnTimeSetListener() {
+    protected String[] getPickerArray(int range) {
+        String[] numbers = new String[range];
 
+        for (int i = 0; i < range; i++) {
+            numbers[i] = String.valueOf(i);
+        }
+        return numbers;
+    }
 
-
+    protected void setPicker(String[] pickerValues, NumberPicker picker, int maxValue, final String id) {
+        picker.setMinValue(0);
+        picker.setMaxValue(maxValue);
+        picker.setDisplayedValues(pickerValues);
+        picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
-            public void onTimeSet(com.ikovac.timepickerwithseconds.TimePicker view, int hourOfDay, int minuteOfDay, int secondsOfDay) {
-                hour = Integer.toString(hourOfDay);
-                minute = Integer.toString(minuteOfDay);
-                seconds = Integer.toString(secondsOfDay);
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                switch (id) {
+                    case "Hours":
+                        hour = Integer.toString(picker.getValue());
+                        break;
+                    case "Minutes":
+                        minute = Integer.toString(picker.getValue());
+                        break;
+                    case "Seconds":
+                        second = Integer.toString(picker.getValue());
+                        break;
+                }
             }
+        });
+    }
 
-        }, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND), true);
-        mTimePicker.show();
+    protected void getUserInput() {
+        if (hour.equals("") || minute.equals("") || second.equals("")) {
+            Toast.makeText(getContext(), "Please insert desired time", Toast.LENGTH_SHORT).show();
+        } else {
+            ArrayList<String> results = new ArrayList<>();
+            results.add(hour);
+            results.add(minute);
+            results.add(second);
+            listener.applyUserInfo(results);
+        }
     }
 }

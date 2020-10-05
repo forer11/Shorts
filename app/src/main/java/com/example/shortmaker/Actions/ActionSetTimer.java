@@ -46,6 +46,5 @@ public class ActionSetTimer implements Action {
         hour = Integer.parseInt(data.get(0))*3600;
         minutes = Integer.parseInt(data.get(1))*60;
         seconds = Integer.parseInt(data.get(2))+hour+minutes;
-        System.out.println("");
     }
 }
