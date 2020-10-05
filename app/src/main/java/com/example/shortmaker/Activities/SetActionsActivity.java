@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.example.shortmaker.ActionDialogs.ActionDialog;
@@ -98,8 +99,13 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
     }
 
     private void setShortcutImage(Shortcut shortcut) {
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(this);
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
         Glide.with(SetActionsActivity.this)
                 .load(shortcut.getImageUrl())
+                .placeholder(circularProgressDrawable)
                 .into(shortcutIcon);
     }
 

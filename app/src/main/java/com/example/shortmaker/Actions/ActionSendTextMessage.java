@@ -2,6 +2,7 @@ package com.example.shortmaker.Actions;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,6 +18,8 @@ public class ActionSendTextMessage implements Action {
     private TextMessageDialog dialog;
 
     private boolean sendThroughWhatsapp;
+    private String whoToSend;
+    private String message;
 
     public ActionSendTextMessage() {
         this.dialog = new TextMessageDialog();
@@ -26,16 +29,15 @@ public class ActionSendTextMessage implements Action {
     @Override
     public void activate(Context context , Activity activity) {
         Log.v("YAY", "Send Text activated");
-        Toast.makeText(context, "Send Text activated", Toast.LENGTH_SHORT).show();
 
-//        Intent sendIntent = new Intent();
-//        if (sendThroughWhatsapp) {
-//            sendIntent.setPackage(WHATSAPP_PACKAGE_NAME);
-//        }
-//        sendIntent.setAction(Intent.ACTION_SEND);
-//        sendIntent.putExtra(Intent.EXTRA_TEXT, "This is my text to send."); //TODO - change to a costumized user text
-//        sendIntent.setType("text/plain");
-//        context.startActivity(sendIntent);
+        Intent sendIntent = new Intent();
+        if (sendThroughWhatsapp) {
+            sendIntent.setPackage(WHATSAPP_PACKAGE_NAME);
+        }
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, message);
+        sendIntent.setType("text/plain");
+        activity.startActivity(sendIntent);
     }
 
     @Override
@@ -46,6 +48,7 @@ public class ActionSendTextMessage implements Action {
 
     @Override
     public void setData(List<String> data) {
-
+        whoToSend = data.get(0);
+        message = data.get(1);
     }
 }
