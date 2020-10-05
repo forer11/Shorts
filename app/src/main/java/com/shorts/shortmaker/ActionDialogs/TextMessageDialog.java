@@ -41,8 +41,10 @@ public class TextMessageDialog extends ActionDialog {
     private Map<String, String> contacts;
 
     private ArrayList<Contact> contactsList = new ArrayList<>();
+    private ArrayList<Contact> fullContactsList = new ArrayList<>();
+
     private RecyclerView recyclerView;
-    private ContactsAdapter adapter;
+    private ContactsAdapter adapter = null;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
 
@@ -50,12 +52,10 @@ public class TextMessageDialog extends ActionDialog {
     private EditText message;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         showContacts(getActivity());
-
     }
-
 
     @NonNull
     @Override
@@ -66,10 +66,8 @@ public class TextMessageDialog extends ActionDialog {
 
         whoToSendTo = view.findViewById(R.id.search_edit_text);
         message = view.findViewById(R.id.message);
-
-        buildRecyclerView();
         setSearchContactBox();
-
+        buildRecyclerView();
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.text_message_gif).into(imageView);
 
@@ -106,25 +104,19 @@ public class TextMessageDialog extends ActionDialog {
 
             @Override
             public void afterTextChanged(Editable s) {
-                filter(s.toString());
+                adapter.getFilter().filter(s.toString());
             }
         });
-    }
-
-    private void filter(String text) {
-        ArrayList<Contact> filteredList = new ArrayList<>();
-        for (Contact item : contactsList) {
-            if (item.getContactName().toLowerCase().contains(text.toLowerCase())) {
-                filteredList.add(item);
-            }
-        }
-        adapter.filterList(filteredList);
     }
 
     public void createContactsList() {
         contactsList = new ArrayList<>();
         for (Map.Entry<String, String> entry : contacts.entrySet()) {
             contactsList.add(new Contact(entry.getKey(), entry.getValue()));
+            fullContactsList.add(new Contact(entry.getKey(), entry.getValue()));
+        }
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
         }
 
     }
@@ -133,7 +125,7 @@ public class TextMessageDialog extends ActionDialog {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
-        adapter = new ContactsAdapter(contactsList);
+        adapter = new ContactsAdapter(contactsList, fullContactsList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         adapter.setOnItemClickListener(new ContactsAdapter.OnItemClickListener() {
@@ -212,7 +204,6 @@ public class TextMessageDialog extends ActionDialog {
                 // Permission is granted
                 getContactNames(getActivity());
                 createContactsList();
-                adapter.notifyDataSetChanged();
             } else {
                 Toast.makeText(getActivity(),
                         "Until you grant the permission, we cannot get the names",
