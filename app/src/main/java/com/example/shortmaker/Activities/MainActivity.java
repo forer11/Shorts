@@ -328,7 +328,9 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
                               @NonNull RecyclerView.ViewHolder viewHolder,
                               @NonNull RecyclerView.ViewHolder target) {
 
-            popupWindow.dismiss();
+            if (popupWindow != null) {
+                popupWindow.dismiss();
+            }
             int fromPos = viewHolder.getAdapterPosition();
             int toPos = target.getAdapterPosition();
             swapShortcutPos(fromPos, toPos);
