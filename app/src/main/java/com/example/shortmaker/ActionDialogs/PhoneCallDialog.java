@@ -16,10 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,20 +34,27 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.example.shortmaker.Actions.ActionPhoneCall.PERMISSIONS_REQUEST_READ_CONTACTS;
 
-public class PhoneCallDialog extends ActionDialog {
+public class PhoneCallDialog extends ActionDialog implements  ActivityCompat.OnRequestPermissionsResultCallback{
 
+    // Request code for READ_CONTACTS. It can be any number > 0.
+    public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     private EditText phoneNum;
     private Map<String, String> contacts;
 
-    private ArrayList<Contact> contactsList;
+    private ArrayList<Contact> contactsList = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private ContactsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+    }
 
     @NonNull
     @Override
@@ -57,9 +66,8 @@ public class PhoneCallDialog extends ActionDialog {
         phoneNum = view.findViewById(R.id.phoneNum);
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.phone_call_gif).into(imageView);
-        showContacts(getActivity());
 
-        createContactsList();
+        showContacts(getActivity());
         buildRecyclerView();
         setSearchContactBox();
 
@@ -93,14 +101,16 @@ public class PhoneCallDialog extends ActionDialog {
         }
         adapter.filterList(filteredList);
     }
-    private void createContactsList() {
+
+    public void createContactsList() {
         contactsList = new ArrayList<>();
         for (Map.Entry<String, String> entry : contacts.entrySet()) {
             contactsList.add(new Contact(entry.getKey(), entry.getValue()));
-
         }
+
     }
-    private void buildRecyclerView() {
+
+    public void buildRecyclerView() {
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getActivity());
@@ -148,13 +158,14 @@ public class PhoneCallDialog extends ActionDialog {
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            contacts = getContactNames(activity);
+           getContactNames(activity);
+           createContactsList();
         }
     }
 
 
-    private Map<String, String> getContactNames(Activity activity) {
-        Map<String, String> contacts = new HashMap<>();
+    public void getContactNames(Activity activity) {
+        contacts = new HashMap<>();
         ContentResolver cr = activity.getContentResolver();
         Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null, null);
@@ -184,7 +195,24 @@ public class PhoneCallDialog extends ActionDialog {
         if (cur != null) {
             cur.close();
         }
-        return contacts;
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+      if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS){
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission is granted
+               getContactNames(getActivity());
+               createContactsList();
+               adapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(getActivity(), "Until you grant the permission, we cannot get the names", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }
