@@ -53,7 +53,7 @@ public class CreateShortcutDialog extends AppCompatDialogFragment {
         final AppData appData = (AppData) getApplicationContext();
         final EditText shortcutTitleEditText = view.findViewById(R.id.shortcutTitle);
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.progress_gif).into(imageView);
+        Glide.with(this).load(R.drawable.a).into(imageView);
 
         builder.setView(view)
                 .setTitle("Add a shortcut")

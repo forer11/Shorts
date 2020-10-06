@@ -1,12 +1,16 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.provider.MediaStore;
 import android.util.Log;
+import android.view.KeyEvent;
 
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionDialogs.SpotifyDialog;
@@ -28,7 +32,8 @@ public class ActionSpotify implements Action {
         Log.v("YAY", "Spotify activated");
         boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
         if (isSpotifyInstalled) {
-            launchSpotify(context,activity);
+//            launchSpotify(context,activity);
+            playSearchArtist(activity,artist);
         } else {
             installSpotify(activity);
         }
@@ -67,12 +72,27 @@ public class ActionSpotify implements Action {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         //TODO - we can generally open spotify with "spotify:open" and not a specific album
         // we can delete the ":play: from the uri in order for the song not to be played automatically
-        intent.setData(Uri.parse("spotify:album:0sNOF9WDwhWunNAHPD3Baj:play"));
+        intent.setData(Uri.parse("spotify:album:"+artist+":play"));
         intent.putExtra(Intent.EXTRA_REFERRER,
                 Uri.parse("android-app://" + context.getPackageName()));
         activity.startActivity(intent);
+    }
+
+    public void playSearchArtist(Activity activity,String artist) {
+        Intent intent = new Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH);
+        intent.setComponent(new ComponentName("com.spotify.music", "com.spotify.music.MainActivity"));
+        intent.putExtra(MediaStore.EXTRA_MEDIA_FOCUS, MediaStore.Audio.Artists.ENTRY_CONTENT_TYPE);
+        intent.putExtra(MediaStore.EXTRA_MEDIA_ARTIST, artist);
+        intent.putExtra(SearchManager.QUERY, artist);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        if (intent.resolveActivity(activity.getPackageManager()) != null) {
+            activity.startActivity(intent);
+        }
 
     }
+
+
 
     private boolean checkIfSpotifyInstalled(Context context) {
         PackageManager pm = context.getPackageManager();
