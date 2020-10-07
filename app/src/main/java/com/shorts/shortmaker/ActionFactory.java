@@ -1,9 +1,11 @@
 package com.shorts.shortmaker;
 
+import com.shorts.shortmaker.ActionDialogs.FlashActionDialog;
 import com.shorts.shortmaker.Actions.Action;
 import com.shorts.shortmaker.Actions.ActionActivateWifi;
 import com.shorts.shortmaker.Actions.ActionAlarmClock;
 import com.shorts.shortmaker.Actions.ActionChangeOrientation;
+import com.shorts.shortmaker.Actions.ActionOpenFlash;
 import com.shorts.shortmaker.Actions.ActionPhoneCall;
 import com.shorts.shortmaker.Actions.ActionSendTextMessage;
 import com.shorts.shortmaker.Actions.ActionSetTimer;
@@ -28,6 +30,7 @@ public class ActionFactory {
     public static final String TIMER_ACTION_TITLE = "timer";
     public static final String WIFI_ACTION_TITLE = "wifi";
     public static final String ORIENTATION_ACTION_TITLE = "orientation";
+    public static final String FLASH_ACTION_TITLE = "flash";
 
 
     public static final ArrayList<ActionData> ACTION_DATA_ARRAY_LIST = new ArrayList<ActionData>(
@@ -40,7 +43,9 @@ public class ActionFactory {
                     new ActionData(ActionFactory.TEXT_MESSAGE_ACTION_TITLE, R.drawable.text_message),
                     new ActionData(ActionFactory.SOUND_MODE_ACTION_TITLE, R.drawable.sound_mode_icon),
                     new ActionData(ActionFactory.WIFI_ACTION_TITLE, R.drawable.wifi_icon),
-                    new ActionData(ActionFactory.ORIENTATION_ACTION_TITLE, R.drawable.orientation_icon)
+                    new ActionData(ActionFactory.ORIENTATION_ACTION_TITLE, R.drawable.orientation_icon),
+                    new ActionData(ActionFactory.FLASH_ACTION_TITLE, R.drawable.flash_icon)
+
             ));
 
 
@@ -64,6 +69,8 @@ public class ActionFactory {
                 return new ActionActivateWifi();
             case ORIENTATION_ACTION_TITLE:
                 return new ActionChangeOrientation();
+            case FLASH_ACTION_TITLE:
+                return new ActionOpenFlash();
         }
         return null;
     }
