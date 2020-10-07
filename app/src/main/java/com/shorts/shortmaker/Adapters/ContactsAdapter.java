@@ -104,7 +104,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.Contac
                 String filterPattern = constraint.toString().toLowerCase().trim();
                 for (Contact contact : fullContactList)
                 {
-                    if (contact.getContactName().toLowerCase().contains(filterPattern)) {
+                    if (contact.getContactName().toLowerCase().startsWith(filterPattern)) {
                         filteredContacts.add(contact);
                     }
                 }

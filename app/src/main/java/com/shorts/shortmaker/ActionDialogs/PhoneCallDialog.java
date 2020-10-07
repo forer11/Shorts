@@ -29,6 +29,7 @@ import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.Adapters.ContactsAdapter;
 import com.shorts.shortmaker.DataClasses.Contact;
 import com.shorts.shortmaker.R;
+import com.shorts.shortmaker.SystemHandlers.ContactsHandler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,8 +42,6 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
 
     private EditText phoneNum;
-    private Map<String, String> contacts;
-
     private ArrayList<Contact> contactsList = new ArrayList<>();
     private ArrayList<Contact> fullContactsList = new ArrayList<>();
 
@@ -54,8 +53,15 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        showContacts(getActivity());
+    }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (showContacts(getActivity()))
+        {
+            buildRecyclerView();
+        }
     }
 
     @NonNull
@@ -68,8 +74,6 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         phoneNum = view.findViewById(R.id.phoneNum);
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.phone_call_gif).into(imageView);
-
-        buildRecyclerView();
         setSearchContactBox();
 
         buildDialog(builder, view);
@@ -96,7 +100,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
 
     public void createContactsList() {
         contactsList = new ArrayList<>();
-        for (Map.Entry<String, String> entry : contacts.entrySet()) {
+        for (Map.Entry<String, String> entry :  ContactsHandler.getContacts().entrySet()) {
             contactsList.add(new Contact(entry.getKey(), entry.getValue()));
             fullContactsList.add(new Contact(entry.getKey(), entry.getValue()));
         }
@@ -143,50 +147,22 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     }
 
 
-    public void showContacts(Activity activity) {
+    /**
+     * //todo Carmel doc
+     * @param activity the activity
+     * @return true if permission is already granted, false otherwise
+     */
+    private boolean showContacts(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(Manifest.permission.READ_CONTACTS)
                 != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
                     PERMISSIONS_REQUEST_READ_CONTACTS);
+            return false;
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            getContactNames(activity);
-            createContactsList();
-        }
-    }
-
-
-    public void getContactNames(Activity activity) {
-        contacts = new HashMap<>();
-        ContentResolver cr = activity.getContentResolver();
-        Cursor cur = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                null, null, null, null);
-
-        if ((cur != null ? cur.getCount() : 0) > 0) {
-            while (cur != null && cur.moveToNext()) {
-                String id = cur.getString(
-                        cur.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = cur.getString(cur.getColumnIndex(
-                        ContactsContract.Contacts.DISPLAY_NAME));
-                if (cur.getInt(cur.getColumnIndex(
-                        ContactsContract.Contacts.HAS_PHONE_NUMBER)) > 0) {
-                    Cursor pCur = cr.query(
-                            ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id}, null);
-                    while (pCur.moveToNext()) {
-                        String phoneNo = pCur.getString(pCur.getColumnIndex(
-                                ContactsContract.CommonDataKinds.Phone.NUMBER));
-                        contacts.put(name, phoneNo);
-                    }
-                    pCur.close();
-                }
-            }
-        }
-        if (cur != null) {
-            cur.close();
+            queryContacts(activity);
+            return true;
         }
     }
 
@@ -195,17 +171,19 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                getContactNames(getActivity());
-                createContactsList();
-                adapter.notifyDataSetChanged();
+                queryContacts(getActivity());
+                buildRecyclerView();
             } else {
                 Toast.makeText(getActivity(), "Until you grant the permission, we cannot get the names", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
+    private void queryContacts(Activity activity) {
+        if (ContactsHandler.getContactNames(activity)) {
+            createContactsList();
+        } else {
+            //todo handel error
+        }
     }
 }
