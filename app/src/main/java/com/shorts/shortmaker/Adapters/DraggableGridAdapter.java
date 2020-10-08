@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
@@ -116,6 +117,7 @@ public class DraggableGridAdapter extends RecyclerView
 
         TextView shortcut_title;
         ImageView shortcut_image;
+        CardView cardView;
         Context context;
 
         public ShortcutItemHolder(@NonNull View itemView, Context context, final OnItemClickListener listener,
@@ -124,8 +126,9 @@ public class DraggableGridAdapter extends RecyclerView
             this.context = context;
             shortcut_title = itemView.findViewById(R.id.icon_title);
             shortcut_image = itemView.findViewById(R.id.icon_image);
-            setOnItemClickListener(itemView, listener);
-            setOnLongItemClickListener(itemView, longClickListener);
+            cardView = itemView.findViewById(R.id.shortcut_cardview);
+            setOnItemClickListener(cardView, listener);
+            setOnLongItemClickListener(cardView, longClickListener);
         }
 
         private void setOnLongItemClickListener(@NonNull View itemView, final OnItemLongClickListener longClickListener) {
