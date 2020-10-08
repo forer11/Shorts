@@ -15,8 +15,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.shorts.shortmaker.Activities.SetActionsActivity;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.Shortcut;
@@ -25,6 +27,7 @@ import com.shorts.shortmaker.R;
 
 import java.util.Objects;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 import static com.facebook.FacebookSdk.getApplicationContext;
 
 public class CreateShortcutDialog extends AppCompatDialogFragment {
@@ -53,7 +56,7 @@ public class CreateShortcutDialog extends AppCompatDialogFragment {
         final AppData appData = (AppData) getApplicationContext();
         final EditText shortcutTitleEditText = view.findViewById(R.id.shortcutTitle);
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.a).into(imageView);
+        setDialogImage(imageView, R.drawable.new_is_always_better);
 
         builder.setView(view)
                 .setTitle("Add a shortcut")
@@ -92,6 +95,24 @@ public class CreateShortcutDialog extends AppCompatDialogFragment {
                     }
                 });
         return builder.create();
+    }
+
+    private CircularProgressDrawable setCircularProgressBar() {
+        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(getContext());
+        circularProgressDrawable.setStrokeWidth(5f);
+        circularProgressDrawable.setCenterRadius(30f);
+        circularProgressDrawable.start();
+        return circularProgressDrawable;
+    }
+
+    protected void setDialogImage(ImageView imageView, int imagePath) {
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
+        //Glide.with(this).load(R.drawable.alarm_clock_gif).placeholder(circularProgressDrawable).into(imageView);
+        Glide.with(this).load(imagePath)
+                .transition(withCrossFade())
+                .placeholder(circularProgressDrawable)
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .into(imageView);
     }
 
 
