@@ -24,6 +24,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.Adapters.ContactsAdapter;
@@ -89,23 +90,32 @@ public class TextMessageDialog extends ActionDialog {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         view = layoutInflater.inflate(R.layout.text_message_dialog, null);
 
-        whoToSendTo = view.findViewById(R.id.search_edit_text);
-        message = view.findViewById(R.id.message);
-        message.addTextChangedListener(messageTextWatcher);
-
-        okButton = view.findViewById(R.id.okButton);
-        setOkButton();
-        Button cancelButton = view.findViewById(R.id.cancelButton);
-        setCancelButton(cancelButton);
-        setOkButton();
-        setSearchContactBox();
-        ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.text_message_gif).into(imageView);
+        setDialogViews();
 
         builder.setView(view)
                 .setTitle("Send Text Message");
 
         return builder.create();
+    }
+
+    protected void setDialogViews() {
+        Button cancelButton = initializeDialogViews();
+        setOkButton();
+        setCancelButton(cancelButton);
+        setSearchContactBox();
+        ImageView imageView = view.findViewById(R.id.imageView);
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
+
+        Glide.with(this).load(R.drawable.text_message_gif).placeholder(circularProgressDrawable).into(imageView);
+    }
+
+    private Button initializeDialogViews() {
+        whoToSendTo = view.findViewById(R.id.search_edit_text);
+        message = view.findViewById(R.id.message);
+        message.addTextChangedListener(messageTextWatcher);
+        Button cancelButton = view.findViewById(R.id.cancelButton);
+        okButton = view.findViewById(R.id.okButton);
+        return cancelButton;
     }
 
     protected void setCancelButton(Button cancelButton) {

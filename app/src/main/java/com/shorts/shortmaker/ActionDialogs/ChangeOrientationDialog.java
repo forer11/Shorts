@@ -14,14 +14,13 @@ import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
 
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
 public class ChangeOrientationDialog extends ActionDialog {
 
@@ -34,11 +33,19 @@ public class ChangeOrientationDialog extends ActionDialog {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.orientation_dialog,null);
 
+        initializeDialogViews(builder, view);
+        return builder.create();
+    }
+
+    protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         setModesSpinner(view);
-
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.orientation_gif).into(imageView);
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
+        Glide.with(this).load(R.drawable.orientation_gif).placeholder(circularProgressDrawable).into(imageView);
+        buildDialog(builder, view);
+    }
 
+    protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
                 .setTitle("Change orientation")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -55,9 +62,6 @@ public class ChangeOrientationDialog extends ActionDialog {
                         listener.applyUserInfo(results);
                     }
                 });
-
-
-        return builder.create();
     }
 
     protected void setModesSpinner(View view) {
@@ -67,8 +71,12 @@ public class ChangeOrientationDialog extends ActionDialog {
         // set Adapter
         spinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        setSpinner(spinner);
 
 
+    }
+
+    private void setSpinner(Spinner spinner) {
         //Register a callback to be invoked when an item in this AdapterView has been selected
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 

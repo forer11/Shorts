@@ -27,6 +27,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.Adapters.ContactsAdapter;
@@ -75,14 +76,19 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         view = layoutInflater.inflate(R.layout.phone_call_dialog, null);
 
-        phoneNum = view.findViewById(R.id.phoneNum);
-        ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.phone_call_gif).into(imageView);
-        setSearchContactBox();
-        okButton = view.findViewById(R.id.okButton);
-
+        initializeDialogViews();
         buildDialog(builder, view);
         return builder.create();
+    }
+
+    protected void initializeDialogViews() {
+        phoneNum = view.findViewById(R.id.phoneNum);
+        ImageView imageView = view.findViewById(R.id.imageView);
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
+
+        Glide.with(this).load(R.drawable.phone_call_gif).placeholder(circularProgressDrawable).into(imageView);
+        setSearchContactBox();
+        okButton = view.findViewById(R.id.okButton);
     }
 
     protected void setSearchContactBox() {

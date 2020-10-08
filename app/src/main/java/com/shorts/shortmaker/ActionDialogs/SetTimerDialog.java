@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
@@ -34,17 +35,23 @@ public class SetTimerDialog extends ActionDialog {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.set_timer_dialog, null);
 
+        initializeDialogViews(builder, view);
+        return builder.create();
+    }
+
+    protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.timer_gif).into(imageView);
-
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
+        Glide.with(this).load(R.drawable.timer_gif).placeholder(circularProgressDrawable).into(imageView);
         setPickers(view);
+        buildDialog(builder, view);
+    }
 
+    protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
                 .setTitle("Set timer")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -59,7 +66,6 @@ public class SetTimerDialog extends ActionDialog {
                         getUserInput();
                     }
                 });
-        return builder.create();
     }
 
     protected void setPickers(View view) {

@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
@@ -26,10 +27,18 @@ public class WifiDialog extends ActionDialog{
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.wifi_dialog,null);
 
+        initializeDialogViews(builder, view);
+        return builder.create();
+    }
+
+    protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.wifi_gif).into(imageView);
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
+        Glide.with(this).load(R.drawable.wifi_gif).placeholder(circularProgressDrawable).into(imageView);
+        buildDialog(builder, view);
+    }
 
-
+    protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
                 .setTitle("Turn on wifi")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -46,8 +55,5 @@ public class WifiDialog extends ActionDialog{
                         listener.applyUserInfo(results);
                     }
                 });
-
-
-        return builder.create();
     }
 }

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
@@ -29,10 +30,19 @@ public class WazeDialog extends ActionDialog {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.waze_dialog,null);
 
+        initializeDialogViews(builder, view);
+        return builder.create();
+    }
+
+    protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         editTextAddress = view.findViewById(R.id.editText);
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.waze_gif).into(imageView);
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
+        Glide.with(this).load(R.drawable.waze_gif).placeholder(circularProgressDrawable).into(imageView);
+        buildDialog(builder, view);
+    }
 
+    protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
                 .setTitle("Where to set Waze to")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -51,8 +61,5 @@ public class WazeDialog extends ActionDialog {
                         dismiss();
                     }
                 });
-
-
-        return builder.create();
     }
 }
