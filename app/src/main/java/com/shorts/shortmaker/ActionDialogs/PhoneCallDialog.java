@@ -104,7 +104,9 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
 
             @Override
             public void afterTextChanged(Editable s) {
-                adapter.getFilter().filter(s.toString());
+                if (adapter != null) {
+                    adapter.getFilter().filter(s.toString());
+                }
             }
         });
     }
@@ -156,7 +158,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
                 dismiss();
             }
         });
-        if(phoneNum.getText().toString().equals("")) {
+        if (phoneNum.getText().toString().equals("")) {
             phoneNum.setError("Choose a Contact");
         }
     }
