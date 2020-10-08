@@ -28,7 +28,7 @@ public class WazeDialog extends ActionDialog {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.waze_dialog,null);
+        View view = layoutInflater.inflate(R.layout.waze_dialog, null);
 
         initializeDialogViews(builder, view);
         return builder.create();
@@ -37,8 +37,7 @@ public class WazeDialog extends ActionDialog {
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         editTextAddress = view.findViewById(R.id.editText);
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-        Glide.with(this).load(R.drawable.waze_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.waze_gif);
         buildDialog(builder, view);
     }
 

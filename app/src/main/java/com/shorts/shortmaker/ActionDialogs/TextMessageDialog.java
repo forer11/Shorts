@@ -104,9 +104,7 @@ public class TextMessageDialog extends ActionDialog {
         setCancelButton(cancelButton);
         setSearchContactBox();
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-
-        Glide.with(this).load(R.drawable.text_message_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.text_message_gif);
     }
 
     private Button initializeDialogViews() {

@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Shorts</string>
-
     <string name="facebook_app_id">301932977528563</string>
     <string name="fb_login_protocol_scheme">fb301932977528563</string>
     <string name="choose_an_icon">Choose an Icon</string>

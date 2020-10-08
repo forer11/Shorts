@@ -17,7 +17,7 @@ import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
 
-public class WifiDialog extends ActionDialog{
+public class WifiDialog extends ActionDialog {
 
 
     @NonNull
@@ -25,7 +25,7 @@ public class WifiDialog extends ActionDialog{
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.wifi_dialog,null);
+        View view = layoutInflater.inflate(R.layout.wifi_dialog, null);
 
         initializeDialogViews(builder, view);
         return builder.create();
@@ -33,8 +33,7 @@ public class WifiDialog extends ActionDialog{
 
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-        Glide.with(this).load(R.drawable.wifi_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.wifi_gif);
         buildDialog(builder, view);
     }
 

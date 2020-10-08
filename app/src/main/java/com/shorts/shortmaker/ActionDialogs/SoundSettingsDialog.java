@@ -38,8 +38,7 @@ public class SoundSettingsDialog extends ActionDialog {
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         setModesSpinner(view);
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-        Glide.with(this).load(R.drawable.rington_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.rington_gif);
         buildDialog(builder, view);
     }
 

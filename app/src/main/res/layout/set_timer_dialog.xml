@@ -1,71 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ImageView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:id="@+id/imageView"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <TextView
-        android:id="@+id/hoursHeadLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imageView"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
-        android:text="Hours" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_dialog_image_size"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitCenter" />
 
-    <NumberPicker
-        android:id="@+id/hoursPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="40dp"
-        android:layout_below="@id/hoursHeadLine"
-        />
+        <TextView
+            android:id="@+id/hoursHeadLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="20dp"
+            android:text="Hours" />
 
-    <TextView
-        android:id="@+id/minutesHeadLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imageView"
-        android:layout_marginStart="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Minutes" />
+        <NumberPicker
+            android:id="@+id/hoursPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hoursHeadLine"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="40dp" />
 
-    <NumberPicker
-        android:id="@+id/minutesPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginStart="40dp"
-        android:layout_below="@id/minutesHeadLine"/>
+        <TextView
+            android:id="@+id/minutesHeadLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="20dp"
+            android:text="Minutes" />
 
-    <TextView
-        android:id="@+id/secondsHeadLine"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/imageView"
-        android:layout_marginEnd="45dp"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="20dp"
-        android:text="Seconds" />
+        <NumberPicker
+            android:id="@+id/minutesPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/minutesHeadLine"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="40dp" />
 
-    <NumberPicker
-        android:id="@+id/secondsPicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="40dp"
-        android:layout_below="@id/secondsHeadLine"/>
+        <TextView
+            android:id="@+id/secondsHeadLine"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:text="Seconds" />
+
+        <NumberPicker
+            android:id="@+id/secondsPicker"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/secondsHeadLine"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="40dp" />
 
 
+    </RelativeLayout>
 
-</RelativeLayout>
+</ScrollView>

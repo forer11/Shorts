@@ -36,8 +36,7 @@ public class AlarmClockDialog extends ActionDialog{
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         final TimePicker timePicker = view.findViewById(R.id.timePicker);
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-        Glide.with(this).load(R.drawable.alarm_clock_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.alarm_clock_gif);
         buildDialog(builder, view, timePicker);
     }
 

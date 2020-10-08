@@ -41,9 +41,7 @@ public class SpotifyDialog extends ActionDialog {
     protected void initializeDialogViews(View view) {
         albumToPlay = view.findViewById(R.id.editText);
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-
-        Glide.with(this).load(R.drawable.spotify_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.spotify_gif);
     }
 
     protected void buildDialog(AlertDialog.Builder builder, View view) {
