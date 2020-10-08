@@ -14,6 +14,7 @@ import androidx.core.app.ActivityCompat;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionDialogs.TextMessageDialog;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -25,6 +26,7 @@ public class ActionSendTextMessage implements Action, ActivityCompat.OnRequestPe
     private Activity activity;
     private String whoToSend;
     private String message;
+    private List<String> recipientsList;
 
     public ActionSendTextMessage() {
         this.dialog = new TextMessageDialog();
@@ -66,12 +68,14 @@ public class ActionSendTextMessage implements Action, ActivityCompat.OnRequestPe
     }
 
     private void sendSms() {
-        SmsManager.getDefault().sendTextMessage(
-                whoToSend,
-                null,
-                message,
-                null,
-                null);
+        for (int i = 0; i < recipientsList.size(); i++) {
+            SmsManager.getDefault().sendTextMessage(
+                    recipientsList.get(i),
+                    null,
+                    message,
+                    null,
+                    null);
+        }
     }
 
 
@@ -83,7 +87,7 @@ public class ActionSendTextMessage implements Action, ActivityCompat.OnRequestPe
 
     @Override
     public void setData(List<String> data) {
-        whoToSend = data.get(0);
-        message = data.get(1);
+        message = data.get(0);
+        recipientsList = data.subList(1,data.size());
     }
 }
