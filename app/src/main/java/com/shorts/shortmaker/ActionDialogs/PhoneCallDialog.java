@@ -84,9 +84,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     protected void initializeDialogViews() {
         phoneNum = view.findViewById(R.id.phoneNum);
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-
-        Glide.with(this).load(R.drawable.phone_call_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.phone_call_gif);
         setSearchContactBox();
         okButton = view.findViewById(R.id.okButton);
     }
@@ -104,7 +102,9 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
 
             @Override
             public void afterTextChanged(Editable s) {
-                adapter.getFilter().filter(s.toString());
+                if (adapter != null) {
+                    adapter.getFilter().filter(s.toString());
+                }
             }
         });
     }
@@ -156,7 +156,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
                 dismiss();
             }
         });
-        if(phoneNum.getText().toString().equals("")) {
+        if (phoneNum.getText().toString().equals("")) {
             phoneNum.setError("Choose a Contact");
         }
     }

@@ -27,7 +27,7 @@ public class FlashActionDialog extends ActionDialog {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.flash_dialog,null);
+        View view = layoutInflater.inflate(R.layout.flash_dialog, null);
 
         initializeDialogViews(view);
         buildDialog(builder, view);
@@ -36,8 +36,7 @@ public class FlashActionDialog extends ActionDialog {
 
     protected void initializeDialogViews(View view) {
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-        Glide.with(this).load(R.drawable.flash_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.flash_gif);
     }
 
     protected void buildDialog(AlertDialog.Builder builder, View view) {

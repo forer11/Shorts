@@ -28,9 +28,9 @@ public class SetTimerDialog extends ActionDialog {
     public static final int HOURS_MAX_VAL = 24;
     public static final int MINUTES_MAX_VAL = 60;
     public static final int SECONDS_MAX_VAL = 60;
-    protected String minute="0";
-    protected String hour="0";
-    protected String second="0";
+    protected String minute = "0";
+    protected String hour = "0";
+    protected String second = "0";
 
     @NonNull
     @Override
@@ -45,8 +45,7 @@ public class SetTimerDialog extends ActionDialog {
 
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-        Glide.with(this).load(R.drawable.timer_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.timer_gif);
         setPickers(view);
         buildDialog(builder, view);
     }
@@ -77,9 +76,9 @@ public class SetTimerDialog extends ActionDialog {
         NumberPicker minutesPicker = (NumberPicker) view.findViewById(R.id.minutesPicker);
         NumberPicker secondsPicker = (NumberPicker) view.findViewById(R.id.secondsPicker);
 
-        setPicker(hours, hoursPicker, HOURS_MAX_VAL - 1,"Hours");
-        setPicker(minutes, minutesPicker, MINUTES_MAX_VAL - 1,"Minutes");
-        setPicker(seconds, secondsPicker, SECONDS_MAX_VAL - 1,"Seconds");
+        setPicker(hours, hoursPicker, HOURS_MAX_VAL - 1, "Hours");
+        setPicker(minutes, minutesPicker, MINUTES_MAX_VAL - 1, "Minutes");
+        setPicker(seconds, secondsPicker, SECONDS_MAX_VAL - 1, "Seconds");
     }
 
 

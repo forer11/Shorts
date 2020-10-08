@@ -54,14 +54,14 @@ public class TextMessageDialog extends ActionDialog {
     private Pair<String, String> contact;
     private Button okButton;
 
-    private  TextWatcher messageTextWatcher = new TextWatcher() {
+    private TextWatcher messageTextWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
         }
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if(whoToSendTo.getText().toString().equals("")) {
+            if (whoToSendTo.getText().toString().equals("")) {
                 whoToSendTo.setError("Choose a Contact");
             } else {
                 okButton.setEnabled(!message.getText().toString().equals(""));
@@ -104,9 +104,7 @@ public class TextMessageDialog extends ActionDialog {
         setCancelButton(cancelButton);
         setSearchContactBox();
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-
-        Glide.with(this).load(R.drawable.text_message_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.text_message_gif);
     }
 
     private Button initializeDialogViews() {
@@ -150,7 +148,9 @@ public class TextMessageDialog extends ActionDialog {
 
             @Override
             public void afterTextChanged(Editable s) {
-                adapter.getFilter().filter(s.toString());
+                if (adapter != null) {
+                    adapter.getFilter().filter(s.toString());
+                }
             }
         });
     }
@@ -182,7 +182,7 @@ public class TextMessageDialog extends ActionDialog {
                 contact = new Pair<>(contactsList.get(position).getContactName(),
                         contactsList.get(position).getContactNum());
                 whoToSendTo.setText(contact.first);
-                if(message.getText().toString().equals("")){
+                if (message.getText().toString().equals("")) {
                     message.requestFocus();
                     message.setError("Message is Empty");
                 } else {

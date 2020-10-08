@@ -1,22 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/topLayout"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <ImageView
+    <LinearLayout
+        android:id="@+id/topLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView"/>
+        android:orientation="vertical"
+        android:padding="16dp">
 
-    <Spinner
-        android:id="@+id/spinner"
-        android:layout_width="fill_parent"
-        android:layout_marginTop="30dp"
-        android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_dialog_image_size"
+            android:scaleType="fitCenter" />
+
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp" />
 
 
-</LinearLayout>
+    </LinearLayout>
+</ScrollView>

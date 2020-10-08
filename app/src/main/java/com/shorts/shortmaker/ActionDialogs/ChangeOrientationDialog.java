@@ -31,7 +31,7 @@ public class ChangeOrientationDialog extends ActionDialog {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.orientation_dialog,null);
+        View view = layoutInflater.inflate(R.layout.orientation_dialog, null);
 
         initializeDialogViews(builder, view);
         return builder.create();
@@ -40,8 +40,7 @@ public class ChangeOrientationDialog extends ActionDialog {
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         setModesSpinner(view);
         ImageView imageView = view.findViewById(R.id.imageView);
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-        Glide.with(this).load(R.drawable.orientation_gif).placeholder(circularProgressDrawable).into(imageView);
+        setDialogImage(imageView, R.drawable.orientation_gif);
         buildDialog(builder, view);
     }
 
@@ -65,7 +64,7 @@ public class ChangeOrientationDialog extends ActionDialog {
     }
 
     protected void setModesSpinner(View view) {
-        String[] modes = {"Landscape","Portrait"};
+        String[] modes = {"Landscape", "Portrait"};
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, modes);
         // set Adapter
