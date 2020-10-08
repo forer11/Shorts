@@ -12,10 +12,12 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -49,6 +51,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     private ContactsAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private View view;
+    private Pair<String, String> contact;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,8 +61,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (showContacts(getActivity()))
-        {
+        if (showContacts(getActivity())) {
             buildRecyclerView();
         }
     }
@@ -100,7 +102,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
 
     public void createContactsList() {
         contactsList = new ArrayList<>();
-        for (Map.Entry<String, String> entry :  ContactsHandler.getContacts().entrySet()) {
+        for (Map.Entry<String, String> entry : ContactsHandler.getContacts().entrySet()) {
             contactsList.add(new Contact(entry.getKey(), entry.getValue()));
             fullContactsList.add(new Contact(entry.getKey(), entry.getValue()));
         }
@@ -114,10 +116,14 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         adapter = new ContactsAdapter(contactsList, fullContactsList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        ProgressBar progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         adapter.setOnItemClickListener(new ContactsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                phoneNum.setText(contactsList.get(position).getContactNum());
+                contact = new Pair<>(contactsList.get(position).getContactName(),
+                        contactsList.get(position).getContactNum());
+                phoneNum.setText(contact.first);
             }
         });
     }
@@ -140,7 +146,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     }
 
     protected void getUserInput() {
-        String numberToCall = phoneNum.getText().toString();
+        String numberToCall = contact.second;
         ArrayList<String> results = new ArrayList<>();
         results.add(numberToCall);
         listener.applyUserInfo(results);
@@ -149,6 +155,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
 
     /**
      * //todo Carmel doc
+     *
      * @param activity the activity
      * @return true if permission is already granted, false otherwise
      */

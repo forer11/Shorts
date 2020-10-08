@@ -9,15 +9,19 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.ViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,6 +33,8 @@ import com.shorts.shortmaker.SystemHandlers.ContactsHandler;
 
 import java.util.ArrayList;
 import java.util.Map;
+
+import javax.xml.validation.Validator;
 
 public class TextMessageDialog extends ActionDialog {
 
@@ -44,12 +50,34 @@ public class TextMessageDialog extends ActionDialog {
 
     private EditText whoToSendTo;
     private EditText message;
+    private Pair<String, String> contact;
+    private Button okButton;
+
+    private  TextWatcher messageTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if(whoToSendTo.getText().toString().equals("")) {
+                whoToSendTo.setError("Choose a Contact");
+            } else {
+                okButton.setEnabled(!message.getText().toString().equals(""));
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            message.setError(null);
+
+        }
+    };
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        if (showContacts(getActivity()))
-        {
+        if (showContacts(getActivity())) {
             buildRecyclerView();
         }
     }
@@ -63,26 +91,22 @@ public class TextMessageDialog extends ActionDialog {
 
         whoToSendTo = view.findViewById(R.id.search_edit_text);
         message = view.findViewById(R.id.message);
+        message.addTextChangedListener(messageTextWatcher);
+
+        okButton = view.findViewById(R.id.okButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getUserInput();
+                dismiss();
+            }
+        });
         setSearchContactBox();
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.text_message_gif).into(imageView);
 
-
         builder.setView(view)
-                .setTitle("Send Text Message")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getUserInput();
-                    }
-                });
-
+                .setTitle("Send Text Message");
 
         return builder.create();
     }
@@ -124,22 +148,29 @@ public class TextMessageDialog extends ActionDialog {
         adapter = new ContactsAdapter(contactsList, fullContactsList);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+        ProgressBar progressBar = view.findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
         adapter.setOnItemClickListener(new ContactsAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
-                whoToSendTo.setText(contactsList.get(position).getContactNum());
+                contact = new Pair<>(contactsList.get(position).getContactName(),
+                        contactsList.get(position).getContactNum());
+                whoToSendTo.setText(contact.first);
+                message.requestFocus();
+                message.setError("Message is Empty");
             }
         });
     }
 
 
     protected void getUserInput() {
-        String whoToSend = whoToSendTo.getText().toString();
-        String theMessage = message.getText().toString();
+        String theMessage = contact.first;
+        String whoToSend = contact.second;
         ArrayList<String> results = new ArrayList<>();
         results.add(whoToSend);
         results.add(theMessage);
         listener.applyUserInfo(results);
+
     }
 
 

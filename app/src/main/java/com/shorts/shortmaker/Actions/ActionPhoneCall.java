@@ -38,7 +38,7 @@ public class ActionPhoneCall implements Action, ActivityCompat.OnRequestPermissi
         if (number.trim().length() > 0) {
             if (ContextCompat.checkSelfPermission(context,
                     Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions((Activity) context,
+                ActivityCompat.requestPermissions(activity,
                         new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
             } else {
                 String dial = "tel:" + number;
