@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
@@ -28,14 +29,21 @@ public class SoundSettingsDialog extends ActionDialog {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.sound_settings_dialog,null);
+        View view = layoutInflater.inflate(R.layout.sound_settings_dialog, null);
 
+        initializeDialogViews(builder, view);
+        return builder.create();
+    }
+
+    protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         setModesSpinner(view);
-
-
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.rington_gif).into(imageView);
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
+        Glide.with(this).load(R.drawable.rington_gif).placeholder(circularProgressDrawable).into(imageView);
+        buildDialog(builder, view);
+    }
 
+    protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
                 .setTitle("Which mode you would like")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -52,9 +60,6 @@ public class SoundSettingsDialog extends ActionDialog {
                         listener.applyUserInfo(results);
                     }
                 });
-
-
-        return builder.create();
     }
 
     protected void setModesSpinner(View view) {
@@ -64,8 +69,11 @@ public class SoundSettingsDialog extends ActionDialog {
         // set Adapter
         spinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        setSpinner(spinner);
 
+    }
 
+    private void setSpinner(Spinner spinner) {
         //Register a callback to be invoked when an item in this AdapterView has been selected
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 

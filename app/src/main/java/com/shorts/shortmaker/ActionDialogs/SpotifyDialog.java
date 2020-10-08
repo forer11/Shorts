@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
@@ -29,10 +30,23 @@ public class SpotifyDialog extends ActionDialog {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.spotify_dialog,null);
 
+        initializeDialogViews(view);
+
+        buildDialog(builder, view);
+
+
+        return builder.create();
+    }
+
+    protected void initializeDialogViews(View view) {
         albumToPlay = view.findViewById(R.id.editText);
         ImageView imageView = view.findViewById(R.id.imageView);
-        Glide.with(this).load(R.drawable.spotify_gif).into(imageView);
+        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
 
+        Glide.with(this).load(R.drawable.spotify_gif).placeholder(circularProgressDrawable).into(imageView);
+    }
+
+    protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
                 .setTitle("Which album to play on Spotify")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -50,8 +64,5 @@ public class SpotifyDialog extends ActionDialog {
                         listener.applyUserInfo(results);
                     }
                 });
-
-
-        return builder.create();
     }
 }
