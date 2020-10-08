@@ -45,7 +45,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.shorts.shortmaker.Activities.SetActionsActivity"></activity>
+        <activity android:name="com.shorts.shortmaker.Activities.SetActionsActivity"
+            android:theme="@style/SetActionsTheme">
+
+        </activity>
 
         <receiver
             android:name="com.shorts.shortmaker.MyReceiver"

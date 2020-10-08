@@ -3,13 +3,10 @@ package com.shorts.shortmaker.ActionDialogs;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ContentResolver;
-import android.content.DialogInterface;
+
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Pair;
@@ -25,18 +22,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.bumptech.glide.Glide;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.shorts.shortmaker.Adapters.ContactsAdapter;
 import com.shorts.shortmaker.DataClasses.Contact;
 import com.shorts.shortmaker.R;
 import com.shorts.shortmaker.SystemHandlers.ContactsHandler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -55,6 +53,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     private View view;
     private Pair<String, String> contact;
     private Button okButton;
+    private EditText searchContactEditText;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +77,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
 
         initializeDialogViews();
         buildDialog(builder, view);
+
         return builder.create();
     }
 
@@ -85,12 +85,13 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         phoneNum = view.findViewById(R.id.phoneNum);
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.phone_call_gif);
+
         setSearchContactBox();
         okButton = view.findViewById(R.id.okButton);
     }
 
     protected void setSearchContactBox() {
-        EditText searchContactEditText = view.findViewById(R.id.search_edit_text);
+        searchContactEditText = view.findViewById(R.id.search_edit_text);
         searchContactEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -132,9 +133,10 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
             public void onItemClick(int position) {
                 contact = new Pair<>(contactsList.get(position).getContactName(),
                         contactsList.get(position).getContactNum());
-                phoneNum.setText(contact.first);
                 phoneNum.setError(null);
                 okButton.setEnabled(true);
+                phoneNum.setText(contact.first);
+
             }
         });
     }

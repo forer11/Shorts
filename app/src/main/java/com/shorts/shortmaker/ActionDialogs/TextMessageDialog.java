@@ -3,7 +3,6 @@ package com.shorts.shortmaker.ActionDialogs;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,21 +20,22 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.view.ViewCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.bumptech.glide.Glide;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 import com.shorts.shortmaker.Adapters.ContactsAdapter;
 import com.shorts.shortmaker.DataClasses.Contact;
 import com.shorts.shortmaker.R;
 import com.shorts.shortmaker.SystemHandlers.ContactsHandler;
 
-import java.util.ArrayList;
-import java.util.Map;
+import org.jetbrains.annotations.NotNull;
 
-import javax.xml.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class TextMessageDialog extends ActionDialog {
 
@@ -53,6 +53,7 @@ public class TextMessageDialog extends ActionDialog {
     private EditText message;
     private Pair<String, String> contact;
     private Button okButton;
+    private List<Pair<String, String>> whoToSendList;
 
     private TextWatcher messageTextWatcher = new TextWatcher() {
         @Override
@@ -61,7 +62,7 @@ public class TextMessageDialog extends ActionDialog {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (whoToSendTo.getText().toString().equals("")) {
+            if (whoToSendList.size()==0) {
                 whoToSendTo.setError("Choose a Contact");
             } else {
                 okButton.setEnabled(!message.getText().toString().equals(""));
@@ -71,7 +72,7 @@ public class TextMessageDialog extends ActionDialog {
         @Override
         public void afterTextChanged(Editable s) {
             message.setError(null);
-
+            okButton.setEnabled(true);
         }
     };
 
@@ -91,10 +92,9 @@ public class TextMessageDialog extends ActionDialog {
         view = layoutInflater.inflate(R.layout.text_message_dialog, null);
 
         setDialogViews();
-
+        whoToSendList = new ArrayList<>();
         builder.setView(view)
                 .setTitle("Send Text Message");
-
         return builder.create();
     }
 
@@ -181,9 +181,17 @@ public class TextMessageDialog extends ActionDialog {
             public void onItemClick(int position) {
                 contact = new Pair<>(contactsList.get(position).getContactName(),
                         contactsList.get(position).getContactNum());
-                whoToSendTo.setText(contact.first);
+                whoToSendList.add(contact);
+
+
+                final Chip chip = initializeChip();
+                final ChipGroup chipGroup = view.findViewById(R.id.chipGroup2);
+                chipGroup.addView((View) chip);
+                whoToSendTo.setText("");
+                setChipOnClickListener(chip, chipGroup);
+
                 if (message.getText().toString().equals("")) {
-                    message.requestFocus();
+//                    message.requestFocus();
                     message.setError("Message is Empty");
                 } else {
                     whoToSendTo.setError(null);
@@ -193,13 +201,43 @@ public class TextMessageDialog extends ActionDialog {
         });
     }
 
+    @NotNull
+    protected Chip initializeChip() {
+        final Chip chip = new Chip(getContext());
+        chip.setText(contact.first);
+        chip.setChipIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_textsms_24));
+        // following lines are for the demo
+        chip.setChipIconTintResource(R.color.gray);
+        chip.setCloseIconVisible(true);
+        chip.setClickable(true);
+        chip.setCheckable(false);
+        return chip;
+    }
+
+    protected void setChipOnClickListener(final Chip chip, final ChipGroup chipGroup) {
+        chip.setOnCloseIconClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chipGroup.removeView((View) chip);
+                whoToSendTo.setError("Choose a Contact");
+                okButton.setEnabled(false);
+                for (Pair<String, String> contact : whoToSendList) {
+                    if(contact.first.equals(chip.getText().toString())){
+                        whoToSendList.remove(contact);
+                    }
+                }
+            }
+        });
+    }
+
 
     protected void getUserInput() {
-        String theMessage = contact.first;
-        String whoToSend = contact.second;
+        String theMessage = message.getText().toString();
         ArrayList<String> results = new ArrayList<>();
-        results.add(whoToSend);
         results.add(theMessage);
+        for (Pair<String, String> contact : whoToSendList) {
+            results.add(contact.second);
+        }
         listener.applyUserInfo(results);
 
     }
