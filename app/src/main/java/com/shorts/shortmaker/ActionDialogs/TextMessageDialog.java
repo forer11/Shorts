@@ -94,13 +94,10 @@ public class TextMessageDialog extends ActionDialog {
         message.addTextChangedListener(messageTextWatcher);
 
         okButton = view.findViewById(R.id.okButton);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserInput();
-                dismiss();
-            }
-        });
+        setOkButton();
+        Button cancelButton = view.findViewById(R.id.cancelButton);
+        setCancelButton(cancelButton);
+        setOkButton();
         setSearchContactBox();
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.text_message_gif).into(imageView);
@@ -109,6 +106,25 @@ public class TextMessageDialog extends ActionDialog {
                 .setTitle("Send Text Message");
 
         return builder.create();
+    }
+
+    protected void setCancelButton(Button cancelButton) {
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
+
+    protected void setOkButton() {
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getUserInput();
+                dismiss();
+            }
+        });
     }
 
     protected void setSearchContactBox() {
@@ -156,8 +172,13 @@ public class TextMessageDialog extends ActionDialog {
                 contact = new Pair<>(contactsList.get(position).getContactName(),
                         contactsList.get(position).getContactNum());
                 whoToSendTo.setText(contact.first);
-                message.requestFocus();
-                message.setError("Message is Empty");
+                if(message.getText().toString().equals("")){
+                    message.requestFocus();
+                    message.setError("Message is Empty");
+                } else {
+                    whoToSendTo.setError(null);
+                    okButton.setEnabled(true);
+                }
             }
         });
     }

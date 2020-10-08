@@ -15,6 +15,7 @@ import android.text.TextWatcher;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -52,6 +53,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     private RecyclerView.LayoutManager layoutManager;
     private View view;
     private Pair<String, String> contact;
+    private Button okButton;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -77,6 +79,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         ImageView imageView = view.findViewById(R.id.imageView);
         Glide.with(this).load(R.drawable.phone_call_gif).into(imageView);
         setSearchContactBox();
+        okButton = view.findViewById(R.id.okButton);
 
         buildDialog(builder, view);
         return builder.create();
@@ -124,25 +127,32 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
                 contact = new Pair<>(contactsList.get(position).getContactName(),
                         contactsList.get(position).getContactNum());
                 phoneNum.setText(contact.first);
+                phoneNum.setError(null);
+                okButton.setEnabled(true);
             }
         });
     }
 
     protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
-                .setTitle("Make a call")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getUserInput();
-                    }
-                });
+                .setTitle("Make a call");
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getUserInput();
+                dismiss();
+            }
+        });
+        Button cancelButton = view.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+        if(phoneNum.getText().toString().equals("")) {
+            phoneNum.setError("Choose a Contact");
+        }
     }
 
     protected void getUserInput() {
