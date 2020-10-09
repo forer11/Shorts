@@ -62,7 +62,7 @@ public class TextMessageDialog extends ActionDialog {
 
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (whoToSendList.size()==0) {
+            if (whoToSendList.size() == 0) {
                 whoToSendTo.setError("Choose a Contact");
             } else {
                 okButton.setEnabled(!message.getText().toString().equals(""));
@@ -75,12 +75,15 @@ public class TextMessageDialog extends ActionDialog {
             okButton.setEnabled(true);
         }
     };
+    private ArrayList<String> data;
+    private Map<String, String> reversedContacts;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (showContacts(getActivity())) {
             buildRecyclerView();
+
         }
     }
 
@@ -91,8 +94,11 @@ public class TextMessageDialog extends ActionDialog {
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         view = layoutInflater.inflate(R.layout.text_message_dialog, null);
 
-        setDialogViews();
+        data = getArguments().getStringArrayList("data");
         whoToSendList = new ArrayList<>();
+
+        setDialogViews();
+
         builder.setView(view)
                 .setTitle("Send Text Message");
         return builder.create();
@@ -110,6 +116,8 @@ public class TextMessageDialog extends ActionDialog {
     private Button initializeDialogViews() {
         whoToSendTo = view.findViewById(R.id.search_edit_text);
         message = view.findViewById(R.id.message);
+        message.setText(data.get(0));
+
         message.addTextChangedListener(messageTextWatcher);
         Button cancelButton = view.findViewById(R.id.cancelButton);
         okButton = view.findViewById(R.id.okButton);
@@ -161,6 +169,13 @@ public class TextMessageDialog extends ActionDialog {
             contactsList.add(new Contact(entry.getKey(), entry.getValue()));
             fullContactsList.add(new Contact(entry.getKey(), entry.getValue()));
         }
+        reversedContacts = ContactsHandler.getReverseContacts();
+
+        if(data!=null){
+            for (String number : data.subList(1, data.size())) {
+                onContactChosenHandler(new Pair<>(reversedContacts.get(number), number));
+            }
+        }
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -181,28 +196,30 @@ public class TextMessageDialog extends ActionDialog {
             public void onItemClick(int position) {
                 contact = new Pair<>(contactsList.get(position).getContactName(),
                         contactsList.get(position).getContactNum());
-                whoToSendList.add(contact);
+                onContactChosenHandler(contact);
 
-
-                final Chip chip = initializeChip();
-                final ChipGroup chipGroup = view.findViewById(R.id.chipGroup2);
-                chipGroup.addView((View) chip);
-                whoToSendTo.setText("");
-                setChipOnClickListener(chip, chipGroup);
-
-                if (message.getText().toString().equals("")) {
-//                    message.requestFocus();
-                    message.setError("Message is Empty");
-                } else {
-                    whoToSendTo.setError(null);
-                    okButton.setEnabled(true);
-                }
             }
         });
     }
 
+    protected void onContactChosenHandler(Pair<String, String> contact) {
+        whoToSendList.add(contact);
+        final Chip chip = initializeChip(contact);
+        final ChipGroup chipGroup = view.findViewById(R.id.chipGroup2);
+        chipGroup.addView((View) chip);
+        whoToSendTo.setText("");
+        setChipOnClickListener(chip, chipGroup);
+        if (message.getText().toString().equals("")) {
+//                    message.requestFocus();
+            message.setError("Message is Empty");
+        } else {
+            whoToSendTo.setError(null);
+            okButton.setEnabled(true);
+        }
+    }
+
     @NotNull
-    protected Chip initializeChip() {
+    protected Chip initializeChip(Pair<String, String> contact) {
         final Chip chip = new Chip(getContext());
         chip.setText(contact.first);
         chip.setChipIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_baseline_textsms_24));
@@ -222,8 +239,9 @@ public class TextMessageDialog extends ActionDialog {
                 whoToSendTo.setError("Choose a Contact");
                 okButton.setEnabled(false);
                 for (Pair<String, String> contact : whoToSendList) {
-                    if(contact.first.equals(chip.getText().toString())){
+                    if (contact.first.equals(chip.getText().toString())) {
                         whoToSendList.remove(contact);
+
                     }
                 }
             }
@@ -268,6 +286,7 @@ public class TextMessageDialog extends ActionDialog {
     private void queryContacts(Activity activity) {
         if (ContactsHandler.getContactNames(activity)) {
             createContactsList();
+
         } else {
             //todo handel error
         }
