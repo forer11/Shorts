@@ -11,7 +11,7 @@
     <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/shortcut_cardview"
         android:layout_width="100dp"
-        android:layout_height="140dp"
+        android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:clickable="true"
         app:cardBackgroundColor="@color/transperent"
@@ -41,7 +41,8 @@
                 android:gravity="center"
                 android:text="Icon"
                 android:textStyle="bold"
-                android:textSize="13sp"
+                android:textSize="18sp"
+                android:maxLines="1"
 />
 
         </LinearLayout>
