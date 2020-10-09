@@ -33,6 +33,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
@@ -252,18 +253,45 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         popupWindow.setOutsideTouchable(true);
         popupWindow.setFocusable(true);
 
-        setPopupLocation(view);
+        setPopupLocation(view, customView);
     }
 
-    private void setPopupLocation(View view) {
+    private void setPopupLocation(View view, View costumeView) {
         int[] location = {0, 0};
         view.getLocationOnScreen(location);
         if (location[Y] >= (screenHeight / 2)) {
             int h = -view.getHeight();
             popupWindow.showAsDropDown(view, 0, (int) Math.round(h * 1.71));
+            setTriangleLocation(location, true, costumeView);
         } else {
             popupWindow.showAsDropDown(view);
+            setTriangleLocation(location, false, costumeView);
         }
+    }
+
+    /**
+     * sets the traingle location
+     *
+     * @param location the popup location
+     * @param down     indicating if the triangle shuld be facing down or up
+     */
+    private void setTriangleLocation(int[] location, boolean down, View costumeView) {
+        ImageView triangle;
+        if (location[X] > screenWidth / 1.5) {
+            if (down) { //right bottom
+                triangle = costumeView.findViewById(R.id.triangle_bottom_right);
+            } else { // right top
+                triangle = costumeView.findViewById(R.id.triangle_top_right);
+            }
+
+        } else { // left
+            if (down) { //left bottom
+                triangle = costumeView.findViewById(R.id.triangle_bottom_left);
+            } else { //left top
+                triangle = costumeView.findViewById(R.id.triangle_top_left);
+            }
+        }
+        triangle.setVisibility(View.VISIBLE);
     }
 
     private void setHorizontalMenuClickEvents(LinearLayout editLayout, LinearLayout deleteLayout, LinearLayout copyLayout, LinearLayout swapIconLayout) {
