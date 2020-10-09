@@ -256,23 +256,27 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         });
     }
 
-    protected void showActionDialog(final ActionData action, final boolean edit) {
+    protected void showActionDialog(final ActionData actionData, final boolean edit) {
         ActionDialog actionDialog = Objects
                 .requireNonNull(ActionFactory
-                        .getAction(action.getTitle())).getDialog();
+                        .getAction(actionData.getTitle())).getDialog();
+        Bundle bundle = new Bundle();
         if (actionDialog != null) {
+            bundle.putStringArrayList("data", actionData.getData());
             actionDialog.show(getSupportFragmentManager(),
-                    action.getTitle() + " dialog");
+                    actionData.getTitle() + " dialog");
             actionDialog.setNewDialogListener(new ActionDialog.DialogListener() {
                 @Override
                 public void applyUserInfo(ArrayList<String> data) {
-                    action.setData(data);
-                    addAction(action,edit);
+                    actionData.setData(data);
+                    addAction(actionData,edit);
                 }
             });
         } else {
-            addAction(action,edit);
+            addAction(actionData,edit);
         }
+        actionDialog.setArguments(bundle);
+
     }
 
     private void addAction(ActionData action, final boolean edit) {

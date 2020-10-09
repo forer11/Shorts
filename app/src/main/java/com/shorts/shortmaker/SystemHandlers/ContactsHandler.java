@@ -14,6 +14,8 @@ import java.util.Map;
 
 public class ContactsHandler {
     private static Map<String, String> contacts = new HashMap<>();
+    private static Map<String, String> reverseContacts = new HashMap<>();
+
     private static boolean loadedContacts = false;
     private static final String[] PROJECTION = new String[]{
             ContactsContract.CommonDataKinds.Phone.NUMBER,
@@ -45,6 +47,7 @@ public class ContactsHandler {
                         displayName = cursor.getString(displayNameIndex);
                         System.out.println("FALOL");
                         contacts.put(displayName, number);
+                        reverseContacts.put(number, displayName);
                     }
                     loadedContacts = true;
                     cursor.close();
@@ -64,6 +67,11 @@ public class ContactsHandler {
     public static Map<String, String> getContacts() {
         return contacts;
     }
+
+    public static Map<String, String> getReverseContacts() {
+        return reverseContacts;
+    }
+
 
     public static boolean areContactsLoaded() {
         return loadedContacts;
