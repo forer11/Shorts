@@ -3,18 +3,27 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
+        <item name="android:fontFamily">@font/caviar_dreams</item>
         <item name="colorPrimary">#F8F8F8</item>
-        <item name="colorPrimaryDark">#C7CCD1</item>
+        <item name="android:textColor">#000000</item>
+        <item name="colorPrimaryDark">#311b92</item>
         <item name="colorAccent">@color/indigo</item>
         <item name="icdStyle">@style/CustomIconDialogStyle</item>
         <item name="popupMenuStyle">@style/popupMenu</item>
+        <item name="android:windowBackground">@color/background</item>
         <item name="android:dropDownListViewStyle">@style/PopupMenuListView</item>
-
     </style>
+
+    <style name="TextColor">
+        <item name="android:textColor">#0097A7</item>
+    </style>
+
+
 
     <style name="SetActionsTheme" parent="Theme.MaterialComponents">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">#F8F8F8</item>
+        <item name="android:typeface">serif</item>
         <item name="colorPrimaryDark">#C7CCD1</item>
         <item name="colorAccent">@color/indigo</item>
         <item name="icdStyle">@style/CustomIconDialogStyle</item>
@@ -35,9 +44,9 @@
 
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
-        <item name="android:textColorPrimary">#2D8F97</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
         <!-- actionMenuTextColor is the color of the text of action (popup_menu) items  -->
-        <item name="actionMenuTextColor">@android:color/holo_green_light</item>
+        <item name="actionMenuTextColor">#FFFFFF</item>
         <!-- Tints the input fields like checkboxes and text fields -->
         <item name="colorAccent">@color/salmon</item>
         <!-- Applies to views in their normal state. -->
@@ -57,7 +66,7 @@
     <!-- This configures the styles for the title within the Toolbar  -->
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">21sp</item>
-        <item name="android:textStyle">italic</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Theme.Transparent" parent="Theme.AppCompat.Light.NoActionBar">
@@ -86,7 +95,7 @@
     </style>
 
     <style name="IcdButtonStyle" parent="Base.Widget.AppCompat.Button.ButtonBar.AlertDialog">
-        <item name="android:textColor">@color/gray</item>
+        <item name="android:textColor">#0097A7</item>
         <item name="android:background">@drawable/sign_in_button_design</item>
         <item name="android:minWidth">64dp</item>
         <item name="android:minHeight">64dp</item>
