@@ -5,7 +5,8 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.shorts.shortmaker.Activities.MainActivity">
+    tools:context="com.shorts.shortmaker.Activities.MainActivity"
+    android:background="#5A5A5A">
 
     <include
         android:id="@+id/toolbar"
