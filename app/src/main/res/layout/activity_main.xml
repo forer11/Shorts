@@ -8,27 +8,29 @@
     android:background="@drawable/gradient"
     tools:context="com.shorts.shortmaker.Activities.MainActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/app_bar_layout"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <FrameLayout
+        android:id="@+id/toolbar_shadow"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
         <View
             android:layout_width="match_parent"
-            android:layout_height="0.5dp"
-            android:id="@+id/separator"
-            android:visibility="visible"
-            android:background="@android:color/darker_gray"
-            />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:layout_height="3dp"
+            android:background="@drawable/toolbar_shadow" />
+
+    </FrameLayout>
+
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -38,7 +40,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/app_bar_layout" />
+        app:layout_constraintTop_toTopOf="@+id/toolbar_shadow" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -49,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_shadow"
         app:layout_constraintVertical_bias="1.0">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -66,7 +68,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.95"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_shadow"
         app:layout_constraintVertical_bias="0.95"
         app:rippleColor="@color/colorAccent" />
 

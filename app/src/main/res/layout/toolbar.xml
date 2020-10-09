@@ -6,7 +6,6 @@
     android:background="@drawable/gradient_toolbar"
     android:elevation="8dp"
     android:minHeight="?attr/actionBarSize"
-    android:outlineProvider="paddedBounds"
     android:theme="@style/ToolbarTheme"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
     app:titleTextAppearance="@style/Toolbar.TitleText">
