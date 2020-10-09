@@ -78,7 +78,7 @@ public class DraggableGridAdapter extends RecyclerView
     public void onBindViewHolder(@NonNull ShortcutItemHolder holder, int position) {
         Shortcut shortcut = shortcuts.get(position);
         holder.shortcut_title.setText(shortcut.getTitle());
-        setAnimatedGradientBackground(holder);
+//        setAnimatedGradientBackground(holder);
         CircularProgressDrawable circularProgressDrawable = setCircularProgressDrawable();
         Glide.with(context)
                 .load(Uri.parse(shortcut.getImageUrl()))
