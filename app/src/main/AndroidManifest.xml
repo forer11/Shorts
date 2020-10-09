@@ -60,7 +60,8 @@
         </receiver>
 
         <activity android:name="com.shorts.shortmaker.Activities.TextToSpeechActivity"></activity>
-        <activity android:name="com.shorts.shortmaker.Activities.MainActivity" />
+        <activity android:name="com.shorts.shortmaker.Activities.MainActivity"
+            />
         <activity
             android:name="com.shorts.shortmaker.Activities.OpeningScreenActivity"
             android:theme="@style/SplashTheme">

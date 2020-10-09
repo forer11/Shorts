@@ -37,14 +37,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:shadowColor="@color/text_shadow"
-                android:shadowDx="-1"
-                android:shadowDy="-1"
-                android:shadowRadius="1"
                 android:text="Icon"
-                android:textColor="@color/gray"
-                android:textSize="13sp" />
-
+                android:textStyle="bold"
+                android:textSize="13sp"
+/>
 
         </LinearLayout>
 
