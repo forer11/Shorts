@@ -71,12 +71,19 @@ public class TextMessageDialog extends ActionDialog {
 
         @Override
         public void afterTextChanged(Editable s) {
-            message.setError(null);
-            okButton.setEnabled(true);
+            if (message.getText().toString().equals("")) {
+                message.setError("Message is Empty");
+                okButton.setEnabled(false);
+            } else {
+                message.setError(null);
+                okButton.setEnabled(true);
+            }
         }
     };
+
     private ArrayList<String> data;
     private Map<String, String> reversedContacts;
+    private Button cancelButton;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -105,7 +112,7 @@ public class TextMessageDialog extends ActionDialog {
     }
 
     protected void setDialogViews() {
-        Button cancelButton = initializeDialogViews();
+        initializeDialogViews();
         setOkButton();
         setCancelButton(cancelButton);
         setSearchContactBox();
@@ -113,15 +120,16 @@ public class TextMessageDialog extends ActionDialog {
         setDialogImage(imageView, R.drawable.text_message_gif);
     }
 
-    private Button initializeDialogViews() {
+    private void initializeDialogViews() {
         whoToSendTo = view.findViewById(R.id.search_edit_text);
         message = view.findViewById(R.id.message);
-        message.setText(data.get(0));
+        if(data!=null){
+            message.setText(data.get(0));
 
+        }
         message.addTextChangedListener(messageTextWatcher);
-        Button cancelButton = view.findViewById(R.id.cancelButton);
+        cancelButton = view.findViewById(R.id.cancelButton);
         okButton = view.findViewById(R.id.okButton);
-        return cancelButton;
     }
 
     protected void setCancelButton(Button cancelButton) {
@@ -196,6 +204,8 @@ public class TextMessageDialog extends ActionDialog {
             public void onItemClick(int position) {
                 contact = new Pair<>(contactsList.get(position).getContactName(),
                         contactsList.get(position).getContactNum());
+                fullContactsList.remove(position);
+                adapter.notifyDataSetChanged();
                 onContactChosenHandler(contact);
 
             }
@@ -241,7 +251,8 @@ public class TextMessageDialog extends ActionDialog {
                 for (Pair<String, String> contact : whoToSendList) {
                     if (contact.first.equals(chip.getText().toString())) {
                         whoToSendList.remove(contact);
-
+                        fullContactsList.add(new Contact(contact.first,contact.second));
+                        adapter.notifyItemInserted(fullContactsList.size());
                     }
                 }
             }
