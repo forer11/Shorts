@@ -76,6 +76,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
+            android:layout_below="@+id/secondsPicker"
             android:enabled="false"
             android:text="OK" />
 
@@ -85,6 +86,7 @@
             android:layout_height="wrap_content"
             android:layout_toStartOf="@+id/okButton"
             android:layout_alignParentBottom="true"
+            android:layout_below="@+id/minutesPicker"
             android:layout_marginEnd="10dp"
             android:text="CANCEL" />
 

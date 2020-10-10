@@ -70,7 +70,6 @@ public class SpotifyDialog extends ActionDialog {
     }
 
 
-
     protected void getUserInput() {
         String album = albumToPlay.getText().toString();
         ArrayList<String> results = new ArrayList<>();
