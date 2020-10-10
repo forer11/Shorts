@@ -25,5 +25,22 @@
             android:layout_marginTop="20dp"
             android:hint="Which album to play" />
 
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_alignParentEnd="true"
+            android:enabled="false"
+            android:text="OK" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editText"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/okButton"
+            android:text="CANCEL" />
     </RelativeLayout>
 </ScrollView>
