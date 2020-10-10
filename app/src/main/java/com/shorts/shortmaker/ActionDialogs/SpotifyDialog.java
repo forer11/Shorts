@@ -57,7 +57,7 @@ public class SpotifyDialog extends ActionDialog {
 
         initializeDialogViews(view);
 
-        buildDialog(builder, view);
+        buildDialog(builder, view,"Which album to play on Spotify",okButton);
         return builder.create();
     }
 
@@ -69,24 +69,7 @@ public class SpotifyDialog extends ActionDialog {
         albumToPlay.addTextChangedListener(userInputTextWatcher);
     }
 
-    protected void buildDialog(AlertDialog.Builder builder, View view) {
-        builder.setView(view)
-                .setTitle("Which album to play on Spotify");
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserInput();
-                dismiss();
-            }
-        });
-        Button cancelButton = view.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-    }
+
 
     protected void getUserInput() {
         String album = albumToPlay.getText().toString();

@@ -76,8 +76,10 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         view = layoutInflater.inflate(R.layout.phone_call_dialog, null);
 
         initializeDialogViews();
-        buildDialog(builder, view);
-
+        buildDialog(builder, view,"Make a call",okButton);
+        if (phoneNum.getText().toString().equals("")) {
+            phoneNum.setError("Choose a Contact");
+        }
         return builder.create();
     }
 
@@ -85,7 +87,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         phoneNum = view.findViewById(R.id.phoneNum);
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.phone_call_gif);
-
+        okButton = view.findViewById(R.id.okButton);
         setSearchContactBox();
     }
 
@@ -140,28 +142,6 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         });
     }
 
-    protected void buildDialog(AlertDialog.Builder builder, View view) {
-        builder.setView(view)
-                .setTitle("Make a call");
-        okButton = view.findViewById(R.id.okButton);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserInput();
-                dismiss();
-            }
-        });
-        Button cancelButton = view.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-        if (phoneNum.getText().toString().equals("")) {
-            phoneNum.setError("Choose a Contact");
-        }
-    }
 
     protected void getUserInput() {
         String numberToCall = contact.second;

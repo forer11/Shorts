@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class AlarmClockDialog extends ActionDialog{
 
     private Button okButton;
+    private TimePicker timePicker;
 
     @NonNull
     @Override
@@ -38,7 +39,7 @@ public class AlarmClockDialog extends ActionDialog{
     }
 
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
-        final TimePicker timePicker = view.findViewById(R.id.timePicker);
+        timePicker = view.findViewById(R.id.timePicker);
         okButton = view.findViewById(R.id.okButton);
         timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
             @Override
@@ -48,29 +49,11 @@ public class AlarmClockDialog extends ActionDialog{
         });
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.alarm_clock_gif);
-        buildDialog(builder, view, timePicker);
+        buildDialog(builder, view, "Set alarm clock",okButton);
     }
 
-    protected void buildDialog(AlertDialog.Builder builder, View view, final TimePicker timePicker) {
-        builder.setView(view)
-                .setTitle("Set alarm clock");
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserInput(timePicker);
-                dismiss();
-            }
-        });
-        Button cancelButton = view.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-    }
 
-    protected void getUserInput(TimePicker timePicker) {
+    protected void getUserInput() {
         String desiredHour = Integer.toString(timePicker.getHour());
         String desiredMinutes =Integer.toString(timePicker.getMinute());
         ArrayList<String> results = new ArrayList<>();

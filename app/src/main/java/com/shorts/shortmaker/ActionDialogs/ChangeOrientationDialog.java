@@ -45,28 +45,9 @@ public class ChangeOrientationDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.orientation_gif);
         okButton = view.findViewById(R.id.okButton);
-        buildDialog(builder, view);
+        buildDialog(builder, view,CHANGE_ORIENTATION,okButton);
     }
 
-    protected void buildDialog(AlertDialog.Builder builder, View view) {
-        builder.setView(view)
-                .setTitle(CHANGE_ORIENTATION);
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserInput();
-                dismiss();
-            }
-        });
-        Button cancelButton = view.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-    }
 
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();

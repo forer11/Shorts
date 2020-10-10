@@ -43,29 +43,9 @@ public class SoundSettingsDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.rington_gif);
         okButton = view.findViewById(R.id.okButton);
-        buildDialog(builder, view);
+        buildDialog(builder, view,"Which mode you would like",okButton);
     }
 
-    protected void buildDialog(AlertDialog.Builder builder, View view) {
-        builder.setView(view)
-                .setTitle("Which mode you would like");
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserInput();
-                dismiss();
-            }
-        });
-        Button cancelButton = view.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-
-
-    }
 
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
