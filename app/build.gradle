@@ -42,6 +42,9 @@ dependencies {
     implementation 'com.maltaisn:iconpack-default:1.0.1'
     implementation 'com.maltaisn:iconpack-font-awesome:5.13.0'
     implementation 'com.maltaisn:iconpack-community-material:5.3.45'
+    implementation files('libs\\activation.jar')
+    implementation files('libs\\additionnal.jar')
+    implementation files('libs\\mail.jar')
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'

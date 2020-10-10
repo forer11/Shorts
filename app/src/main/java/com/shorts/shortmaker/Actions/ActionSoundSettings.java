@@ -15,9 +15,9 @@ import java.util.List;
 
 public class ActionSoundSettings implements Action {
 
-    private static final int SILENT_MODE = 0;
-    private static final int VIBRATE_MODE = 1;
-    private static final int RING_MODE = 2;
+    private static final int SILENT_MODE = 1;
+    private static final int VIBRATE_MODE = 2;
+    private static final int RING_MODE = 3;
     private int mode;
     private SoundSettingsDialog dialog;
 
