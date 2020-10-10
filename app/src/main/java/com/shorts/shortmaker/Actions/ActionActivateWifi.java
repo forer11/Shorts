@@ -1,8 +1,12 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.net.wifi.WifiManager;
+import android.os.Build;
+import android.provider.Settings;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -15,6 +19,7 @@ public class ActionActivateWifi implements Action {
 
 
     private WifiDialog dialog;
+    private int brightness;
 
     public ActionActivateWifi() {
         this.dialog = new WifiDialog();
@@ -22,15 +27,23 @@ public class ActionActivateWifi implements Action {
 
 
     @Override
-    public void activate(Context context , Activity activity) {
-        Log.v("YAY", "Wifi activated");
-        Toast.makeText(context, "Wifi activated", Toast.LENGTH_SHORT).show();
-
-        WifiManager wifi = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
-        if (wifi != null) {  //TODO else?
-            wifi.setWifiEnabled(true);
+    public void activate(Context context, Activity activity) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Settings.System.canWrite(context)) {
+                ContentResolver cResolver = context.getApplicationContext().getContentResolver();
+                Settings.System.putInt(cResolver,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE,
+                        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+                Settings.System.putInt(cResolver,
+                        Settings.System.SCREEN_BRIGHTNESS, brightness);
+            } else {
+                Toast.makeText(context,
+                        "Enable Modify system settings and try again",
+                        Toast.LENGTH_SHORT).show();
+            }
         }
     }
+
 
     @Override
     public ActionDialog getDialog() {
@@ -39,6 +52,6 @@ public class ActionActivateWifi implements Action {
 
     @Override
     public void setData(List<String> data) {
-
+        brightness = Integer.parseInt(data.get(0));
     }
 }

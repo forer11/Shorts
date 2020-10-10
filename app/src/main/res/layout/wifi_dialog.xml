@@ -2,12 +2,11 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fadeScrollbars="false"
-    >
+    android:fadeScrollbars="false">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -17,6 +16,42 @@
             android:layout_height="@dimen/action_dialog_image_size"
             android:layout_alignParentTop="true"
             android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/show_results_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/imageView"
+            android:layout_centerInParent="true"
+            android:text="Show Real time brightness"/>
+        <CheckBox
+            android:id="@+id/checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_below="@id/imageView"
+            android:layout_above="@id/brightness_icon"
+            android:layout_toEndOf="@id/show_results_text"
+            />
+
+
+        <ImageView
+            android:id="@+id/brightness_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/show_results_text"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:src="@mipmap/brightness" />
+
+        <SeekBar
+            android:id="@+id/seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/show_results_text"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@id/brightness_icon" />
 
 
     </RelativeLayout>

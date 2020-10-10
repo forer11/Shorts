@@ -91,9 +91,6 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         setObjects();
         setToolbar();
         setAddShortcutButton();
-        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        wifiManager.setWifiEnabled(true);
-
     }
 
 
