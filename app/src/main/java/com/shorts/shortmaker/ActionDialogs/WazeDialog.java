@@ -64,28 +64,10 @@ public class WazeDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.waze_gif);
         okButton = view.findViewById(R.id.okButton);
-        buildDialog(builder, view);
+        buildDialog(builder, view,"Where to set Waze to",okButton);
         editTextAddress.addTextChangedListener(userInputTextWatcher);
     }
 
-    protected void buildDialog(AlertDialog.Builder builder, View view) {
-        builder.setView(view)
-                .setTitle("Where to set Waze to");
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserInput();
-                dismiss();
-            }
-        });
-        Button cancelButton = view.findViewById(R.id.cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-    }
 
     protected void getUserInput() {
         String address = editTextAddress.getText().toString();

@@ -4,8 +4,11 @@ import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOption
 
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
@@ -61,6 +64,25 @@ abstract public class ActionDialog extends AppCompatDialogFragment {
 
     protected void getUserInput(){
 
+    }
+
+    protected void buildDialog(AlertDialog.Builder builder, View view, String dialogTitle,Button okButton) {
+        builder.setView(view)
+                .setTitle(dialogTitle);
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getUserInput();
+                dismiss();
+            }
+        });
+        Button cancelButton = view.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
     }
 }
 

@@ -106,15 +106,13 @@ public class TextMessageDialog extends ActionDialog {
 
         setDialogViews();
 
-        builder.setView(view)
-                .setTitle("Send Text Message");
+        buildDialog(builder,view,"Send Text Message",okButton);
         return builder.create();
     }
 
+
     protected void setDialogViews() {
         initializeDialogViews();
-        setOkButton();
-        setCancelButton(cancelButton);
         setSearchContactBox();
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.text_message_gif);
@@ -125,31 +123,12 @@ public class TextMessageDialog extends ActionDialog {
         message = view.findViewById(R.id.message);
         if(data!=null){
             message.setText(data.get(0));
-
         }
         message.addTextChangedListener(messageTextWatcher);
         cancelButton = view.findViewById(R.id.cancelButton);
         okButton = view.findViewById(R.id.okButton);
     }
 
-    protected void setCancelButton(Button cancelButton) {
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dismiss();
-            }
-        });
-    }
-
-    protected void setOkButton() {
-        okButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getUserInput();
-                dismiss();
-            }
-        });
-    }
 
     protected void setSearchContactBox() {
         EditText searchContactEditText = view.findViewById(R.id.search_edit_text);
