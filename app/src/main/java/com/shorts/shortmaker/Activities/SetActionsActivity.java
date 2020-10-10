@@ -21,6 +21,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
+import com.shorts.shortmaker.Actions.Action;
 import com.shorts.shortmaker.Adapters.ActionAdapter;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
@@ -262,15 +263,17 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                         .getAction(actionData.getTitle())).getDialog();
         Bundle bundle = new Bundle();
         if (actionDialog != null) {
-            bundle.putStringArrayList("data", actionData.getData());
+            final ActionData newAction = new ActionData();
+            newAction.copyAction(actionData);
+            bundle.putStringArrayList("data", newAction.getData());
             actionDialog.show(getSupportFragmentManager(),
-                    actionData.getTitle() + " dialog");
+                    newAction.getTitle() + " dialog");
             actionDialog.setNewDialogListener(new ActionDialog.DialogListener() {
                 @Override
-                public void applyUserInfo(ArrayList<String> data, String description) { //TODO check with carmel why we need edit, maybe she didn't see it's a callback
-                    actionData.setDescription(description);
-                    actionData.setData(data);
-                    addAction(actionData, edit);
+                public void applyUserInfo(ArrayList<String> data, String description) {
+                    newAction.setDescription(description);
+                    newAction.copyData(data);
+                    addAction(newAction, edit);
                 }
             });
         } else {

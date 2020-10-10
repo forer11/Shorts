@@ -121,7 +121,7 @@ public class TextMessageDialog extends ActionDialog {
     private void initializeDialogViews() {
         whoToSendTo = view.findViewById(R.id.search_edit_text);
         message = view.findViewById(R.id.message);
-        if (data != null) {
+        if (data != null && data.size() > 0) {
             message.setText(data.get(0));
         }
         message.addTextChangedListener(messageTextWatcher);
@@ -158,7 +158,7 @@ public class TextMessageDialog extends ActionDialog {
         }
         reversedContacts = ContactsHandler.getReverseContacts();
 
-        if (data != null) {
+        if (data != null && data.size() > 0) {
             for (String number : data.subList(1, data.size())) {
                 onContactChosenHandler(new Pair<>(reversedContacts.get(number), number));
             }
