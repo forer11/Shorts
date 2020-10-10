@@ -17,7 +17,7 @@ import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
 
-public class AlarmClockDialog extends ActionDialog{
+public class AlarmClockDialog extends ActionDialog {
 
     private Button okButton;
     private TimePicker timePicker;
@@ -27,7 +27,7 @@ public class AlarmClockDialog extends ActionDialog{
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.alarm_clock_dialog,null);
+        View view = layoutInflater.inflate(R.layout.alarm_clock_dialog, null);
 
         initializeDialogViews(builder, view);
         return builder.create();
@@ -44,17 +44,18 @@ public class AlarmClockDialog extends ActionDialog{
         });
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.alarm_clock_gif);
-        buildDialog(builder, view, "Set alarm clock",okButton);
+        buildDialog(builder, view, "Set alarm clock", okButton);
     }
 
 
     protected void getUserInput() {
         String desiredHour = Integer.toString(timePicker.getHour());
-        String desiredMinutes =Integer.toString(timePicker.getMinute());
+        String desiredMinutes = Integer.toString(timePicker.getMinute());
         ArrayList<String> results = new ArrayList<>();
         results.add(desiredHour);
         results.add(desiredMinutes);
-        listener.applyUserInfo(results);
+        String description = "Alarm is set for " + desiredHour + ":" + desiredMinutes;
+        listener.applyUserInfo(results, description);
     }
 
 }

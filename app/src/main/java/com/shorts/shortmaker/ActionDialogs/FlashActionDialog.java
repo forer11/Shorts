@@ -48,7 +48,8 @@ public class FlashActionDialog extends ActionDialog {
                     public void onClick(DialogInterface dialog, int which) {
                         ArrayList<String> results = new ArrayList<>();
                         results.add("0");
-                        listener.applyUserInfo(results);
+                        String description = "Flashlight On";
+                        listener.applyUserInfo(results, description);
                     }
                 });
     }

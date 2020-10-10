@@ -18,12 +18,17 @@ import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
 
+import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+import static com.shorts.shortmaker.Actions.ActionChangeOrientation.PORTRAIT_ORIENTATION;
+
 
 public class ChangeOrientationDialog extends ActionDialog {
 
     public static final String CHANGE_ORIENTATION = "Change orientation";
     private int mode;
     private Button okButton;
+    private String[] modes;
 
     @NonNull
     @Override
@@ -47,12 +52,14 @@ public class ChangeOrientationDialog extends ActionDialog {
 
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
-        results.add(String.valueOf(mode));
-        listener.applyUserInfo(results);
+        results.add(String.valueOf(mode - 1));
+        String orientation = modes[mode];
+        String description = "set for " + orientation;
+        listener.applyUserInfo(results, description);
     }
 
     protected void setModesSpinner(View view) {
-        String[] modes = {CHANGE_ORIENTATION, "Landscape", "Portrait"};
+        modes = new String[]{CHANGE_ORIENTATION, "Portrait", "Landscape"};
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, modes);

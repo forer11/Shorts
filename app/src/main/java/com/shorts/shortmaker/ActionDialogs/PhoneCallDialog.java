@@ -145,7 +145,8 @@ public class PhoneCallDialog extends ActionDialog implements
         String numberToCall = contact.second;
         ArrayList<String> results = new ArrayList<>();
         results.add(numberToCall);
-        listener.applyUserInfo(results);
+        String description = "Call " + contact.first;
+        listener.applyUserInfo(results, description);
     }
 
 

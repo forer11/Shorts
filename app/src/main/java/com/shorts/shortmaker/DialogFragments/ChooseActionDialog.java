@@ -23,14 +23,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ChooseActionDialog extends AppCompatDialogFragment implements ActionDialog.DialogListener {
+public class ChooseActionDialog extends AppCompatDialogFragment {
 
     private Context context;
-
-    @Override
-    public void applyUserInfo(ArrayList<String> data) {
-        //TODO - here we need to update the corresponding action with user input i.e - data
-    }
 
     public interface ChooseActionDialogListener {
         void onChoseAction(ActionData action, int position);

@@ -119,7 +119,8 @@ public class SetTimerDialog extends ActionDialog {
             results.add(hour);
             results.add(minute);
             results.add(second);
-            listener.applyUserInfo(results);
+            String description = "Set Timer for " + hour + ":" + minute + ":" + second;
+            listener.applyUserInfo(results, description);
         }
     }
 }

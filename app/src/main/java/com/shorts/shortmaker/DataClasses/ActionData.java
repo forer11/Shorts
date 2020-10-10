@@ -7,6 +7,7 @@ import bolts.Bolts;
 public class ActionData {
 
     private String title;
+    private String description;
     private int iconPath;
     private ArrayList<String> data;
     /* True by default */
@@ -52,5 +53,13 @@ public class ActionData {
 
     public void setIsActivated(Boolean activated) {
         isActivated = activated;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
