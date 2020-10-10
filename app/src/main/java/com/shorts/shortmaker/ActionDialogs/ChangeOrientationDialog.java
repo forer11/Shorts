@@ -1,7 +1,6 @@
 package com.shorts.shortmaker.ActionDialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +9,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
@@ -45,7 +41,7 @@ public class ChangeOrientationDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.orientation_gif);
         okButton = view.findViewById(R.id.okButton);
-        buildDialog(builder, view,CHANGE_ORIENTATION,okButton);
+        buildDialog(builder, view, CHANGE_ORIENTATION, okButton);
     }
 
 
@@ -56,38 +52,35 @@ public class ChangeOrientationDialog extends ActionDialog {
     }
 
     protected void setModesSpinner(View view) {
-        String[] modes = {CHANGE_ORIENTATION,"Landscape", "Portrait"};
+        String[] modes = {CHANGE_ORIENTATION, "Landscape", "Portrait"};
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, modes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, modes);
         // set Adapter
         spinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         setSpinner(spinner);
-
-
     }
 
     private void setSpinner(final Spinner spinner) {
         //Register a callback to be invoked when an item in this AdapterView has been selected
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             @Override
             public void onItemSelected(AdapterView<?> arg0, View arg1,
                                        int position, long id) {
                 setSpinnerSelectionListener(position, spinner);
                 mode = position;
             }
+
             @Override
             public void onNothingSelected(AdapterView<?> arg0) {
             }
-
         });
-
     }
 
     protected void setSpinnerSelectionListener(int position, Spinner spinner) {
         String item = (String) spinner.getItemAtPosition(position);
-        if(!item.equals(CHANGE_ORIENTATION)){
+        if (!item.equals(CHANGE_ORIENTATION)) {
             okButton.setEnabled(true);
         } else {
             okButton.setEnabled(false);

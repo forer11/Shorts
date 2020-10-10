@@ -1,10 +1,10 @@
 package com.shorts.shortmaker.ActionDialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.Toast;
@@ -12,16 +12,13 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
-import static android.media.CamcorderProfile.get;
 
 public class SetTimerDialog extends ActionDialog {
 
@@ -31,6 +28,7 @@ public class SetTimerDialog extends ActionDialog {
     protected String minute = "0";
     protected String hour = "0";
     protected String second = "0";
+    private Button okButton;
 
     @NonNull
     @Override
@@ -46,25 +44,9 @@ public class SetTimerDialog extends ActionDialog {
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.timer_gif);
+        okButton = view.findViewById(R.id.okButton);
         setPickers(view);
-        buildDialog(builder, view);
-    }
-
-    protected void buildDialog(AlertDialog.Builder builder, View view) {
-        builder.setView(view)
-                .setTitle("Set timer")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        getUserInput();
-                    }
-                });
+        buildDialog(builder, view, "Set timer", okButton);
     }
 
     protected void setPickers(View view) {
@@ -92,10 +74,15 @@ public class SetTimerDialog extends ActionDialog {
         return numbers;
     }
 
-    protected void setPicker(String[] pickerValues, NumberPicker picker, int maxValue, final String id) {
+    protected void setPicker(String[] pickerValues, NumberPicker picker, int maxValue,
+                             final String id) {
         picker.setMinValue(0);
         picker.setMaxValue(maxValue);
         picker.setDisplayedValues(pickerValues);
+        setPickerOnValueChangedListener(picker, id);
+    }
+
+    private void setPickerOnValueChangedListener(NumberPicker picker, final String id) {
         picker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
@@ -110,13 +97,23 @@ public class SetTimerDialog extends ActionDialog {
                         second = Integer.toString(picker.getValue());
                         break;
                 }
+                setEnableOkButton();
             }
         });
     }
 
+    protected void setEnableOkButton() {
+        if (!(hour.equals("0") && minute.equals("0") && second.equals("0"))) {
+            okButton.setEnabled(true);
+        } else {
+            okButton.setEnabled(false);
+        }
+    }
+
     protected void getUserInput() {
         if (hour.equals("0") && minute.equals("0") && second.equals("0")) {
-            Toast.makeText(getContext(), "Please insert desired time", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please insert desired time",
+                    Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<String> results = new ArrayList<>();
             results.add(hour);

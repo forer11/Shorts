@@ -10,9 +10,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
@@ -50,7 +48,8 @@ public class WifiDialog extends ActionDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ArrayList<String> results = new ArrayList<>();
-                        results.add("Turn on"); //TODO - remember that if data == Turn on it says activate
+                        results.add("Turn on"); //TODO - remember that if data == Turn on
+                        // it says activate
                         listener.applyUserInfo(results);
                     }
                 });

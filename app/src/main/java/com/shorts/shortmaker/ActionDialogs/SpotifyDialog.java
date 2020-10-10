@@ -1,7 +1,6 @@
 package com.shorts.shortmaker.ActionDialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,9 +13,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
@@ -68,7 +65,6 @@ public class SpotifyDialog extends ActionDialog {
         okButton = view.findViewById(R.id.okButton);
         albumToPlay.addTextChangedListener(userInputTextWatcher);
     }
-
 
 
     protected void getUserInput() {
