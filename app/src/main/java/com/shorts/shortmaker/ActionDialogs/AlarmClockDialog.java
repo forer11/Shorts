@@ -54,8 +54,14 @@ public class AlarmClockDialog extends ActionDialog {
         ArrayList<String> results = new ArrayList<>();
         results.add(desiredHour);
         results.add(desiredMinutes);
-        String description = "Alarm is set for " + desiredHour + ":" + desiredMinutes;
+        String description = "Alarm is set for "
+                + addZero(desiredHour) + ":"
+                + addZero(desiredMinutes);
         listener.applyUserInfo(results, description);
+    }
+
+    private String addZero(String timeUnit) {
+        return timeUnit.length() == 1 ? "0" + timeUnit : timeUnit;
     }
 
 }
