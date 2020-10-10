@@ -3,8 +3,11 @@ package com.shorts.shortmaker.ActionDialogs;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -22,6 +25,28 @@ import java.util.ArrayList;
 public class WazeDialog extends ActionDialog {
 
     private EditText editTextAddress;
+    private TextWatcher userInputTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            if (editTextAddress.getText().toString().equals("")) {
+                editTextAddress.setError("Enter an address");
+                okButton.setEnabled(false);
+            } else {
+                editTextAddress.setError(null);
+                okButton.setEnabled(true);
+            }
+        }
+    };
+    private Button okButton;
 
     @NonNull
     @Override
@@ -38,27 +63,34 @@ public class WazeDialog extends ActionDialog {
         editTextAddress = view.findViewById(R.id.editText);
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.waze_gif);
+        okButton = view.findViewById(R.id.okButton);
         buildDialog(builder, view);
+        editTextAddress.addTextChangedListener(userInputTextWatcher);
     }
 
     protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
-                .setTitle("Where to set Waze to")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dismiss();
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String address = editTextAddress.getText().toString();
-                        ArrayList<String> results = new ArrayList<>();
-                        results.add(address);
-                        listener.applyUserInfo(results);
-                        dismiss();
-                    }
-                });
+                .setTitle("Where to set Waze to");
+        okButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getUserInput();
+                dismiss();
+            }
+        });
+        Button cancelButton = view.findViewById(R.id.cancelButton);
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dismiss();
+            }
+        });
+    }
+
+    protected void getUserInput() {
+        String address = editTextAddress.getText().toString();
+        ArrayList<String> results = new ArrayList<>();
+        results.add(address);
+        listener.applyUserInfo(results);
     }
 }

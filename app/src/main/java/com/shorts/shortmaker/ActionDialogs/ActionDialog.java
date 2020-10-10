@@ -58,6 +58,10 @@ abstract public class ActionDialog extends AppCompatDialogFragment {
                 .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
                 .into(imageView);
     }
+
+    protected void getUserInput(){
+
+    }
 }
 
 

@@ -87,7 +87,6 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         setDialogImage(imageView, R.drawable.phone_call_gif);
 
         setSearchContactBox();
-        okButton = view.findViewById(R.id.okButton);
     }
 
     protected void setSearchContactBox() {
@@ -144,6 +143,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
                 .setTitle("Make a call");
+        okButton = view.findViewById(R.id.okButton);
         okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
