@@ -5,17 +5,13 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+
 import android.widget.ImageView;
-import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
@@ -45,7 +41,6 @@ public class FlashActionDialog extends ActionDialog {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
                     }
                 })
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -57,7 +52,5 @@ public class FlashActionDialog extends ActionDialog {
                     }
                 });
     }
-
-
 }
 

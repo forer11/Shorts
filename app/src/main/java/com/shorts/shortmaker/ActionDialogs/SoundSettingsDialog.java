@@ -1,7 +1,6 @@
 package com.shorts.shortmaker.ActionDialogs;
 
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,9 +13,7 @@ import android.widget.Spinner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
-import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
-import com.bumptech.glide.Glide;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
@@ -56,7 +53,8 @@ public class SoundSettingsDialog extends ActionDialog {
     protected void setModesSpinner(View view) {
         String[] modes = {CHOOSE_MODE,"Silent Mode", "Vibrate Mode", "Ring Mode"};
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_spinner_item, modes);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, modes);
         // set Adapter
         spinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

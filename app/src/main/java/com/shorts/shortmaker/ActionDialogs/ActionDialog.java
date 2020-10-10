@@ -2,24 +2,20 @@ package com.shorts.shortmaker.ActionDialogs;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 
-import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
+
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDialogFragment;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
+
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
 import com.shorts.shortmaker.R;
 
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 
@@ -45,7 +41,8 @@ abstract public class ActionDialog extends AppCompatDialogFragment {
     }
 
     private CircularProgressDrawable setCircularProgressBar() {
-        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(getContext());
+        CircularProgressDrawable circularProgressDrawable = new
+                CircularProgressDrawable(getContext());
         circularProgressDrawable.setStrokeWidth(5f);
         circularProgressDrawable.setCenterRadius(30f);
         circularProgressDrawable.start();
@@ -62,11 +59,12 @@ abstract public class ActionDialog extends AppCompatDialogFragment {
                 .into(imageView);
     }
 
-    protected void getUserInput(){
+    protected void getUserInput() {
 
     }
 
-    protected void buildDialog(AlertDialog.Builder builder, View view, String dialogTitle,Button okButton) {
+    protected void buildDialog(AlertDialog.Builder builder, View view, String dialogTitle,
+                               Button okButton) {
         builder.setView(view)
                 .setTitle(dialogTitle);
         okButton.setOnClickListener(new View.OnClickListener() {

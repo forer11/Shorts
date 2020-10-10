@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 
-
 public class SetTimerDialog extends ActionDialog {
 
     public static final int HOURS_MAX_VAL = 24;
@@ -47,7 +46,7 @@ public class SetTimerDialog extends ActionDialog {
         setDialogImage(imageView, R.drawable.timer_gif);
         okButton = view.findViewById(R.id.okButton);
         setPickers(view);
-        buildDialog(builder, view,"Set timer",okButton);
+        buildDialog(builder, view, "Set timer", okButton);
     }
 
     protected void setPickers(View view) {
@@ -75,7 +74,8 @@ public class SetTimerDialog extends ActionDialog {
         return numbers;
     }
 
-    protected void setPicker(String[] pickerValues, NumberPicker picker, int maxValue, final String id) {
+    protected void setPicker(String[] pickerValues, NumberPicker picker, int maxValue,
+                             final String id) {
         picker.setMinValue(0);
         picker.setMaxValue(maxValue);
         picker.setDisplayedValues(pickerValues);
@@ -103,7 +103,7 @@ public class SetTimerDialog extends ActionDialog {
     }
 
     protected void setEnableOkButton() {
-        if(!(hour.equals("0")&&minute.equals("0")&&second.equals("0"))){
+        if (!(hour.equals("0") && minute.equals("0") && second.equals("0"))) {
             okButton.setEnabled(true);
         } else {
             okButton.setEnabled(false);
@@ -112,7 +112,8 @@ public class SetTimerDialog extends ActionDialog {
 
     protected void getUserInput() {
         if (hour.equals("0") && minute.equals("0") && second.equals("0")) {
-            Toast.makeText(getContext(), "Please insert desired time", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please insert desired time",
+                    Toast.LENGTH_SHORT).show();
         } else {
             ArrayList<String> results = new ArrayList<>();
             results.add(hour);

@@ -22,23 +22,21 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.chip.Chip;
-import com.google.android.material.chip.ChipGroup;
+
 import com.shorts.shortmaker.Adapters.ContactsAdapter;
 import com.shorts.shortmaker.DataClasses.Contact;
 import com.shorts.shortmaker.R;
 import com.shorts.shortmaker.SystemHandlers.ContactsHandler;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 
-public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class PhoneCallDialog extends ActionDialog implements
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     // Request code for READ_CONTACTS. It can be any number > 0.
     public static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
@@ -76,7 +74,7 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
         view = layoutInflater.inflate(R.layout.phone_call_dialog, null);
 
         initializeDialogViews();
-        buildDialog(builder, view,"Make a call",okButton);
+        buildDialog(builder, view, "Make a call", okButton);
         if (phoneNum.getText().toString().equals("")) {
             phoneNum.setError("Choose a Contact");
         }
@@ -158,12 +156,14 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
      * @return true if permission is already granted, false otherwise
      */
     private boolean showContacts(Activity activity) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
+                activity.checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                        != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
                     PERMISSIONS_REQUEST_READ_CONTACTS);
             return false;
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], i
+            // nt[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
             queryContacts(activity);
@@ -172,14 +172,16 @@ public class PhoneCallDialog extends ActionDialog implements ActivityCompat.OnRe
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 queryContacts(getActivity());
                 buildRecyclerView();
             } else {
-                Toast.makeText(getActivity(), "Until you grant the permission, we cannot get the names", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Until you grant the permission, we cannot" +
+                        " get the names", Toast.LENGTH_SHORT).show();
             }
         }
     }
