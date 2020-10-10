@@ -25,7 +25,7 @@ abstract public class ActionDialog extends AppCompatDialogFragment {
 
 
     public interface DialogListener {
-        void applyUserInfo(ArrayList<String> data);
+        void applyUserInfo(ArrayList<String> data, String description);
     }
 
     public void setNewDialogListener(DialogListener listener) {

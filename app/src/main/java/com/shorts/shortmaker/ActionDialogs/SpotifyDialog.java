@@ -50,11 +50,11 @@ public class SpotifyDialog extends ActionDialog {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.spotify_dialog,null);
+        View view = layoutInflater.inflate(R.layout.spotify_dialog, null);
 
         initializeDialogViews(view);
 
-        buildDialog(builder, view,"Which album to play on Spotify",okButton);
+        buildDialog(builder, view, "Which album to play on Spotify", okButton);
         return builder.create();
     }
 
@@ -71,6 +71,7 @@ public class SpotifyDialog extends ActionDialog {
         String album = albumToPlay.getText().toString();
         ArrayList<String> results = new ArrayList<>();
         results.add(album);
-        listener.applyUserInfo(results);
+        String description = "Spotify"; //TODO decide
+        listener.applyUserInfo(results, description);
     }
 }

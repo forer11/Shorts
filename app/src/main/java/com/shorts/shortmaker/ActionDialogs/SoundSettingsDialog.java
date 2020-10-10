@@ -23,6 +23,7 @@ public class SoundSettingsDialog extends ActionDialog {
     public static final String CHOOSE_MODE = "Choose Mode";
     private int mode;
     private Button okButton;
+    private String[] modes;
 
     @NonNull
     @Override
@@ -40,18 +41,19 @@ public class SoundSettingsDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.rington_gif);
         okButton = view.findViewById(R.id.okButton);
-        buildDialog(builder, view,"Which mode you would like",okButton);
+        buildDialog(builder, view, "Which mode you would like", okButton);
     }
 
 
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
         results.add(String.valueOf(mode));
-        listener.applyUserInfo(results);
+        String description = "Phone set to " + modes[mode];
+        listener.applyUserInfo(results, description);
     }
 
     protected void setModesSpinner(View view) {
-        String[] modes = {CHOOSE_MODE,"Silent Mode", "Vibrate Mode", "Ring Mode"};
+        modes = new String[]{CHOOSE_MODE, "Silent Mode", "Vibrate Mode", "Ring Mode"};
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, modes);

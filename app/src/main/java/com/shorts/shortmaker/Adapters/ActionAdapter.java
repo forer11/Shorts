@@ -88,7 +88,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
     public void onBindViewHolder(@NotNull ActionViewHolder holder, int position) {
         ActionData currentItem = actionDataList.get(position);
         holder.actionIcon.setImageResource(currentItem.getIconPath());
-        holder.actionTitle.setText(currentItem.getTitle());
+        holder.actionTitle.setText(currentItem.getDescription());
         holder.isEnabledSwitch.setChecked(currentItem.getIsActivated());
 
     }

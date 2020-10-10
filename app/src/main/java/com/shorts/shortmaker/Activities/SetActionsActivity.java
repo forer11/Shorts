@@ -267,20 +267,21 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                     actionData.getTitle() + " dialog");
             actionDialog.setNewDialogListener(new ActionDialog.DialogListener() {
                 @Override
-                public void applyUserInfo(ArrayList<String> data) {
+                public void applyUserInfo(ArrayList<String> data, String description) { //TODO check with carmel why we need edit, maybe she didn't see it's a callback
+                    actionData.setDescription(description);
                     actionData.setData(data);
-                    addAction(actionData,edit);
+                    addAction(actionData, edit);
                 }
             });
         } else {
-            addAction(actionData,edit);
+            addAction(actionData, edit);
         }
         actionDialog.setArguments(bundle);
 
     }
 
     private void addAction(ActionData action, final boolean edit) {
-        if(edit){
+        if (edit) {
             editAction(action);
         } else {
             currentShortcut.getActionDataList().add(action);
@@ -293,7 +294,7 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
     private void editAction(ActionData action) {
         currentShortcut.getActionDataList().remove(lastPosition);
         adapter.notifyItemRemoved(lastPosition);
-        currentShortcut.getActionDataList().add(lastPosition,action);
+        currentShortcut.getActionDataList().add(lastPosition, action);
         adapter.notifyItemInserted(lastPosition);
     }
 

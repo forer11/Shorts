@@ -50,7 +50,8 @@ public class WifiDialog extends ActionDialog {
                         ArrayList<String> results = new ArrayList<>();
                         results.add("Turn on"); //TODO - remember that if data == Turn on
                         // it says activate
-                        listener.applyUserInfo(results);
+                        String description = "WIFI on"; //todo carmel check if on or off
+                        listener.applyUserInfo(results, description);
                     }
                 });
     }

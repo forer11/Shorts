@@ -106,7 +106,7 @@ public class TextMessageDialog extends ActionDialog {
 
         setDialogViews();
 
-        buildDialog(builder,view,"Send Text Message",okButton);
+        buildDialog(builder, view, "Send Text Message", okButton);
         return builder.create();
     }
 
@@ -121,7 +121,7 @@ public class TextMessageDialog extends ActionDialog {
     private void initializeDialogViews() {
         whoToSendTo = view.findViewById(R.id.search_edit_text);
         message = view.findViewById(R.id.message);
-        if(data!=null){
+        if (data != null) {
             message.setText(data.get(0));
         }
         message.addTextChangedListener(messageTextWatcher);
@@ -158,7 +158,7 @@ public class TextMessageDialog extends ActionDialog {
         }
         reversedContacts = ContactsHandler.getReverseContacts();
 
-        if(data!=null){
+        if (data != null) {
             for (String number : data.subList(1, data.size())) {
                 onContactChosenHandler(new Pair<>(reversedContacts.get(number), number));
             }
@@ -230,7 +230,7 @@ public class TextMessageDialog extends ActionDialog {
                 for (Pair<String, String> contact : whoToSendList) {
                     if (contact.first.equals(chip.getText().toString())) {
                         whoToSendList.remove(contact);
-                        fullContactsList.add(new Contact(contact.first,contact.second));
+                        fullContactsList.add(new Contact(contact.first, contact.second));
                         adapter.notifyItemInserted(fullContactsList.size());
                     }
                 }
@@ -246,7 +246,14 @@ public class TextMessageDialog extends ActionDialog {
         for (Pair<String, String> contact : whoToSendList) {
             results.add(contact.second);
         }
-        listener.applyUserInfo(results);
+        String contact;
+        if (whoToSendList.size() > 1) {
+            contact = "Group";
+        } else {
+            contact = whoToSendList.get(0).first;
+        }
+        String description = "Send SMS to " + contact;
+        listener.applyUserInfo(results, description);
 
     }
 

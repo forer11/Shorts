@@ -61,7 +61,7 @@ public class WazeDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.waze_gif);
         okButton = view.findViewById(R.id.okButton);
-        buildDialog(builder, view,"Where to set Waze to",okButton);
+        buildDialog(builder, view, "Where to set Waze to", okButton);
         editTextAddress.addTextChangedListener(userInputTextWatcher);
     }
 
@@ -70,6 +70,7 @@ public class WazeDialog extends ActionDialog {
         String address = editTextAddress.getText().toString();
         ArrayList<String> results = new ArrayList<>();
         results.add(address);
-        listener.applyUserInfo(results);
+        String description = "Waze"; //TODO decide
+        listener.applyUserInfo(results, description);
     }
 }
