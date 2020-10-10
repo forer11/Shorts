@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_dialog_image_size"
+            android:scaleType="fitCenter"
+            android:layout_alignParentTop="true" />
+
+        <EditText
+            android:id="@+id/userEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView"
+            android:layout_marginTop="20dp"
+            android:hint="Enter your email" />
+
+        <EditText
+            android:id="@+id/userPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userEmail"
+            android:layout_marginTop="20dp"
+            android:hint="Enter your password" />
+
+
+        <EditText
+            android:id="@+id/recipientEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/userPassword"
+            android:layout_marginTop="20dp"
+            android:hint="Enter recipient email" />
+
+        <EditText
+            android:id="@+id/messageSubject"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/recipientEmail"
+            android:layout_marginTop="20dp"
+            android:hint="Enter message subject" />
+
+        <EditText
+            android:id="@+id/messageBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/messageSubject"
+            android:layout_marginTop="20dp"
+            android:hint="Enter message body" />
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/messageBody"
+            android:layout_alignParentEnd="true"
+            android:enabled="false"
+            android:text="OK" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/messageBody"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/okButton"
+            android:text="CANCEL" />
+    </RelativeLayout>
+</ScrollView>
