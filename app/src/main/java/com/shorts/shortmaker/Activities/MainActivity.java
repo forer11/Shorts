@@ -108,10 +108,10 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         setObjects();
         setToolbar();
         setAddShortcutButton();
-        Button button = findViewById(R.id.button2);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+//        Button button = findViewById(R.id.button2);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
 //                Intent intent = new Intent(getApplicationContext(), ActivateShortcutActivity.class).setAction(Intent.ACTION_MAIN);
 //                intent.putExtra("shortcutId", shortcuts.get(0).getId());
 //                if (ShortcutManagerCompat.isRequestPinShortcutSupported(getApplicationContext())) {
@@ -124,8 +124,8 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
 //                } else {
 //                    Toast.makeText(MainActivity.this,"launcher does not support short cut icon",Toast.LENGTH_LONG).show();
 //                }
-            }
-        });
+//            }
+//        });
 
 //        if (!Places.isInitialized()) {
 //            Places.initialize(getApplicationContext(), "your api key");
