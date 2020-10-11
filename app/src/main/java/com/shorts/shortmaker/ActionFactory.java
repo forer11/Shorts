@@ -42,7 +42,7 @@ public class ActionFactory {
         put(SOUND_MODE_ACTION_TITLE, R.drawable.sound_mode_icon);
         put(TIMER_ACTION_TITLE, R.drawable.timer_icon);
         put(PHONE_CALL_ACTION_TITLE, R.drawable.phone_icon);
-        put(BRIGHTNESS_ACTION_TITLE, R.drawable.wifi_icon);
+        put(BRIGHTNESS_ACTION_TITLE, R.drawable.brightness_icon);
         put(ORIENTATION_ACTION_TITLE, R.drawable.orientation_icon);
         put(FLASH_ACTION_TITLE, R.drawable.flash_icon);
         put(GMAIL_ACTION_TITLE, R.drawable.gmail_icon);

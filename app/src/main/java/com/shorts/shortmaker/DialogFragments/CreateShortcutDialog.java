@@ -55,8 +55,6 @@ public class CreateShortcutDialog extends AppCompatDialogFragment {
         View view = layoutInflater.inflate(R.layout.create_shortcut_dialog, null);
         final AppData appData = (AppData) getApplicationContext();
         final EditText shortcutTitleEditText = view.findViewById(R.id.shortcutTitle);
-        ImageView imageView = view.findViewById(R.id.imageView);
-        setDialogImage(imageView, R.drawable.new_is_always_better);
 
         builder.setView(view)
                 .setTitle("Add a shortcut")
@@ -96,24 +94,5 @@ public class CreateShortcutDialog extends AppCompatDialogFragment {
                 });
         return builder.create();
     }
-
-    private CircularProgressDrawable setCircularProgressBar() {
-        CircularProgressDrawable circularProgressDrawable = new CircularProgressDrawable(getContext());
-        circularProgressDrawable.setStrokeWidth(5f);
-        circularProgressDrawable.setCenterRadius(30f);
-        circularProgressDrawable.start();
-        return circularProgressDrawable;
-    }
-
-    protected void setDialogImage(ImageView imageView, int imagePath) {
-        CircularProgressDrawable circularProgressDrawable = setCircularProgressBar();
-        //Glide.with(this).load(R.drawable.alarm_clock_gif).placeholder(circularProgressDrawable).into(imageView);
-        Glide.with(this).load(imagePath)
-                .transition(withCrossFade())
-                .placeholder(circularProgressDrawable)
-                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
-                .into(imageView);
-    }
-
 
 }
