@@ -16,6 +16,8 @@ import com.shorts.shortmaker.DataClasses.ActionData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class ActionFactory {
@@ -32,22 +34,33 @@ public class ActionFactory {
     public static final String FLASH_ACTION_TITLE = "Flash";
     public static final String GMAIL_ACTION_TITLE = "Gmail";
 
-
+    public static final HashMap<String, Integer> ICON_NAME_TO_PATH = new HashMap<String, Integer>() {{
+        put(WAZE_ACTION_TITLE, R.drawable.waze_icon);
+        put(SPOTIFY_ACTION_TITLE, R.drawable.spotify_icon);
+        put(ALARM_CLOCK_ACTION_TITLE, R.drawable.alarm_clock_icon);
+        put(TEXT_MESSAGE_ACTION_TITLE, R.drawable.text_message);
+        put(SOUND_MODE_ACTION_TITLE, R.drawable.sound_mode_icon);
+        put(TIMER_ACTION_TITLE, R.drawable.timer_icon);
+        put(PHONE_CALL_ACTION_TITLE, R.drawable.phone_icon);
+        put(BRIGHTNESS_ACTION_TITLE, R.drawable.wifi_icon);
+        put(ORIENTATION_ACTION_TITLE, R.drawable.orientation_icon);
+        put(FLASH_ACTION_TITLE, R.drawable.flash_icon);
+        put(GMAIL_ACTION_TITLE, R.drawable.gmail_icon);
+    }};
 
     public static final ArrayList<ActionData> ACTION_DATA_ARRAY_LIST = new ArrayList<ActionData>(
             Arrays.asList(
-                    new ActionData(ActionFactory.WAZE_ACTION_TITLE, R.drawable.waze_icon),
-                    new ActionData(ActionFactory.SPOTIFY_ACTION_TITLE, R.drawable.spotify_icon),
-                    new ActionData(ActionFactory.ALARM_CLOCK_ACTION_TITLE, R.drawable.alarm_clock_icon),
-                    new ActionData(ActionFactory.PHONE_CALL_ACTION_TITLE, R.drawable.phone_icon),
-                    new ActionData(ActionFactory.TIMER_ACTION_TITLE, R.drawable.timer_icon),
-                    new ActionData(ActionFactory.TEXT_MESSAGE_ACTION_TITLE, R.drawable.text_message),
-                    new ActionData(ActionFactory.SOUND_MODE_ACTION_TITLE, R.drawable.sound_mode_icon),
-                    new ActionData(ActionFactory.BRIGHTNESS_ACTION_TITLE, R.drawable.wifi_icon),
-                    new ActionData(ActionFactory.ORIENTATION_ACTION_TITLE, R.drawable.orientation_icon),
-                    new ActionData(ActionFactory.FLASH_ACTION_TITLE, R.drawable.flash_icon),
-                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE, R.drawable.gmail_icon)
-
+                    new ActionData(ActionFactory.WAZE_ACTION_TITLE),
+                    new ActionData(ActionFactory.SPOTIFY_ACTION_TITLE),
+                    new ActionData(ActionFactory.ALARM_CLOCK_ACTION_TITLE),
+                    new ActionData(ActionFactory.PHONE_CALL_ACTION_TITLE),
+                    new ActionData(ActionFactory.TIMER_ACTION_TITLE),
+                    new ActionData(ActionFactory.TEXT_MESSAGE_ACTION_TITLE),
+                    new ActionData(ActionFactory.SOUND_MODE_ACTION_TITLE),
+                    new ActionData(ActionFactory.BRIGHTNESS_ACTION_TITLE),
+                    new ActionData(ActionFactory.ORIENTATION_ACTION_TITLE),
+                    new ActionData(ActionFactory.FLASH_ACTION_TITLE),
+                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE)
             ));
 
 

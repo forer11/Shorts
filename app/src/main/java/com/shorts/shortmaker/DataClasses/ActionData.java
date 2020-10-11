@@ -3,15 +3,11 @@ package com.shorts.shortmaker.DataClasses;
 import com.google.firebase.firestore.Exclude;
 
 import java.util.ArrayList;
-import java.util.Date;
-
-import bolts.Bolts;
 
 public class ActionData {
 
     private String title;
     private String description;
-    private int iconPath;
     private ArrayList<String> data;
     /* True by default */
     private Boolean isActivated;
@@ -24,25 +20,19 @@ public class ActionData {
     @Exclude
     public void copyAction(ActionData actionData) {
         this.title = actionData.title;
-        this.iconPath = actionData.iconPath;
         this.copyData(actionData.data);
         this.isActivated = actionData.isActivated;
         this.description = actionData.description;
     }
 
-    public ActionData(String title, int iconPath) {
+    public ActionData(String title) {
         this.title = title;
-        this.iconPath = iconPath;
         isActivated = true;
         allocData();
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setIconPath(int iconPath) {
-        this.iconPath = iconPath;
     }
 
     public ArrayList<String> getData() {
@@ -68,10 +58,6 @@ public class ActionData {
 
     public String getTitle() {
         return title;
-    }
-
-    public int getIconPath() {
-        return iconPath;
     }
 
     public Boolean getIsActivated() {

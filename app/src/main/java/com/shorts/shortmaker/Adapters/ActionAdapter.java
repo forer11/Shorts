@@ -10,12 +10,14 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.DataClasses.ActionData;
 import com.shorts.shortmaker.R;
 
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionViewHolder> {
     private ArrayList<ActionData> actionDataList;
@@ -87,7 +89,11 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
     @Override
     public void onBindViewHolder(@NotNull ActionViewHolder holder, int position) {
         ActionData currentItem = actionDataList.get(position);
-        holder.actionIcon.setImageResource(currentItem.getIconPath());
+        HashMap<String, Integer> nameToPath = ActionFactory.ICON_NAME_TO_PATH;
+        Integer imagePath = nameToPath.get(currentItem.getTitle());
+        if (imagePath != null) {
+            holder.actionIcon.setImageResource(imagePath);
+        }
         holder.actionTitle.setText(currentItem.getDescription());
         holder.isEnabledSwitch.setChecked(currentItem.getIsActivated());
 
