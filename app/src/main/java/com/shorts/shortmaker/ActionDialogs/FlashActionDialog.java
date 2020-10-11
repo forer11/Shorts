@@ -37,7 +37,7 @@ public class FlashActionDialog extends ActionDialog {
 
     protected void buildDialog(AlertDialog.Builder builder, View view) {
         builder.setView(view)
-                .setTitle("Turn on flash")
+                .setTitle("Turn on the Flashlight")
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
