@@ -8,7 +8,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Actions.Action;
@@ -35,6 +38,8 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 //
 
 public class SetActionsActivity extends AppCompatActivity implements ChooseIconDialog.OnIconPick,
@@ -50,6 +55,8 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
     private EditText shortcutTitle;
     private ActionAdapter adapter;
     private ImageView shortcutIcon;
+    private ImageView gifPlaceHolder;
+    private TextView noShortcutText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +66,18 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         appData = (AppData) getApplicationContext();
         getShortcutObject();
         showAddActionDialog();
+        setGifPlaceHolder();
+        noShortcutText = findViewById(R.id.noShortcutsText);
     }
+
+    private void setGifPlaceHolder() {
+        gifPlaceHolder = findViewById(R.id.gifPlaceHolder);
+        Glide.with(SetActionsActivity.this).load(R.drawable.empty_gif)
+                .transition(withCrossFade())
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .into(gifPlaceHolder);
+    }
+
 
     private void setBackButton() {
         ImageButton backButton = findViewById(R.id.back_button);
@@ -197,7 +215,10 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         recyclerView.setAdapter(adapter);
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(simpleCallback);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
+        if (currentShortcut.getActionDataList().isEmpty()) {
+            gifPlaceHolder.setVisibility(View.VISIBLE);
+            noShortcutText.setVisibility(View.VISIBLE);
+        }
         adapter.setOnItemLongClickListener(new ActionAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
@@ -286,6 +307,8 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
 
         }
         appData.fireStoreHandler.updateShortcut(currentShortcut);
+        gifPlaceHolder.setVisibility(View.INVISIBLE);
+        noShortcutText.setVisibility(View.INVISIBLE);
     }
 
     private void editAction(ActionData action) {
@@ -293,6 +316,7 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         adapter.notifyItemRemoved(lastPosition);
         currentShortcut.getActionDataList().add(lastPosition, action);
         adapter.notifyItemInserted(lastPosition);
+
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper
@@ -347,5 +371,11 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         currentShortcut.getActionDataList().remove(actionData);
         adapter.notifyDataSetChanged();
         appData.fireStoreHandler.updateShortcut(currentShortcut);
+        if (currentShortcut.getActionDataList().isEmpty()) {
+            gifPlaceHolder.setVisibility(View.VISIBLE);
+            noShortcutText.setVisibility(View.VISIBLE);
+        }
     }
+
+
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient"
     tools:context="com.shorts.shortmaker.Activities.SetActionsActivity">
 
     <ImageButton
@@ -109,6 +110,31 @@
             tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 
+    <ImageView
+        android:id="@+id/gifPlaceHolder"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_centerInParent="true"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/noShortcutsText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/gifPlaceHolder"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:fontFamily="@font/scary_halloween"
+        android:visibility="invisible"
+        android:textAlignment="center"
+        android:text="You are running\n low on Actions"
+        android:textColor="@color/purple"
+        tools:layout_editor_absoluteX="210dp"
+        tools:layout_editor_absoluteY="279dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -126,7 +152,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_add"
-        app:backgroundTint="@color/purple"
+        app:backgroundTint="#283593"
+        app:tint="@color/white"
         app:borderWidth="0dp"
         app:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
