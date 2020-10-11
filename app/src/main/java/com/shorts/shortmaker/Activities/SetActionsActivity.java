@@ -220,18 +220,12 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
 
     private void setSwitchClick() {
         adapter.setOnSwitchClickListener(new ActionAdapter.OnSwitchClickListener() {
-
-            private int defaultSwitchSet = 0;
-
             @Override
             public void onSwitchClick(int position, boolean isChecked) {
-                if (defaultSwitchSet < currentShortcut.getActionDataList().size()) {
-                    defaultSwitchSet++;
-                } else {
-                    currentShortcut.getActionDataList().get(position).setIsActivated(isChecked);
-                    appData.fireStoreHandler.updateShortcut(currentShortcut);
-                }
+                currentShortcut.getActionDataList().get(position).setIsActivated(isChecked);
+                appData.fireStoreHandler.updateShortcut(currentShortcut);
             }
+
         });
     }
 

@@ -3,26 +3,23 @@ package com.shorts.shortmaker.Actions;
 import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
-import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
-import com.shorts.shortmaker.ActionDialogs.WifiDialog;
+import com.shorts.shortmaker.ActionDialogs.BrightnessDialog;
 
 import java.util.List;
 
-public class ActionActivateWifi implements Action {
+public class ActionBrightness implements Action {
 
 
-    private WifiDialog dialog;
+    private BrightnessDialog dialog;
     private int brightness;
 
-    public ActionActivateWifi() {
-        this.dialog = new WifiDialog();
+    public ActionBrightness() {
+        this.dialog = new BrightnessDialog();
     }
 
 

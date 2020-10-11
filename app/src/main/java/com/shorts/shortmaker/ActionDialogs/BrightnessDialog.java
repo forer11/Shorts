@@ -24,7 +24,7 @@ import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
 
-public class WifiDialog extends ActionDialog {
+public class BrightnessDialog extends ActionDialog {
     private int brightness;
     private View dialogView;
     private boolean showRealtimeBrightness;
@@ -157,9 +157,9 @@ public class WifiDialog extends ActionDialog {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         ArrayList<String> results = new ArrayList<>();
-                        results.add(String.valueOf(brightness)); //TODO change in action as well
-                        // it says activate
-                        String description = "WIFI on"; //todo carmel check if on or off
+                        results.add(String.valueOf(brightness));
+                        long percentage = Math.round((double) brightness / 255 * 100);
+                        String description = "Set brightness to " + percentage + "%";
                         listener.applyUserInfo(results, description);
                     }
                 });
