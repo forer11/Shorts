@@ -2,11 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/transperent"
     android:clickable="true"
     android:focusable="true"
-    android:background="@color/transperent"
-    android:gravity="center"
-    >
+    android:gravity="center">
 
     <androidx.cardview.widget.CardView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/shortcut_cardview"
@@ -14,11 +13,11 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:clickable="true"
-        app:cardBackgroundColor="@color/transperent"
         android:foreground="?android:attr/selectableItemBackground"
         android:padding="5dp"
-        app:cardElevation="0dp"
-        app:cardCornerRadius="4dp">
+        app:cardBackgroundColor="@color/transperent"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,13 +36,13 @@
             <TextView
                 android:id="@+id/icon_title"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="40dp"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:maxLines="2"
                 android:text="Icon"
-                android:textStyle="bold"
-                android:textSize="18sp"
-                android:maxLines="1"
-/>
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
 

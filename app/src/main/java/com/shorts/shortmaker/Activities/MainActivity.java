@@ -388,6 +388,20 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         copyLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Shortcut shortcut = shortcuts.get(lastPosition);
+                Shortcut newShortcut = new Shortcut();
+                newShortcut.copyShortcut(shortcut, shortcuts.size());
+                appData.fireStoreHandler.addShortcut(newShortcut,
+                        new FireStoreHandler.SingleShortcutCallback() {
+                            @Override
+                            public void onAddedShortcut(String id,
+                                                        Shortcut shortcut1,
+                                                        Boolean success) {
+                                if (success) { //TODO if not successful
+                                    getUserDataAndLoadRecyclerview();
+                                }
+                            }
+                        });
                 popupWindow.dismiss();
             }
         });
