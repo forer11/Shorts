@@ -11,6 +11,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.karumi.dexter.Dexter;
+import com.karumi.dexter.PermissionToken;
+import com.karumi.dexter.listener.PermissionDeniedResponse;
+import com.karumi.dexter.listener.PermissionGrantedResponse;
+import com.karumi.dexter.listener.PermissionRequest;
+import com.karumi.dexter.listener.single.PermissionListener;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionDialogs.TextMessageDialog;
 
@@ -18,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class ActionSendTextMessage implements Action, ActivityCompat.OnRequestPermissionsResultCallback{
+public class ActionSendTextMessage implements Action {
 
     private static final int REQUEST_CODE_PERMISSION_SMS = 1546;
 
@@ -34,37 +40,34 @@ public class ActionSendTextMessage implements Action, ActivityCompat.OnRequestPe
 
 
     @Override
-    public void activate(Context context, Activity activity) {
-        Log.v("YAY", "Send Text activated");
+    public void activate(Context context, final Activity activity) {
         this.activity = activity;
-        boolean hasSmsPermission =
-                ActivityCompat.checkSelfPermission(activity, Manifest.permission.SEND_SMS) ==
-                        PackageManager.PERMISSION_GRANTED;
-        if (hasSmsPermission) {
-            sendSms();
-        } else {
-            ActivityCompat.requestPermissions(
-                    activity,
-                    new String[]{Manifest.permission.SEND_SMS}, REQUEST_CODE_PERMISSION_SMS);
-        }
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-            @NonNull int[] grantResults) {
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            sendSms();
-        } else {
-            Toast.makeText(activity, "Please confirm permission", Toast.LENGTH_SHORT).show();
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    activity,
-                    Manifest.permission.SEND_SMS)) {
-                Toast.makeText(activity, "Please confirm permission", Toast.LENGTH_SHORT).show();
-                // TODO - maybe to a dialog here
-            }
-        }
+        Dexter.withContext(activity)
+                .withPermission(Manifest.permission.SEND_SMS)
+                .withListener(new PermissionListener() {
+                    @Override
+                    public void onPermissionGranted(PermissionGrantedResponse response) {
+                        sendSms();
+                    }
 
+                    @Override
+                    public void onPermissionDenied(PermissionDeniedResponse response) {
+                        Toast.makeText(activity,
+                                "Please confirm permission",
+                                Toast.LENGTH_SHORT).show();
+                    }
 
+                    @Override
+                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
+                                                                   PermissionToken token) {
+                        Toast.makeText(activity,
+                                "Please confirm permission",
+                                Toast.LENGTH_SHORT).show();
+                        // TODO - maybe to a dialog here(can be added using the dexter library automatically!!!)
+                        token.continuePermissionRequest();
+                    }
+                }).check();
     }
 
     private void sendSms() {
@@ -88,6 +91,6 @@ public class ActionSendTextMessage implements Action, ActivityCompat.OnRequestPe
     @Override
     public void setData(List<String> data) {
         message = data.get(0);
-        recipientsList = data.subList(1,data.size());
+        recipientsList = data.subList(1, data.size());
     }
 }
