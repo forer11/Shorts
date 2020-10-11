@@ -20,36 +20,37 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-
-
     <uses-permission android:name="android.permission.UPDATE_DEVICE_STATS"/>
 
     <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.SEND_SMS"/>
-
+    <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera.flash" />
 
-
     <application
-        android:name="com.shorts.shortmaker.AppData"
+        android:name=".AppData"
         android:allowBackup="true"
         android:icon="@mipmap/teddy_bear"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.shorts.shortmaker.Activities.SetActionsActivity"
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/actions" />
+
+        <activity
+            android:name=".Activities.SetActionsActivity"
             android:theme="@style/SetActionsTheme">
 
         </activity>
 
         <receiver
-            android:name="com.shorts.shortmaker.MyReceiver"
+            android:name=".MyReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -57,21 +58,34 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name="com.shorts.shortmaker.Activities.TextToSpeechActivity"></activity>
-        <activity android:name="com.shorts.shortmaker.Activities.MainActivity"
-            />
+        <activity android:name=".Activities.TextToSpeechActivity" />
+        <activity android:name=".Activities.LoginActivity">
+
+        </activity>
         <activity
-            android:name="com.shorts.shortmaker.Activities.OpeningScreenActivity"
+            android:name=".Activities.OpeningScreenActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="shorts.firebaseapp.com"
+                    android:scheme="https" />
+            </intent-filter>
+
         </activity>
-        <activity android:name="com.shorts.shortmaker.Activities.BaseMenuActivity" />
-        <activity android:name="com.shorts.shortmaker.Activities.LoginActivity" />
-        <activity android:name="com.shorts.shortmaker.Activities.ActivateBluetoothActivity" />
+        <activity android:name=".Activities.BaseMenuActivity" />
+        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.ActivateBluetoothActivity" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -93,7 +107,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
     </application>
 
 </manifest>
