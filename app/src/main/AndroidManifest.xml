@@ -19,11 +19,14 @@
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO" />
-    <uses-permission android:name="android.permission.UPDATE_DEVICE_STATS" />
-    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS" />
-    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.UPDATE_DEVICE_STATS"/>
+
+    <uses-permission android:name="android.permission.WRITE_APN_SETTINGS"/>
+    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+
+  <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -31,6 +34,7 @@
     <uses-feature android:name="android.hardware.camera.flash" />
 
     <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+
 
     <application
         android:name=".AppData"
@@ -44,10 +48,15 @@
             <intent-filter>
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
-        </activity>
+        <meta-data
+            android:name="com.google.android.actions"
+            android:resource="@xml/actions" />
+
         <activity
             android:name=".Activities.SetActionsActivity"
-            android:theme="@style/SetActionsTheme"></activity>
+            android:theme="@style/SetActionsTheme">
+        </activity>
+
 
         <receiver
             android:name=".MyReceiver"
@@ -59,7 +68,8 @@
         </receiver>
 
         <activity android:name=".Activities.TextToSpeechActivity" />
-        <activity android:name=".Activities.MainActivity">
+
+        <activity android:name=".Activities.LoginActivity">
 
         </activity>
         <activity
@@ -70,9 +80,22 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="shorts.firebaseapp.com"
+                    android:scheme="https" />
+            </intent-filter>
+
         </activity>
         <activity android:name=".Activities.BaseMenuActivity" />
-        <activity android:name=".Activities.LoginActivity" />
+
+        <activity android:name=".Activities.MainActivity" />
         <activity android:name=".Activities.ActivateBluetoothActivity" />
 
         <meta-data
