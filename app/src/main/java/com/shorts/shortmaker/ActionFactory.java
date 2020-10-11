@@ -1,6 +1,7 @@
 package com.shorts.shortmaker;
 
 import com.shorts.shortmaker.Actions.Action;
+import com.shorts.shortmaker.Actions.ActionBluetooth;
 import com.shorts.shortmaker.Actions.ActionBrightness;
 import com.shorts.shortmaker.Actions.ActionAlarmClock;
 import com.shorts.shortmaker.Actions.ActionChangeOrientation;
@@ -33,6 +34,7 @@ public class ActionFactory {
     public static final String ORIENTATION_ACTION_TITLE = "Orientation";
     public static final String FLASH_ACTION_TITLE = "Flashlight";
     public static final String GMAIL_ACTION_TITLE = "Gmail";
+    public static final String BLUETOOTH_ACTION_TITLE = "Bluetooth";
 
     public static final HashMap<String, Integer> ICON_NAME_TO_PATH = new HashMap<String, Integer>() {{
         put(WAZE_ACTION_TITLE, R.drawable.waze_icon);
@@ -46,6 +48,7 @@ public class ActionFactory {
         put(ORIENTATION_ACTION_TITLE, R.drawable.orientation_icon);
         put(FLASH_ACTION_TITLE, R.drawable.flash_icon);
         put(GMAIL_ACTION_TITLE, R.drawable.gmail_icon);
+        put(BLUETOOTH_ACTION_TITLE, R.drawable.bluetooth_icon);
     }};
 
     public static final ArrayList<ActionData> ACTION_DATA_ARRAY_LIST = new ArrayList<ActionData>(
@@ -60,7 +63,8 @@ public class ActionFactory {
                     new ActionData(ActionFactory.BRIGHTNESS_ACTION_TITLE),
                     new ActionData(ActionFactory.ORIENTATION_ACTION_TITLE),
                     new ActionData(ActionFactory.FLASH_ACTION_TITLE),
-                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE)
+                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE),
+                    new ActionData(ActionFactory.BLUETOOTH_ACTION_TITLE)
             ));
 
 
@@ -88,6 +92,9 @@ public class ActionFactory {
                 return new ActionOpenFlash();
             case GMAIL_ACTION_TITLE:
                 return new ActionGmail();
+            case BLUETOOTH_ACTION_TITLE:
+                return new ActionBluetooth();
+
         }
         return null;
     }

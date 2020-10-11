@@ -132,7 +132,7 @@ public class BrightnessDialog extends ActionDialog {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        dialogView = layoutInflater.inflate(R.layout.wifi_dialog, null);
+        dialogView = layoutInflater.inflate(R.layout.brightness_dialog, null);
 
         initializeDialogViews(builder, dialogView);
         return builder.create();
