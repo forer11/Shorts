@@ -10,7 +10,6 @@
         <item name="colorAccent">@color/indigo</item>
         <item name="icdStyle">@style/CustomIconDialogStyle</item>
         <item name="popupMenuStyle">@style/popupMenu</item>
-        <item name="android:windowBackground">@color/background</item>
         <item name="android:dropDownListViewStyle">@style/PopupMenuListView</item>
     </style>
 
