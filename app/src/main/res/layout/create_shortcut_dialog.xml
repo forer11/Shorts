@@ -9,12 +9,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/action_dialog_image_size"
-            android:layout_alignParentTop="true"
-            android:scaleType="fitCenter" />
+
 
         <EditText
             android:id="@+id/shortcutTitle"

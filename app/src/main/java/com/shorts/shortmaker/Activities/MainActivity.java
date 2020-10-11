@@ -9,12 +9,11 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
+
 import android.content.Intent;
 
 import android.graphics.Point;
-import android.net.wifi.WifiManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -23,14 +22,17 @@ import android.view.MenuItem;
 
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Actions.Action;
@@ -52,11 +54,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
+
 
 public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.OnIconPick {
-    private static final int REQUEST_CALL = 1;
-    public static final String PHONE_CALL_DIALOG_TITLE = "Make action phone call";
-    public static final String PHONE_CALL_DIALOG_POS_BTN = "DIAL";
+
     public static final int PICKER_REQUEST_CODE = 10;
     public static final int NO_POSITION = -1;
     public static final int Y = 1;
@@ -67,9 +69,7 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     List<Shortcut> fullShortcutsList;
     private DraggableGridAdapter adapter;
     int lastPosition = NO_POSITION;
-    private EditText editText;
-    private View phoneCallDialogLayout;
-    private AlertDialog makeCallDialog;
+
     AppData appData;
     private ItemTouchHelper itemTouchHelper;
     private RecyclerView recyclerView = null;
@@ -77,6 +77,8 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     private PopupWindow popupWindow;
     private int screenWidth;
     private int screenHeight;
+    private ImageView gifPlaceHolder;
+    private TextView noShortcutText;
 
 
     public MainActivity() {
@@ -91,6 +93,7 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         setObjects();
         setToolbar();
         setAddShortcutButton();
+
     }
 
 
@@ -107,6 +110,16 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         fullShortcutsList = new ArrayList<>();
         adapter = null;
         appData = (AppData) getApplicationContext();
+        setGifPlaceHolder();
+        noShortcutText = findViewById(R.id.noShortcutsText);
+    }
+
+    private void setGifPlaceHolder() {
+        gifPlaceHolder = findViewById(R.id.gifPlaceHolder);
+        Glide.with(MainActivity.this).load(R.drawable.empty_gif)
+                .transition(withCrossFade())
+                .override(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                .into(gifPlaceHolder);
     }
 
     private void getUserDataAndLoadRecyclerview() {
@@ -119,6 +132,10 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
                     shortcuts.addAll(shortcutsList);
                     fullShortcutsList.clear();
                     fullShortcutsList.addAll(shortcuts);
+                    if (fullShortcutsList.isEmpty()) {
+                        gifPlaceHolder.setVisibility(View.VISIBLE);
+                        noShortcutText.setVisibility(View.VISIBLE);
+                    }
                     if (recyclerView != null) {
                         filterShortcuts(searchText);
                     }
@@ -334,9 +351,8 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Shorts");
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.icon);// set drawable icon
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+//        getSupportActionBar().setHomeAsUpIndicator(R.mipmap.icon);// set drawable icon
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -441,6 +457,8 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     @Override
     protected void onResume() {
         super.onResume();
+        gifPlaceHolder.setVisibility(View.INVISIBLE);
+        noShortcutText.setVisibility(View.INVISIBLE);
         getUserDataAndLoadRecyclerview();
     }
 }

@@ -67,7 +67,7 @@
     <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textSize">21sp</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">@font/bubblegum</item>
+        <item name="android:fontFamily">@font/kgs_summer_sunshine_shadow</item>
 
     </style>
 
