@@ -9,10 +9,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.DataClasses.ActionData;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapter.ActionViewHolder> {
 
@@ -65,7 +67,11 @@ public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapte
     @Override
     public void onBindViewHolder(@NonNull ActionViewHolder holder, int position) {
         ActionData currentItem = offeredActionsList.get(position);
-        holder.actionIcon.setImageResource(currentItem.getIconPath());
+        HashMap<String, Integer> nameToPath = ActionFactory.ICON_NAME_TO_PATH;
+        Integer imagePath = nameToPath.get(currentItem.getTitle());
+        if (imagePath != null) {
+            holder.actionIcon.setImageResource(imagePath);
+        }
         holder.actionTitle.setText(currentItem.getTitle());
     }
 
