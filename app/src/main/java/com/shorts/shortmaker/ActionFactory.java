@@ -31,7 +31,7 @@ public class ActionFactory {
     public static final String TIMER_ACTION_TITLE = "Timer";
     public static final String BRIGHTNESS_ACTION_TITLE = "Brightness";
     public static final String ORIENTATION_ACTION_TITLE = "Orientation";
-    public static final String FLASH_ACTION_TITLE = "Flash";
+    public static final String FLASH_ACTION_TITLE = "Flashlight";
     public static final String GMAIL_ACTION_TITLE = "Gmail";
 
     public static final HashMap<String, Integer> ICON_NAME_TO_PATH = new HashMap<String, Integer>() {{
