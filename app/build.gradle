@@ -45,6 +45,7 @@ dependencies {
     implementation files('libs\\activation.jar')
     implementation files('libs\\additionnal.jar')
     implementation files('libs\\mail.jar')
+    implementation 'com.karumi:dexter:6.2.1'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
