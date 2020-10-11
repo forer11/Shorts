@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -20,6 +21,7 @@ import java.util.List;
 
 
 public class ActionBluetooth implements Action {
+    private static final String DEVICE_DOES_NOT_HAVE_BLUETOOTH_CAPABILITIES = "device doesn't have bluetooth capabilities";
     private SetBluetoothDialog dialog;
     private Boolean state;
     private BluetoothAdapter bluetoothAdapter;
@@ -40,7 +42,7 @@ public class ActionBluetooth implements Action {
                         if (state) {
                             enableBluetooth(activity);
                         } else {
-                            disableBluetooth();
+                            disableBluetooth(activity);
                         }
                     }
 
@@ -71,10 +73,11 @@ public class ActionBluetooth implements Action {
 
     public void enableBluetooth(Activity activity) {
         if (bluetoothAdapter == null) {
-            Log.d("ERROR", "device doesn't have bluetooth capabilities");
-        }
-
-        if (!bluetoothAdapter.isEnabled()) {
+            Log.d("ERROR", DEVICE_DOES_NOT_HAVE_BLUETOOTH_CAPABILITIES);
+            Toast.makeText(activity,
+                    DEVICE_DOES_NOT_HAVE_BLUETOOTH_CAPABILITIES,
+                    Toast.LENGTH_SHORT).show();
+        } else if (!bluetoothAdapter.isEnabled()) {
 //            Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
 //            activity.startActivity(enableBluetoothIntent);
             bluetoothAdapter.enable();
@@ -82,8 +85,13 @@ public class ActionBluetooth implements Action {
         }
     }
 
-    public void disableBluetooth() {
-        if (bluetoothAdapter.isEnabled()) {
+    public void disableBluetooth(Activity activity) {
+        if (bluetoothAdapter == null) {
+            Log.d("ERROR", DEVICE_DOES_NOT_HAVE_BLUETOOTH_CAPABILITIES);
+            Toast.makeText(activity,
+                    DEVICE_DOES_NOT_HAVE_BLUETOOTH_CAPABILITIES,
+                    Toast.LENGTH_SHORT).show();
+        } else if (bluetoothAdapter.isEnabled()) {
             bluetoothAdapter.disable();
         }
     }
