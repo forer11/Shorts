@@ -69,6 +69,23 @@
         tools:layout_editor_absoluteX="210dp"
         tools:layout_editor_absoluteY="279dp" />
 
+<!--    <fragment-->
+<!--        android:id="@+id/autocomplete_fragment"-->
+<!--        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/progressBar"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:layout_weight="5"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/button2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Button"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"-->
+<!--        tools:layout_editor_absoluteX="166dp" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -77,7 +94,7 @@
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_shadow"
         app:layout_constraintVertical_bias="1.0">
@@ -99,6 +116,8 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_shadow"
         app:layout_constraintVertical_bias="0.95"
         app:rippleColor="@color/colorAccent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
