@@ -5,7 +5,7 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient"
+    android:background="@drawable/gradient_main"
     tools:context="com.shorts.shortmaker.Activities.MainActivity">
 
     <include
@@ -58,17 +58,38 @@
         android:id="@+id/noShortcutsText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/gifPlaceHolder"
+        android:fontFamily="@font/scary_halloween"
+        android:text="You are running\n low on Shortcuts"
+        android:textAlignment="center"
+        android:shadowColor="@color/black"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:textColor="@color/purple"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:fontFamily="@font/scary_halloween"
-        android:visibility="invisible"
-        android:textAlignment="center"
-        android:text="You are running\n low on Shortcuts"
-        android:textColor="@color/purple"
-        tools:layout_editor_absoluteX="210dp"
-        tools:layout_editor_absoluteY="279dp" />
+        app:layout_constraintTop_toBottomOf="@+id/gifPlaceHolder"
+        app:layout_constraintVertical_bias="0.0" />
 
+<!--    <fragment-->
+<!--        android:id="@+id/autocomplete_fragment"-->
+<!--        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/progressBar"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:layout_weight="5"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--    <Button-->
+<!--        android:id="@+id/button2"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:text="Button"-->
+<!--        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"-->
+<!--        tools:layout_editor_absoluteX="166dp" />-->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -77,7 +98,7 @@
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar_shadow"
         app:layout_constraintVertical_bias="1.0">
@@ -99,6 +120,8 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar_shadow"
         app:layout_constraintVertical_bias="0.95"
         app:rippleColor="@color/colorAccent" />
+
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
