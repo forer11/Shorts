@@ -23,6 +23,8 @@ public class Shortcut {
 
     public Shortcut() {
         /* empty public constructor for FireStore */
+        actions = new ArrayList<>();
+        actionDataList = new ArrayList<>();
     }
 
     public Shortcut(String title, String imageUrl) {
@@ -30,6 +32,17 @@ public class Shortcut {
         this.imageUrl = imageUrl;
         actions = new ArrayList<>();
         actionDataList = new ArrayList<>();
+    }
+
+    @Exclude
+    public void copyShortcut(Shortcut shortcut, int pos) {
+        this.title = "copy of " + shortcut.title;
+        this.imageUrl = shortcut.imageUrl;
+        this.actions.clear();
+        this.actions.addAll(shortcut.actions);
+        this.actionDataList.clear();
+        this.actionDataList.addAll(shortcut.actionDataList);
+        this.pos = pos;
     }
 
     public String getTitle() {
