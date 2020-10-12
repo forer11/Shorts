@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.DataClasses;
 
 import com.google.firebase.firestore.Exclude;
+import com.shorts.shortmaker.ActionFactory;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ public class ActionData {
     private String title;
     private String description;
     private ArrayList<String> data;
+    private ActionFactory.Conditions condition;
     /* True by default */
     private Boolean isActivated;
 
@@ -23,6 +25,7 @@ public class ActionData {
         this.copyData(actionData.data);
         this.isActivated = actionData.isActivated;
         this.description = actionData.description;
+        this.condition = actionData.condition;
     }
 
     public ActionData(String title) {
@@ -43,6 +46,7 @@ public class ActionData {
         allocData();
         this.data.clear();
         this.data.addAll(data);
+        this.condition = ActionFactory.Conditions.ON_CLICK;
     }
 
     @Exclude
@@ -74,5 +78,13 @@ public class ActionData {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public ActionFactory.Conditions getCondition() {
+        return condition;
+    }
+
+    public void setCondition(ActionFactory.Conditions condition) {
+        this.condition = condition;
     }
 }
