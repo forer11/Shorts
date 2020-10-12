@@ -9,7 +9,7 @@ import android.telephony.SmsMessage;
 
 import java.util.Objects;
 
-public class MyReceiver extends BroadcastReceiver {
+public class SmsReceiver extends BroadcastReceiver {
 
     private static final String SMS_RECEIVED = "android.provider.Telephony.SMS_RECEIVED";
     private static final String TAG = "SmsBroadcastReceiver";

@@ -1,9 +1,9 @@
 package com.shorts.shortmaker;
 
 import com.shorts.shortmaker.Actions.Action;
+import com.shorts.shortmaker.Actions.ActionAlarmClock;
 import com.shorts.shortmaker.Actions.ActionBluetooth;
 import com.shorts.shortmaker.Actions.ActionBrightness;
-import com.shorts.shortmaker.Actions.ActionAlarmClock;
 import com.shorts.shortmaker.Actions.ActionChangeOrientation;
 import com.shorts.shortmaker.Actions.ActionGmail;
 import com.shorts.shortmaker.Actions.ActionOpenFlash;
@@ -19,10 +19,16 @@ import com.shorts.shortmaker.DataClasses.ActionData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class ActionFactory {
+
+
+
+    public enum Conditions {
+        ON_CLICK,
+        ON_ORIENTATION_CHANGE
+    }
 
     public static final String WAZE_ACTION_TITLE = "Waze";
     public static final String SPOTIFY_ACTION_TITLE = "Spotify";
