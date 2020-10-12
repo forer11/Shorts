@@ -188,7 +188,7 @@ public class PhoneCallDialog extends ActionDialog implements
     }
 
     private void queryContacts(Activity activity) {
-        if (ContactsHandler.getContactNames(activity)) {
+        if (ContactsHandler.getContactNames()) {
             createContactsList();
         } else {
             //todo handel error

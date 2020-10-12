@@ -281,7 +281,7 @@ public class TextMessageDialog extends ActionDialog {
     }
 
     private void queryContacts(Activity activity) {
-        if (ContactsHandler.getContactNames(activity)) {
+        if (ContactsHandler.getContactNames()) {
             createContactsList();
 
         } else {

@@ -21,13 +21,15 @@ import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionDialogs.TextMessageDialog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class ActionSendTextMessage implements Action {
 
     private static final int REQUEST_CODE_PERMISSION_SMS = 1546;
-
+    private static Map<String, String> reverseContacts = new HashMap<>();
     private TextMessageDialog dialog;
     private Activity activity;
     private String whoToSend;
@@ -49,6 +51,7 @@ public class ActionSendTextMessage implements Action {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
                         sendSms();
+
                     }
 
                     @Override
