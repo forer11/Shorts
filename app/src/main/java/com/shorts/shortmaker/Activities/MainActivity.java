@@ -58,6 +58,7 @@ import com.shorts.shortmaker.DialogFragments.DeleteShortcutDialog;
 import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.shorts.shortmaker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.shorts.shortmaker.Services.ForegroundService;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -108,6 +109,9 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         setObjects();
         setToolbar();
         setAddShortcutButton();
+       // startService(new Intent(this, ForegroundService.class));
+
+
 //        Button button = findViewById(R.id.button2);
 //        button.setOnClickListener(new View.OnClickListener() {
 //            @Override

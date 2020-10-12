@@ -1,24 +1,31 @@
 package com.shorts.shortmaker;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
 
 import com.shorts.shortmaker.DataClasses.Icon;
 import com.shorts.shortmaker.FireBaseHandlers.FireBaseAuthHandler;
 import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
+import com.shorts.shortmaker.Services.ForegroundService;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class AppData extends Application {
     public FireStoreHandler fireStoreHandler;
     public FireBaseAuthHandler fireBaseAuthHandler;
     public ArrayList<Icon> icons;
+    public static String CHANNEL_ID = "default_id";
 
     @Override
     public void onCreate() {
@@ -28,13 +35,14 @@ public class AppData extends Application {
         printHashKey();
         icons = new ArrayList<>();
         loadIcons();
+        createNotificationChannel();
     }
 
     public void loadIcons() {
         fireStoreHandler.loadIcons(icons);
     }
 
-    public ArrayList<Icon> getIcons(){
+    public ArrayList<Icon> getIcons() {
         return icons;
     }
 
@@ -50,12 +58,20 @@ public class AppData extends Application {
                 Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
         } catch (
-                PackageManager.NameNotFoundException e) {
+                PackageManager.NameNotFoundException | NoSuchAlgorithmException e) {
             Log.d("ERROR", e.toString());
+        }
+    }
 
-        } catch (
-                NoSuchAlgorithmException e) {
-            Log.d("ERROR", e.toString());
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "service channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            Objects.requireNonNull(manager).createNotificationChannel(serviceChannel);
         }
     }
 }
