@@ -38,7 +38,7 @@ public class DeleteShortcutDialog extends ActionDialog {
                 new AlertDialog.Builder(Objects.requireNonNull(getActivity()));
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.delete_shortcut_dialog, null);
-        ImageView imageView = view.findViewById(R.id.image_view);
+        ImageView imageView = view.findViewById(R.id.imageView);
         setButtons(view);
         setDialogImage(imageView, R.drawable.delete);
         builder.setCancelable(true);
@@ -48,10 +48,10 @@ public class DeleteShortcutDialog extends ActionDialog {
     }
 
     private void setButtons(View view) {
-        Button deleteButton, cancelButton;
-        deleteButton = view.findViewById(R.id.delete_button);
-        cancelButton = view.findViewById(R.id.cancel_button);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
+        Button okButton, cancelButton;
+        okButton = view.findViewById(R.id.okButton);
+        cancelButton = view.findViewById(R.id.cancelButton);
+        okButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onClickListener.onClick();

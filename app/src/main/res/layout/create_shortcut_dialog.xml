@@ -15,9 +15,28 @@
             android:id="@+id/shortcutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView"
             android:layout_marginTop="20dp"
             android:hint="Enter shortcut title" />
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shortcutTitle"
+            android:layout_marginTop="10dp"
+            android:layout_alignParentEnd="true"
+            android:enabled="false"
+            android:text="OK" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shortcutTitle"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_toStartOf="@+id/okButton"
+            android:text="CANCEL" />
 
     </RelativeLayout>
 </ScrollView>
