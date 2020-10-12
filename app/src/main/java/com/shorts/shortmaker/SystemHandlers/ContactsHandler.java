@@ -9,6 +9,8 @@ import android.os.Build;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.shorts.shortmaker.AppData;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,12 +27,11 @@ public class ContactsHandler {
     /**
      * Fills the contacts list
      *
-     * @param activity the activity
      * @return false if an error accord true otherwise.
      */
-    static public boolean getContactNames(Activity activity) {
+    static public boolean getContactNames() {
         if (!loadedContacts) {
-            ContentResolver cr = activity.getContentResolver();
+            ContentResolver cr = AppData.getContext().getContentResolver();
             Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                     PROJECTION,
                     null,

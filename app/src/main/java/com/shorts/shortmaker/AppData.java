@@ -3,7 +3,7 @@ package com.shorts.shortmaker;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.content.Intent;
+import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
@@ -14,7 +14,6 @@ import android.util.Log;
 import com.shorts.shortmaker.DataClasses.Icon;
 import com.shorts.shortmaker.FireBaseHandlers.FireBaseAuthHandler;
 import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
-import com.shorts.shortmaker.Services.ForegroundService;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,10 +25,12 @@ public class AppData extends Application {
     public FireBaseAuthHandler fireBaseAuthHandler;
     public ArrayList<Icon> icons;
     public static String CHANNEL_ID = "default_id";
+    private static Context context;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        context = this;
         fireBaseAuthHandler = new FireBaseAuthHandler(getApplicationContext());
         fireStoreHandler = new FireStoreHandler(getApplicationContext());
         printHashKey();
@@ -73,5 +74,10 @@ public class AppData extends Application {
             NotificationManager manager = getSystemService(NotificationManager.class);
             Objects.requireNonNull(manager).createNotificationChannel(serviceChannel);
         }
+    }
+
+    public static Context getContext()
+    {
+        return context;
     }
 }
