@@ -36,8 +36,16 @@
             android:layout_height="wrap_content"
             android:paddingStart="5dp"
             android:paddingTop="25dp"
-            android:paddingEnd="5dp"
             android:paddingBottom="25dp" />
+
+        <ImageView
+            android:id="@+id/moreButton"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_baseline_more_vert_24"
+            android:layout_gravity="center"
+          />
+
 
 
     </LinearLayout>

@@ -22,11 +22,16 @@ import java.util.HashMap;
 public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionViewHolder> {
     private ArrayList<ActionData> actionDataList;
     private OnItemLongClickListener longClickListener;
+    private OnItemClickListener clickListener;
     private OnSwitchClickListener checkListener;
 
     public interface OnItemLongClickListener {
         void onItemLongClick(View view, int position);
     }
+    public interface OnItemClickListener {
+        void onItemClickListener(View view, int position);
+    }
+
 
     public interface OnSwitchClickListener {
         void onSwitchClick(int position, boolean isChecked);
@@ -34,6 +39,10 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
 
     public void setOnItemLongClickListener(OnItemLongClickListener listener) {
         this.longClickListener = listener;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.clickListener = listener;
     }
 
     public void setOnSwitchClickListener(OnSwitchClickListener listener) {
@@ -45,14 +54,18 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         public ImageView actionIcon;
         public TextView actionTitle;
         public Switch isEnabledSwitch;
+        public ImageView moreButton;
+
 
         public ActionViewHolder(View itemView,
                                 final OnItemLongClickListener longClickListener,
-                                final OnSwitchClickListener checkListener) {
+                                final OnSwitchClickListener checkListener,
+                                final OnItemClickListener clickListener) {
             super(itemView);
             actionIcon = itemView.findViewById(R.id.imageView);
             actionTitle = itemView.findViewById(R.id.textView);
             isEnabledSwitch = itemView.findViewById(R.id.is_enabled_switch);
+            moreButton = itemView.findViewById(R.id.moreButton);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -70,6 +83,18 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
                     checkListener.onSwitchClick(getAdapterPosition(), isChecked);
                 }
             });
+
+            moreButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(clickListener!=null){
+                        int position = getAdapterPosition();
+                        if(position!=RecyclerView.NO_POSITION){
+                            clickListener.onItemClickListener(v,position);
+                        }
+                    }
+                }
+            });
         }
     }
 
@@ -83,7 +108,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         View view = LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.action_item_recycler_view, parent, false);
-        return new ActionViewHolder(view, longClickListener, checkListener);
+        return new ActionViewHolder(view, longClickListener, checkListener,clickListener);
     }
 
     @Override

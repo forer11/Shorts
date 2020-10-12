@@ -1,6 +1,8 @@
 package com.shorts.shortmaker.Activities;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -14,6 +16,7 @@ import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -57,6 +60,7 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
     private ImageView shortcutIcon;
     private ImageView gifPlaceHolder;
     private TextView noShortcutText;
+    private ImageView moreButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +72,7 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         showAddActionDialog();
         setGifPlaceHolder();
         noShortcutText = findViewById(R.id.noShortcutsText);
+        moreButton = findViewById(R.id.moreButton);
     }
 
     private void setGifPlaceHolder() {
@@ -219,14 +224,20 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
             gifPlaceHolder.setVisibility(View.VISIBLE);
             noShortcutText.setVisibility(View.VISIBLE);
         }
-        adapter.setOnItemLongClickListener(new ActionAdapter.OnItemLongClickListener() {
+        adapter.setOnItemClickListener(new ActionAdapter.OnItemClickListener() {
             @Override
-            public void onItemLongClick(View view, int position) {
-                Toast.makeText(SetActionsActivity.this, "Malol make me a menu" + position, Toast.LENGTH_SHORT).show();
+            public void onItemClickListener(View view, int position) {
                 lastPosition = position;
                 showPopUpMenu(view);
             }
         });
+        //TODO - need it for swipe?
+//        adapter.setOnItemLongClickListener(new ActionAdapter.OnItemLongClickListener() {
+//            @Override
+//            public void onItemLongClick(View view, int position) {
+//
+//            }
+//        });
 
         setSwitchClick();
     }
@@ -234,6 +245,11 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
     protected void showPopUpMenu(View view) {
         PopupMenu popup = new PopupMenu(SetActionsActivity.this, view);
         popup.setOnMenuItemClickListener(SetActionsActivity.this);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            popup.setForceShowIcon(true);
+        }
         popup.inflate(R.menu.popup_menu);
         popup.show();
     }
