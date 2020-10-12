@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -29,7 +30,7 @@ public class BrightnessDialog extends ActionDialog {
     private View dialogView;
     private boolean showRealtimeBrightness;
     private int originalBrightness;
-
+    private Button okButton;
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -140,29 +141,18 @@ public class BrightnessDialog extends ActionDialog {
 
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         ImageView imageView = view.findViewById(R.id.imageView);
+        okButton = view.findViewById(R.id.okButton);
         setDialogImage(imageView, R.drawable.dark_bright);
-        buildDialog(builder, view);
+        buildDialog(builder, view, "Turn on wifi", okButton);
     }
 
-    protected void buildDialog(AlertDialog.Builder builder, View view) {
-        builder.setView(view)
-                .setTitle("Turn on wifi")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
 
-                    }
-                })
-                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        ArrayList<String> results = new ArrayList<>();
-                        results.add(String.valueOf(brightness));
-                        long percentage = Math.round((double) brightness / 255 * 100);
-                        String description = "Set brightness to " + percentage + "%";
-                        listener.applyUserInfo(results, description);
-                    }
-                });
+    protected void getUserInput() {
+        ArrayList<String> results = new ArrayList<>();
+        results.add(String.valueOf(brightness));
+        long percentage = Math.round((double) brightness / 255 * 100);
+        String description = "Set brightness to " + percentage + "%";
+        listener.applyUserInfo(results, description);
     }
 
     @Override

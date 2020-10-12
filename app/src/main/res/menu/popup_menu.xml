@@ -7,7 +7,7 @@
         android:id="@+id/action_popup_edit"
         android:title="edit"
         android:icon="@drawable/ic_baseline_edit_24"
-        
+
         />
 
     <item
