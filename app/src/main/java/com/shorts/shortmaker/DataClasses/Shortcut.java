@@ -16,6 +16,8 @@ public class Shortcut {
 
     private int pos;
 
+    private LocationData locationData = null;
+
     private ArrayList<ActionData> actionDataList;
 
     @Exclude
@@ -95,5 +97,13 @@ public class Shortcut {
 
     public void setActionDataList(ArrayList<ActionData> actionDataList) {
         this.actionDataList = actionDataList;
+    }
+
+    public LocationData getLocationData() {
+        return locationData;
+    }
+
+    public void setLocationData(LocationData locationData) {
+        this.locationData = locationData;
     }
 }

@@ -29,6 +29,7 @@ import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Adapters.ActionAdapter;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
+import com.shorts.shortmaker.DataClasses.LocationData;
 import com.shorts.shortmaker.DataClasses.Shortcut;
 import com.shorts.shortmaker.DialogFragments.ChooseActionDialog;
 import com.shorts.shortmaker.DialogFragments.ChooseIconDialog;
@@ -453,6 +454,12 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                     String longtitude = data.getExtras().getString("longtitude");
                     String radius = data.getExtras().getString("radius");
 
+                    LocationData locationData = new LocationData(locationAddress,
+                            locationName,
+                            latitude,
+                            longtitude,
+                            radius);
+                    currentShortcut.setLocationData(locationData);
                     ActionData actionData = currentShortcut.getActionDataList().get(lastPosition);
                     actionData.setConditionDescription("When I'm at " + locationName);
                     actionData.setCondition(ActionFactory.Conditions.ON_AT_LOCATION);
