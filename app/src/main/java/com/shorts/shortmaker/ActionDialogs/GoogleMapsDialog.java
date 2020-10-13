@@ -7,10 +7,13 @@ import android.os.Bundle;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,6 +44,9 @@ public class GoogleMapsDialog extends ActionDialog {
     PlacesClient placesClient;
     private View view;
     private String a;
+    private int mode;
+    private String[] modes;
+    private Place chosenPlace = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,15 +80,9 @@ public class GoogleMapsDialog extends ActionDialog {
                 final String locationName = place.getName();
                 final String locationAddress = place.getAddress();
                 if (locationName != null) {
-                    okButton.setEnabled(true);
                     finalName = locationName;
                     finalAddress = locationAddress;
-                    a = finalName + "&" + finalAddress;
-                    Uri gmmIntentUri = Uri.parse("google.navigation:q=" + place.getLatLng().latitude
-                            + "," + place.getLatLng().longitude);
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                    mapIntent.setPackage("com.google.android.apps.maps");
-                    startActivity(mapIntent);
+                    chosenPlace = place;
                 } else {
                     okButton.setEnabled(false);
                     Toast.makeText(getContext(),
@@ -117,7 +117,7 @@ public class GoogleMapsDialog extends ActionDialog {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        view = layoutInflater.inflate(R.layout.waze_dialog, null);
+        view = layoutInflater.inflate(R.layout.google_maps_dialog, null);
 
         initializeDialogViews(builder, view);
         return builder.create();
@@ -127,14 +127,17 @@ public class GoogleMapsDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.google_maps_gif);
         okButton = view.findViewById(R.id.okButton);
+        setModesSpinner(view);
         buildDialog(builder, view, "Where to set Google Maps to", okButton);
     }
 
 
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
-        results.add(a);
-        String description = "Navigate to " + finalAddress; //TODO decide
+        results.add(String.valueOf(chosenPlace.getLatLng().latitude));
+        results.add(String.valueOf(chosenPlace.getLatLng().longitude));
+        results.add(modes[mode]);
+        String description = "Navigate to " + finalAddress + " by " + modes[mode];
         listener.applyUserInfo(results, description);
     }
 
@@ -148,4 +151,44 @@ public class GoogleMapsDialog extends ActionDialog {
         ft.remove(Objects.requireNonNull(fragment));
         ft.commit();
     }
+
+    protected void setModesSpinner(View view) {
+        modes = new String[]{"Choose transportation mode", "Driving", "Bicycling", "Two-wheeler", "Walking"};
+        Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, modes);
+        // set Adapter
+        spinner.setAdapter(adapter);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        setSpinner(spinner);
+    }
+
+    private void setSpinner(final Spinner spinner) {
+        //Register a callback to be invoked when an item in this AdapterView has been selected
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                       int position, long id) {
+                setSpinnerSelectionListener(position, spinner);
+                mode = position;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+    }
+
+    protected void setSpinnerSelectionListener(int position, Spinner spinner) {
+        String item = (String) spinner.getItemAtPosition(position);
+        if (item.equals(modes[0])){
+            okButton.setEnabled(false);
+        } else {
+            if(chosenPlace!=null){
+                okButton.setEnabled(true);
+            }
+        }
+    }
+
+
 }

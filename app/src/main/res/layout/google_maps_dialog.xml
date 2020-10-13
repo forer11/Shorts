@@ -25,14 +25,20 @@
             android:layout_below="@+id/imageView"
             android:layout_marginTop="20dp" />
 
-
+        <Spinner
+            android:id="@+id/spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/autocomplete_fragment"
+            style="@style/SpinnerTheme
+            android:layout_marginTop="10dp" />
 
         <Button
             android:id="@+id/okButton"
             android:layout_width="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/autocomplete_fragment"
+            android:layout_below="@+id/spinner"
             android:layout_alignParentEnd="true"
             android:enabled="false"
             android:text="OK" />
@@ -42,7 +48,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/autocomplete_fragment"
+            android:layout_below="@+id/spinner"
             android:layout_marginEnd="10dp"
             android:layout_toStartOf="@+id/okButton"
             android:text="CANCEL" />
