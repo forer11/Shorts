@@ -2,7 +2,6 @@ package com.shorts.shortmaker.Activities;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -12,11 +11,9 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.MenuCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,7 +24,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
-import com.shorts.shortmaker.Actions.Action;
 import com.shorts.shortmaker.Adapters.ActionAdapter;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
@@ -224,11 +220,18 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
             gifPlaceHolder.setVisibility(View.VISIBLE);
             noShortcutText.setVisibility(View.VISIBLE);
         }
-        adapter.setOnItemClickListener(new ActionAdapter.OnItemClickListener() {
+        adapter.setOnMoreClickListener(new ActionAdapter.OnMoreClickListener() {
             @Override
-            public void onItemClickListener(View view, int position) {
+            public void onMoreClickListener(View view, int position) {
                 lastPosition = position;
-                showPopUpMenu(view);
+                showMoreMenu(view);
+            }
+        });
+        adapter.setOnConditionsClickListener(new ActionAdapter.OnConditionsClickListener() {
+            @Override
+            public void onConditionsClickListener(View view, int position) {
+                lastPosition = position;
+                showConditionsMenu(view);
             }
         });
         //TODO - need it for swipe?
@@ -242,7 +245,18 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         setSwitchClick();
     }
 
-    protected void showPopUpMenu(View view) {
+    protected void showMoreMenu(View view) {
+        PopupMenu popup = new PopupMenu(SetActionsActivity.this, view);
+        popup.setOnMenuItemClickListener(SetActionsActivity.this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            popup.setForceShowIcon(true);
+        }
+        popup.inflate(R.menu.more_menu);
+        popup.show();
+    }
+
+    protected void showConditionsMenu(View view) {
         PopupMenu popup = new PopupMenu(SetActionsActivity.this, view);
         popup.setOnMenuItemClickListener(SetActionsActivity.this);
 
@@ -250,10 +264,9 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             popup.setForceShowIcon(true);
         }
-        popup.inflate(R.menu.popup_menu);
+        popup.inflate(R.menu.conditions_menu);
         popup.show();
     }
-
 
     private void setSwitchClick() {
         adapter.setOnSwitchClickListener(new ActionAdapter.OnSwitchClickListener() {
@@ -332,7 +345,6 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         adapter.notifyItemRemoved(lastPosition);
         currentShortcut.getActionDataList().add(lastPosition, action);
         adapter.notifyItemInserted(lastPosition);
-
     }
 
     ItemTouchHelper.SimpleCallback simpleCallback = new ItemTouchHelper
@@ -371,12 +383,53 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         ActionData actionData = currentShortcut.getActionDataList().get(lastPosition);
+        if (item.getGroupId() == R.id.more_menu) {
+            return onMoreMenuItemClick(item, actionData);
+        } else if (item.getGroupId() == R.id.conditions_menu) {
+            return onConditionMenuItemClick(item, actionData, lastPosition);
+        } else {
+            return false;
+        }
+    }
+
+    protected boolean onMoreMenuItemClick(MenuItem item, ActionData actionData) {
         switch (item.getItemId()) {
             case R.id.action_popup_edit:
                 showActionDialog(actionData, true);
                 return true;
             case R.id.action_popup_delete:
                 removeAction(actionData);
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    protected boolean onConditionMenuItemClick(MenuItem item,
+                                               ActionData actionData,
+                                               int position) {
+        String conditionDescription;
+        switch (item.getItemId()) {
+            case R.id.onShortcutClick:
+                conditionDescription = ActionFactory.WHEN_CLICKING_ON_A_SHORTCUT;
+                if (!actionData.getConditionDescription().equals(conditionDescription)) {
+                    actionData.setConditionDescription(conditionDescription);
+                    actionData.setCondition(ActionFactory.Conditions.ON_DEFAULT);
+                    adapter.notifyDataSetChanged();
+                    //TOOD- update in firestore
+
+                }
+                return true;
+                //TODO - make the text also clickable
+            case R.id.whenEnteringLocation:
+                //TODO - call a special map dialog
+                conditionDescription = ActionFactory.ON_LOCATION; //TODO - here it will be the location we got from the dialog
+                if (!actionData.getConditionDescription().equals(conditionDescription)) {
+                    actionData.setConditionDescription(conditionDescription);
+                    actionData.setCondition(ActionFactory.Conditions.ON_AT_LOCATION);
+                    adapter.notifyDataSetChanged();
+                    //TOOD - update in firestore
+                }
                 return true;
             default:
                 return false;

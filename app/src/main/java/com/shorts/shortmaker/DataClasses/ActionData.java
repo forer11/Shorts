@@ -27,11 +27,14 @@ public class ActionData {
         this.isActivated = actionData.isActivated;
         this.description = actionData.description;
         this.condition = actionData.condition;
+        this.conditionDescription = actionData.conditionDescription;
     }
 
     public ActionData(String title) {
         this.title = title;
         isActivated = true;
+        this.condition = ActionFactory.Conditions.ON_DEFAULT;
+        conditionDescription = ActionFactory.ENUM_TO_CONDITION_TITLE.get(this.condition);
         allocData();
     }
 
@@ -47,7 +50,7 @@ public class ActionData {
         allocData();
         this.data.clear();
         this.data.addAll(data);
-        this.condition = ActionFactory.Conditions.ON_DEFAULT;
+
     }
 
     @Exclude

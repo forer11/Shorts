@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <group android:id="@+id/conditions_menu">
+
+    <item
+        android:id="@+id/onShortcutClick"
+        android:title="On shortcut click"
+        android:icon="@drawable/ic_baseline_edit_24"
+
+        />
+
+    <item
+        android:id="@+id/whenEnteringLocation"
+        android:icon="@drawable/ic_baseline_delete_24"
+        android:title="When entering a location" />
+    </group>
+</menu>
