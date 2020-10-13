@@ -11,6 +11,7 @@ public class ActionData {
     private String description;
     private ArrayList<String> data;
     private ActionFactory.Conditions condition;
+    private String conditionDescription;
     /* True by default */
     private Boolean isActivated;
 
@@ -86,5 +87,13 @@ public class ActionData {
 
     public void setCondition(ActionFactory.Conditions condition) {
         this.condition = condition;
+    }
+
+    public String getConditionDescription() {
+        return conditionDescription;
+    }
+
+    public void setConditionDescription(String conditionDescription) {
+        this.conditionDescription = conditionDescription;
     }
 }
