@@ -3,9 +3,9 @@ package com.shorts.shortmaker.DataClasses;
 public class LocationData {
     String locationAddress;
     String locationName;
-    String latitude;
-    String longitude;
-    String radius;
+    Double latitude;
+    Double longitude;
+    Double radius;
 
     public LocationData() {
         /* empty for FireStore */
@@ -13,9 +13,9 @@ public class LocationData {
 
     public LocationData(String locationAddress,
                         String locationName,
-                        String latitude,
-                        String longitude,
-                        String radius) {
+                        Double latitude,
+                        Double longitude,
+                        Double radius) {
         this.locationAddress = locationAddress;
         this.locationName = locationName;
         this.longitude = longitude;
@@ -40,27 +40,27 @@ public class LocationData {
         this.locationName = locationName;
     }
 
-    public String getLatitude() {
+    public Double getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(Double latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public Double getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
 
-    public String getRadius() {
+    public Double getRadius() {
         return radius;
     }
 
-    public void setRadius(String radius) {
+    public void setRadius(Double radius) {
         this.radius = radius;
     }
 }

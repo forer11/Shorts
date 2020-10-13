@@ -450,9 +450,9 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                 if (data.getExtras() != null) {
                     String locationAddress = data.getExtras().getString("address");
                     String locationName = data.getExtras().getString("name");
-                    String latitude = data.getExtras().getString("latitude");
-                    String longtitude = data.getExtras().getString("longtitude");
-                    String radius = data.getExtras().getString("radius");
+                    Double latitude = data.getExtras().getDouble("latitude");
+                    Double longtitude = data.getExtras().getDouble("longtitude");
+                    Double radius = data.getExtras().getDouble("radius");
 
                     LocationData locationData = new LocationData(locationAddress,
                             locationName,
