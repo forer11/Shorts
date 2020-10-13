@@ -2,9 +2,7 @@ package com.shorts.shortmaker.ActionDialogs;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -20,7 +18,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -28,7 +25,6 @@ import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.shorts.shortmaker.R;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -38,10 +34,11 @@ public class WazeDialog extends ActionDialog {
 
     private String apiId;
     private Button okButton;
-    private String finalLocation;
+    private String finalName;
     private String finalAddress;
     PlacesClient placesClient;
     private View view;
+    private String a;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,8 +73,10 @@ public class WazeDialog extends ActionDialog {
                 final String locationAddress = place.getAddress();
                 if (locationName != null) {
                     okButton.setEnabled(true);
-                    finalLocation = locationName;
+                    finalName = locationName;
                     finalAddress = locationAddress;
+                    a = finalName+"&"+finalAddress;
+                    System.out.println(a);
                 } else {
                     okButton.setEnabled(false);
                     Toast.makeText(getContext(),
@@ -100,35 +99,12 @@ public class WazeDialog extends ActionDialog {
                         .getView().findViewById(R.id.places_autocomplete_search_input);
                 editText.setText("");
                 okButton.setEnabled(false);
-                finalLocation = "";
+                finalName = "";
                 finalAddress = "";
                 imageButton.setVisibility(View.INVISIBLE);
             }
         });
-
     }
-
-//    private TextWatcher userInputTextWatcher = new TextWatcher() {
-//        @Override
-//        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//        }
-//
-//        @Override
-//        public void onTextChanged(CharSequence s, int start, int before, int count) {
-//
-//        }
-//
-//        @Override
-//        public void afterTextChanged(Editable s) {
-//            if (editTextAddress.getText().toString().equals("")) {
-//                editTextAddress.setError("Enter an address");
-//                okButton.setEnabled(false);
-//            } else {
-//                editTextAddress.setError(null);
-//                okButton.setEnabled(true);
-//            }
-//        }
-//    };
 
     @NonNull
     @Override
@@ -151,7 +127,7 @@ public class WazeDialog extends ActionDialog {
 
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
-        results.add(finalAddress);
+        results.add(a);
         String description = "Navigate to " + finalAddress; //TODO decide
         listener.applyUserInfo(results, description);
     }

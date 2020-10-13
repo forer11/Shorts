@@ -67,7 +67,7 @@ public class GpsDialog extends ActionDialog {
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
         results.add(state);
-        String description = "Bluetooth set to: " + state;
+        String description = "Gps set to: " + state;
         listener.applyUserInfo(results, description);
     }
 }
