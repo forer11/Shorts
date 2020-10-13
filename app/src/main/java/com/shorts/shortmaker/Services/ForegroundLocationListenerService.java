@@ -11,10 +11,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
@@ -29,8 +32,10 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.shorts.shortmaker.BroadcastReceivers.NotificationLocationReceiver;
 import com.shorts.shortmaker.BroadcastReceivers.NotificationReceiver;
 import com.shorts.shortmaker.R;
+import com.sun.mail.imap.protocol.FLAGS;
 
 import java.security.Provider;
 import java.util.List;
@@ -73,8 +78,8 @@ public class ForegroundLocationListenerService extends Service {
 
 
     private void startLocationService() {
-        Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
-        broadcastIntent.putExtra(NotificationReceiver.EXTRA, CLOSE_LOCATION_FOREGROUND);
+        Intent broadcastIntent = new Intent(this, NotificationLocationReceiver.class);
+        broadcastIntent.putExtra(NotificationLocationReceiver.EXTRA, CLOSE_LOCATION_FOREGROUND);
         PendingIntent actionIntent = PendingIntent.getBroadcast(this,
                 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -115,18 +120,30 @@ public class ForegroundLocationListenerService extends Service {
                     @Override
                     public void
                     onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                        LocationServices.getFusedLocationProviderClient(context)
-                                .requestLocationUpdates(locationRequest,
-                                        locationCallback,
-                                        Looper.getMainLooper());
-                        startForeground(LOCATION_SERVICE_ID, builder.build());
+                        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+                        if (manager != null && manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                            LocationServices.getFusedLocationProviderClient(context)
+                                    .requestLocationUpdates(locationRequest,
+                                            locationCallback,
+                                            Looper.getMainLooper());
+                            startForeground(LOCATION_SERVICE_ID, builder.build());
+                        } else {
+                            Intent openLocationIntent =
+                                    new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                            openLocationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(openLocationIntent);
+                            Toast.makeText(context,
+                                    "Enable location and try again",
+                                    Toast.LENGTH_LONG).show();
+                            stopLocationService();
+                        }
                     }
 
                     @Override
                     public void
                     onPermissionRationaleShouldBeShown(List<PermissionRequest> list,
                                                        PermissionToken permissionToken) {
-
+                        //todo dialog?
                     }
                 }).check();
     }

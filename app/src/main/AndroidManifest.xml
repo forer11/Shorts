@@ -132,7 +132,7 @@
 
         <service android:name=".Services.ForegroundReadSmsService" />
         <service android:name=".Services.ForegroundLocationListenerService" />
-
+        <receiver android:name=".BroadcastReceivers.NotificationLocationReceiver" />
         <receiver android:name=".BroadcastReceivers.NotificationReceiver" />
 
         <meta-data

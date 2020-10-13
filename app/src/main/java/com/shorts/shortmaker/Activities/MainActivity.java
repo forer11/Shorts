@@ -113,7 +113,7 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         setObjects();
         setToolbar();
         setAddShortcutButton();
-//        startLocationService();
+        startLocationService();
     }
 
     private void getScreenSize() {
@@ -499,29 +499,29 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     }
 
 
-//    private boolean isLocationServiceRunning() {
-//        ActivityManager activityManager =
-//                (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-//        if (activityManager != null) {
-//            for (ActivityManager.RunningServiceInfo serviceInfo :
-//                    activityManager.getRunningServices(Integer.MAX_VALUE)) {
-//                if (ForegroundLocationListenerService.class.getName()
-//                        .equals(serviceInfo.service.getClassName())) {
-//                    if (serviceInfo.foreground) {
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//        return false;
-//    }
-//
-//    private void startLocationService() {
-//        if (!isLocationServiceRunning()) {
-//            Intent intent = new Intent(getApplicationContext(),
-//                    ForegroundLocationListenerService.class);
-//            intent.setAction(ForegroundLocationListenerService.START_LOCATION_SERVICE);
-//            startService(intent);
-//        }
-//    }
+    private boolean isLocationServiceRunning() {
+        ActivityManager activityManager =
+                (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            for (ActivityManager.RunningServiceInfo serviceInfo :
+                    activityManager.getRunningServices(Integer.MAX_VALUE)) {
+                if (ForegroundLocationListenerService.class.getName()
+                        .equals(serviceInfo.service.getClassName())) {
+                    if (serviceInfo.foreground) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void startLocationService() {
+        if (!isLocationServiceRunning()) {
+            Intent intent = new Intent(getApplicationContext(),
+                    ForegroundLocationListenerService.class);
+            intent.setAction(ForegroundLocationListenerService.START_LOCATION_SERVICE);
+            startService(intent);
+        }
+    }
 }
