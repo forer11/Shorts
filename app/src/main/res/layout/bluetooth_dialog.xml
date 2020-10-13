@@ -32,6 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_above="@id/okButton"
             android:layout_below="@id/imageView"
+            android:layout_marginBottom="-7dp"
+            android:layout_marginTop="-7dp"
             android:layout_toEndOf="@id/enable_disable_textview" />
 
         <Button

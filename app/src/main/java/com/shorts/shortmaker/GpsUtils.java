@@ -55,7 +55,7 @@ public class GpsUtils {
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
                 .addLocationRequest(locationRequest);
         mLocationSettingsRequest = builder.build();
-//**************************
+        //**************************
         builder.setAlwaysShow(true); //this is the key ingredient
         //**************************
     }

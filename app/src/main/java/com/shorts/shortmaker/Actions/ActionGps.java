@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionDialogs.GpsDialog;
+import com.shorts.shortmaker.ActionDialogs.SetBluetoothDialog;
 import com.shorts.shortmaker.GpsUtils;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class ActionGps implements Action {
 
     private GpsDialog dialog;
-    private int turnOn;
+    private boolean state;
     public static boolean isGPS;
 
     public static void setIsGPS(boolean isGPS) {
@@ -30,8 +31,14 @@ public class ActionGps implements Action {
         new GpsUtils(context,activity).turnGPSOn(new GpsUtils.onGpsListener() {
             @Override
             public void gpsStatus(boolean isGPSEnable) {
-                // turn on GPS
-                isGPS = isGPSEnable;
+                if(state){
+                    // turn on GPS
+                    isGPS = isGPSEnable;
+                } else {
+                    // turn on GPS
+                    isGPS = !isGPSEnable;
+                }
+
             }
         });
 
@@ -44,7 +51,7 @@ public class ActionGps implements Action {
 
     @Override
     public void setData(List<String> data) {
-        turnOn = Integer.parseInt(data.get(0));
+        state = data.get(0).equals(SetBluetoothDialog.ON);
     }
 
 
