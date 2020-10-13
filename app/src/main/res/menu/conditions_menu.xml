@@ -7,13 +7,11 @@
     <item
         android:id="@+id/onShortcutClick"
         android:title="On shortcut click"
-        android:icon="@drawable/ic_baseline_edit_24"
 
         />
 
     <item
         android:id="@+id/whenEnteringLocation"
-        android:icon="@drawable/ic_baseline_delete_24"
         android:title="When entering a location" />
     </group>
 </menu>

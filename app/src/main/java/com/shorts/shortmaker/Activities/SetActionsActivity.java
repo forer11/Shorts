@@ -1,23 +1,15 @@
 package com.shorts.shortmaker.Activities;
 
-import android.app.Dialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
-import android.widget.SearchView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -31,24 +23,7 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.libraries.places.api.Places;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Adapters.ActionAdapter;
@@ -59,23 +34,20 @@ import com.shorts.shortmaker.DialogFragments.ChooseActionDialog;
 import com.shorts.shortmaker.DialogFragments.ChooseIconDialog;
 import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.shorts.shortmaker.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 //
 
 public class SetActionsActivity extends AppCompatActivity implements ChooseIconDialog.OnIconPick,
-        PopupMenu.OnMenuItemClickListener
-      {
+        PopupMenu.OnMenuItemClickListener {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     public static final int NO_POSITION = -1;
+    public static final int REQUEST_CODE = 500;
 
     int lastPosition = NO_POSITION;
 
@@ -447,22 +419,13 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                     actionData.setConditionDescription(conditionDescription);
                     actionData.setCondition(ActionFactory.Conditions.ON_DEFAULT);
                     adapter.notifyDataSetChanged();
-                    //TOOD- update in firestore
-
+                    appData.fireStoreHandler.updateShortcut(currentShortcut);
                 }
                 return true;
             case R.id.whenEnteringLocation:
 
-                Intent myIntent = new Intent(getBaseContext(),   LocationPickerActivity.class);
-                startActivity(myIntent);
-
-                conditionDescription = ActionFactory.ON_LOCATION; //TODO - here it will be the location we got from the dialog
-                if (!actionData.getConditionDescription().equals(conditionDescription)) {
-                    actionData.setConditionDescription(conditionDescription);
-                    actionData.setCondition(ActionFactory.Conditions.ON_AT_LOCATION);
-                    adapter.notifyDataSetChanged();
-                    //TOOD - update in firestore
-                }
+                Intent intent = new Intent(getBaseContext(), LocationPickerActivity.class);
+                startActivityForResult(intent, REQUEST_CODE);
                 return true;
             default:
                 return false;
@@ -476,6 +439,27 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         if (currentShortcut.getActionDataList().isEmpty()) {
             gifPlaceHolder.setVisibility(View.VISIBLE);
             noShortcutText.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                if (data.getExtras() != null) {
+                    String locationAddress = data.getExtras().getString("address");
+                    String locationName = data.getExtras().getString("name");
+                    String latitude = data.getExtras().getString("latitude");
+                    String longtitude = data.getExtras().getString("longtitude");
+                    String radius = data.getExtras().getString("radius");
+
+                    ActionData actionData = currentShortcut.getActionDataList().get(lastPosition);
+                    actionData.setConditionDescription("When I'm at " + locationName);
+                    actionData.setCondition(ActionFactory.Conditions.ON_AT_LOCATION);
+                    adapter.notifyDataSetChanged();
+                    appData.fireStoreHandler.updateShortcut(currentShortcut);
+                }
+            }
         }
     }
 
