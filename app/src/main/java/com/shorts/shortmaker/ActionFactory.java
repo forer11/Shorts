@@ -26,11 +26,24 @@ import java.util.HashMap;
 public class ActionFactory {
 
 
-
     public enum Conditions {
-        ON_CLICK,
-        ON_ORIENTATION_CHANGE
+        ON_DEFAULT,
+        ON_AT_LOCATION
     }
+
+    public static final String WHEN_CLICKING_ON_A_SHORTCUT = "When clicking on the Shortcut";
+    public static final String ON_LOCATION = "When I'm at";
+
+    public static final HashMap<Conditions, String> ENUM_TO_CONDITION_TITLE = new HashMap<Conditions, String>() {{
+        put(Conditions.ON_DEFAULT, WHEN_CLICKING_ON_A_SHORTCUT);
+        put(Conditions.ON_AT_LOCATION, ON_LOCATION);
+    }};
+
+    public static final HashMap<String, Conditions> CONDITION_TITLE_TO_ENUM = new HashMap<String, Conditions>() {{
+        put(WHEN_CLICKING_ON_A_SHORTCUT, Conditions.ON_DEFAULT);
+        put(ON_LOCATION, Conditions.ON_AT_LOCATION);
+    }};
+
 
     public static final String WAZE_ACTION_TITLE = "Waze";
     public static final String SPOTIFY_ACTION_TITLE = "Spotify";

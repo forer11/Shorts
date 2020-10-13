@@ -46,7 +46,7 @@ public class ActionData {
         allocData();
         this.data.clear();
         this.data.addAll(data);
-        this.condition = ActionFactory.Conditions.ON_CLICK;
+        this.condition = ActionFactory.Conditions.ON_DEFAULT;
     }
 
     @Exclude

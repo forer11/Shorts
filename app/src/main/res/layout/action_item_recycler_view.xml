@@ -52,9 +52,9 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_baseline_more_vert_24" />
         </LinearLayout>
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/spinner_text"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/action_layout"/>
     </RelativeLayout>
