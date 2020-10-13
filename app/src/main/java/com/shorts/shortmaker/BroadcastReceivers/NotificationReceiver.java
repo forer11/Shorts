@@ -4,9 +4,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+
 public class NotificationReceiver extends BroadcastReceiver {
+    static public String EXTRA = "extra";
+
     @Override
     public void onReceive(Context context, Intent intent) {
-        context.sendBroadcast(new Intent("my.close.foreground"));
+        if (intent.getExtras() != null) {
+            String action = intent.getExtras().getString(EXTRA);
+            if (action != null) {
+                context.sendBroadcast(new Intent(action));
+            }
+        }
     }
 }
