@@ -75,6 +75,7 @@
         <activity
             android:name=".Activities.LoginActivity"
             android:theme="@style/LoginTheme"></activity>
+       
         <activity
             android:name=".Activities.OpeningScreenActivity"
             android:theme="@style/SplashTheme">

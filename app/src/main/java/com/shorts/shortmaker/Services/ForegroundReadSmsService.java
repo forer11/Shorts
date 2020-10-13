@@ -112,7 +112,7 @@ public class ForegroundReadSmsService extends Service {
 
     private void startForeground() {
         Intent broadcastIntent = new Intent(this, NotificationReceiver.class);
-        broadcastIntent.putExtra("command", MY_CLOSE_FOREGROUND);
+        broadcastIntent.putExtra(NotificationReceiver.EXTRA, MY_CLOSE_FOREGROUND);
         PendingIntent actionIntent = PendingIntent.getBroadcast(this,
                 0, broadcastIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -125,7 +125,7 @@ public class ForegroundReadSmsService extends Service {
                 .setContentTitle("Listening for incoming SMS")
                 .setContentText("yay")
                 .setSmallIcon(R.mipmap.pants)
-                .addAction(R.mipmap.teddy_bear, "Stop service", actionIntent)
+                .addAction(R.mipmap.delete_icon, "Stop service", actionIntent)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setCustomContentView(notificationLayout)
                 .build();
@@ -189,5 +189,6 @@ public class ForegroundReadSmsService extends Service {
 
         }
         unregisterReceiver(receiver);
+        unregisterReceiver(closeReceiver);
     }
 }
