@@ -40,6 +40,13 @@ public class SetBluetoothDialog extends ActionDialog {
         view = layoutInflater.inflate(R.layout.bluetooth_dialog, null);
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.blutooth_gif);
+        setSwitch();
+        Button okButton = view.findViewById(R.id.okButton);
+        buildDialog(builder, view, "Set Bluetooth On/Off", okButton);
+        return builder.create();
+    }
+
+    protected void setSwitch() {
         final TextView onOffTextView = view.findViewById(R.id.enable_disable_textview);
         Switch onOffSwitch = view.findViewById(R.id.enable_disable_switch);
         onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -55,9 +62,6 @@ public class SetBluetoothDialog extends ActionDialog {
             }
         });
         onOffSwitch.setChecked(true);
-        Button okButton = view.findViewById(R.id.okButton);
-        buildDialog(builder, view, "Set Bluetooth On/Off", okButton);
-        return builder.create();
     }
 
     @Override

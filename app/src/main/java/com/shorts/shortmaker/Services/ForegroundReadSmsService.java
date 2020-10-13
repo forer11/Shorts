@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
+import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -118,14 +119,15 @@ public class ForegroundReadSmsService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, 0);
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_layout);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-                .setContentTitle("listening")
+                .setContentTitle("Listening for incoming SMS")
                 .setContentText("yay")
                 .setSmallIcon(R.mipmap.pants)
-                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
-                        R.mipmap.pants))
                 .addAction(R.mipmap.teddy_bear, "Stop service", actionIntent)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
+                .setCustomContentView(notificationLayout)
                 .build();
 
         startForeground(NOTIF_ID, notification);

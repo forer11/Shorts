@@ -5,7 +5,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,18 +19,23 @@ import com.shorts.shortmaker.R;
 import java.util.ArrayList;
 
 public class GpsDialog extends ActionDialog {
+    public static final String ON = "On";
+    public static final String OFF = "Off";
 
     private Button okButton;
+    private View view;
+    private String state;
+
 
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
-        View view = layoutInflater.inflate(R.layout.gps_dialog, null);
-
+        view = layoutInflater.inflate(R.layout.gps_dialog, null);
         initializeDialogViews(view);
-        buildDialog(builder, view, "Turn on GPS", okButton);
+        setSwitch();
+        buildDialog(builder, view, "Set GPS On/Off", okButton);
         return builder.create();
     }
 
@@ -37,10 +45,29 @@ public class GpsDialog extends ActionDialog {
         okButton = view.findViewById(R.id.okButton);
     }
 
+
+    protected void setSwitch() {
+        final TextView onOffTextView = view.findViewById(R.id.enable_disable_textview);
+        Switch onOffSwitch = view.findViewById(R.id.enable_disable_switch);
+        onOffSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    state = ON;
+                    onOffTextView.setText("GPS enabled");
+                } else {
+                    state = OFF;
+                    onOffTextView.setText("GPS disabled");
+                }
+            }
+        });
+        onOffSwitch.setChecked(true);
+    }
+
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
-        results.add("0");
-        String description = "GPS On";
+        results.add(state);
+        String description = "Bluetooth set to: " + state;
         listener.applyUserInfo(results, description);
     }
 }
