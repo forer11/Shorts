@@ -75,8 +75,6 @@ public class WazeDialog extends ActionDialog {
                     okButton.setEnabled(true);
                     finalName = locationName;
                     finalAddress = locationAddress;
-                    a = finalName+"&"+finalAddress;
-                    System.out.println(a);
                 } else {
                     okButton.setEnabled(false);
                     Toast.makeText(getContext(),
