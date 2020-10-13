@@ -53,6 +53,7 @@ public class LocationPickerActivity extends AppCompatActivity implements OnMapRe
     private String locationAddress;
     private Address address;
     private LatLng latLng;
+    private FloatingActionButton setAddressButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +67,7 @@ public class LocationPickerActivity extends AppCompatActivity implements OnMapRe
         setMapFragment();
         setBackButton();
 
-        FloatingActionButton setAddressButton = findViewById(R.id.setAddressButton);
+        setAddressButton = findViewById(R.id.setAddressButton);
         setAddressButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,6 +136,7 @@ public class LocationPickerActivity extends AppCompatActivity implements OnMapRe
         autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
+                setAddressButton.setVisibility(View.VISIBLE);
                 latLng = place.getLatLng();
                 locationName = place.getName();
                 locationAddress = place.getAddress();

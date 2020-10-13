@@ -46,6 +46,5 @@ public class ActionWaze implements Action {
     private void openOrInstallWaze(String uri,Activity activity) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         activity.startActivity(intent);
-
     }
 }
