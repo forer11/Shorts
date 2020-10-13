@@ -52,12 +52,17 @@
                 <action android:name="android.intent.action.CREATE_SHORTCUT" />
             </intent-filter>
         </activity>
-        <meta-data android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.actions"
             android:resource="@xml/actions" />
-        <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@mipmap/pants" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/pants" />
+
         <activity
             android:name=".Activities.SetActionsActivity"
             android:theme="@style/SetActionsTheme">
@@ -74,7 +79,8 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Activities.LoginActivity"
+        <activity
+            android:name=".Activities.LoginActivity"
             android:theme="@style/LoginTheme">
 
         </activity>
@@ -125,6 +131,8 @@
         </activity>
 
         <service android:name=".Services.ForegroundReadSmsService" />
+        <service android:name=".Services.ForegroundLocationListenerService" />
+
         <receiver android:name=".BroadcastReceivers.NotificationReceiver" />
 
     </application>
