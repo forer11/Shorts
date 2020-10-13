@@ -20,6 +20,7 @@ import com.shorts.shortmaker.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 
 import static com.shorts.shortmaker.AppData.getContext;
@@ -29,6 +30,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
     private OnItemLongClickListener longClickListener;
     private OnItemClickListener clickListener;
     private OnSwitchClickListener checkListener;
+    private ArrayList<String> modes;
 
     public interface OnItemLongClickListener {
         void onItemLongClick(View view, int position);
@@ -62,6 +64,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         public Switch isEnabledSwitch;
         public ImageView moreButton;
         public Spinner chooseOnCondition;
+        public TextView spinnerText;
 
         public ActionViewHolder(View itemView,
                                 final OnItemLongClickListener longClickListener,
@@ -73,6 +76,7 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
             isEnabledSwitch = itemView.findViewById(R.id.is_enabled_switch);
             moreButton = itemView.findViewById(R.id.moreButton);
             chooseOnCondition = itemView.findViewById(R.id.spinner);
+            spinnerText = itemView.findViewById(R.id.spinner_text);
 
             itemView.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
@@ -128,6 +132,8 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
         }
         holder.actionTitle.setText(currentItem.getDescription());
         holder.isEnabledSwitch.setChecked(currentItem.getIsActivated());
+        String spinnerText = ActionFactory.ENUM_TO_CONDITION_TITLE.get(currentItem.getCondition());
+        holder.spinnerText.setText(spinnerText);
         setModesSpinner(holder.chooseOnCondition);
     }
 
@@ -137,35 +143,13 @@ public class ActionAdapter extends RecyclerView.Adapter<ActionAdapter.ActionView
     }
 
     protected void setModesSpinner(Spinner spinner) {
-        String[] modes = new String[]{"Activate by default", "2", "3"};
+        modes = new ArrayList<>();
+        EnumSet.allOf(ActionFactory.Conditions.class)
+                .forEach(condition -> modes
+                        .add(ActionFactory
+                                .ENUM_TO_CONDITION_TITLE
+                                .get(condition)));
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, modes);
-        // set Adapter
-        spinner.setAdapter(adapter);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        setSpinner(spinner);
-    }
-
-    private void setSpinner(final Spinner spinner) {
-        //Register a callback to be invoked when an item in this AdapterView has been selected
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int position, long id) {
-                setSpinnerSelectionListener(position, spinner);
-                //
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-
-        });
-    }
-
-    protected void setSpinnerSelectionListener(int position, Spinner spinner) {
-        String item = (String) spinner.getItemAtPosition(position);
     }
 }
