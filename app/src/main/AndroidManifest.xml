@@ -127,6 +127,10 @@
         <service android:name=".Services.ForegroundReadSmsService" />
         <receiver android:name=".BroadcastReceivers.NotificationReceiver" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/maps_id"
+            />
     </application>
 
 </manifest>

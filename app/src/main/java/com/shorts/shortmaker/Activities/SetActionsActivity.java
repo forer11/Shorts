@@ -1,14 +1,22 @@
 package com.shorts.shortmaker.Activities;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+import android.widget.SearchView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +30,24 @@ import androidx.swiperefreshlayout.widget.CircularProgressDrawable;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.libraries.places.api.Places;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Adapters.ActionAdapter;
@@ -34,15 +60,18 @@ import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.shorts.shortmaker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 
 import static com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade;
 //
 
 public class SetActionsActivity extends AppCompatActivity implements ChooseIconDialog.OnIconPick,
-        PopupMenu.OnMenuItemClickListener {
+        PopupMenu.OnMenuItemClickListener,
+        OnMapReadyCallback {
 
     private static final String ICON_DIALOG_TAG = "icon-dialog";
     public static final int NO_POSITION = -1;
@@ -57,7 +86,15 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
     private ImageView gifPlaceHolder;
     private TextView noShortcutText;
     private ImageView moreButton;
-
+    private SupportMapFragment mapFragment;
+    private GoogleMap map;
+    private SearchView searchView;
+    private int radius = 0;
+    private CircleOptions circleOptions;
+    private Marker m1;
+    private Circle circle;
+    private LatLng mCircleCenter = new LatLng(38.432398, 27.155882);
+    private double mCircleRadius = 250;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,8 +104,115 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
         getShortcutObject();
         showAddActionDialog();
         setGifPlaceHolder();
+
+        setMapFragment();
+
+    }
+
+    private void setMapFragment() {
         noShortcutText = findViewById(R.id.noShortcutsText);
         moreButton = findViewById(R.id.moreButton);
+
+        SeekBar mRadiusSeekBar = (SeekBar)findViewById( R.id.seekbar);
+        setSeekBar(mRadiusSeekBar);
+
+        searchView = findViewById(R.id.sv_location);
+        mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+        setSearchView();
+
+        mapFragment.getMapAsync(this);
+    }
+
+    private void setSeekBar(SeekBar mRadiusSeekBar) {
+        mRadiusSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                filterMarkers(progress * 10);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+    private void setSearchView() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = searchView.getQuery().toString();
+                List<Address> addressList = null;
+
+                if (location != null || !location.equals("")) {
+                    Geocoder geocoder = new Geocoder(SetActionsActivity.this);
+                    try {
+                        addressList = geocoder.getFromLocationName(location, 1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    Address address = addressList.get(0); //TODO - here is our address 
+                    mCircleCenter = new LatLng(address.getLatitude(), address.getLongitude());
+                    m1 = map.addMarker(new MarkerOptions().position(mCircleCenter).title(location));
+                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(mCircleCenter, 15));
+
+                    drawCircle();
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+    }
+    private List<LatLng> mPoints = new ArrayList<>();
+    private List<Marker> mMarkers = new ArrayList<>();
+
+    private void filterMarkers(double radiusForCircle){
+        circle.setRadius(radiusForCircle);
+        float[] distance = new float[2];
+        for(int m = 0; m < mMarkers.size(); m++){
+            Marker marker = mMarkers.get(m);
+            LatLng position = marker.getPosition();
+            double lat = position.latitude;
+            double lon = position.longitude;
+
+            Location.distanceBetween(lat, lon, mCircleCenter.latitude,
+                    mCircleCenter.longitude, distance);
+
+            boolean inCircle = distance[0] <= radiusForCircle;
+            marker.setVisible(inCircle);
+        }
+    }
+
+    protected void drawCircle() {
+        circle = map.addCircle(new CircleOptions()
+                .strokeWidth(4)
+                .radius(mCircleRadius)
+                .center(mCircleCenter)
+                .strokeColor(Color.parseColor("#D1C4E9"))
+                .fillColor(Color.parseColor("#657C4DFF")));
+
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+        this.map = googleMap;
+//        map.addMarker(new MarkerOptions()
+//                .position(new LatLng(0, 0))
+//                .title("Marker")); //TODO - put our location here
+        map.moveCamera(CameraUpdateFactory
+                .newLatLngZoom(mCircleCenter, 12));
+
+        drawCircle();
     }
 
     private void setGifPlaceHolder() {
@@ -420,8 +564,9 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
 
                 }
                 return true;
-                //TODO - make the text also clickable
             case R.id.whenEnteringLocation:
+
+
                 //TODO - call a special map dialog
                 conditionDescription = ActionFactory.ON_LOCATION; //TODO - here it will be the location we got from the dialog
                 if (!actionData.getConditionDescription().equals(conditionDescription)) {
@@ -445,6 +590,5 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
             noShortcutText.setVisibility(View.VISIBLE);
         }
     }
-
 
 }
