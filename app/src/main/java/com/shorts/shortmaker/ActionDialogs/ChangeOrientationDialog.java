@@ -1,5 +1,6 @@
 package com.shorts.shortmaker.ActionDialogs;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -66,6 +67,7 @@ public class ChangeOrientationDialog extends ActionDialog {
         // set Adapter
         spinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
         setSpinner(spinner);
     }
 

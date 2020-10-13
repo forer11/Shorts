@@ -11,13 +11,22 @@ import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionDialogs.GoogleMapsDialog;
 import com.shorts.shortmaker.ActionDialogs.WazeDialog;
 
+import java.util.HashMap;
 import java.util.List;
 
 public class ActionGoogleMaps implements Action {
 
     private String address;
     private GoogleMapsDialog dialog;
-
+    private HashMap<String, String> transportationModes = new HashMap<String, String>() {{
+        put("Driving", "d");
+        put("Bicycling", "b");
+        put("wheeler", "l");
+        put("Walking", "w");
+    }};
+    private String latitude;
+    private String longtitude;
+    private String transportationShortcutName;
 
     public ActionGoogleMaps() {
         this.dialog = new GoogleMapsDialog();
@@ -26,10 +35,11 @@ public class ActionGoogleMaps implements Action {
     @Override
     public void activate(Context context, Activity activity) {
         //TODO - add here the location entered
-        Uri gmmIntentUri = Uri.parse("google.navigation:q=Taronga+Zoo,+Sydney+Australia");
+        Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude
+                + "," + longtitude + "&mode=" + transportationShortcutName);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
         mapIntent.setPackage("com.google.android.apps.maps");
-       activity.startActivity(mapIntent);
+        activity.startActivity(mapIntent);
     }
 
     @Override
@@ -39,7 +49,10 @@ public class ActionGoogleMaps implements Action {
 
     @Override
     public void setData(List<String> data) {
-        address = data.get(0);
+        latitude = data.get(0);
+        longtitude = data.get(1);
+        String transportaionWay = data.get(2);
+        transportationShortcutName = transportationModes.get(transportaionWay);
     }
 
 }

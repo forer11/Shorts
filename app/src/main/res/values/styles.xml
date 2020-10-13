@@ -104,6 +104,8 @@
 
     </style>
 
+
+
     <style name="IcdButtonStyle" parent="Base.Widget.AppCompat.Button.ButtonBar.AlertDialog">
         <item name="android:textColor">#0097A7</item>
         <item name="android:background">@drawable/sign_in_button_design</item>
