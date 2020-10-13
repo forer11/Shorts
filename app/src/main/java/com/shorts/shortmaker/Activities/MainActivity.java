@@ -48,6 +48,7 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Actions.Action;
+import com.shorts.shortmaker.Actions.ActionGps;
 import com.shorts.shortmaker.Adapters.DraggableGridAdapter;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
@@ -56,6 +57,7 @@ import com.shorts.shortmaker.DataClasses.Shortcut;
 import com.shorts.shortmaker.DialogFragments.CreateShortcutDialog;
 import com.shorts.shortmaker.DialogFragments.DeleteShortcutDialog;
 import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
+import com.shorts.shortmaker.GpsUtils;
 import com.shorts.shortmaker.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -118,8 +120,8 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
 //
 //            }
 //        });
-    }
 
+    }
 
     private void getScreenSize() {
         Display display = getWindowManager().getDefaultDisplay();
@@ -204,6 +206,9 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
 //                shortcuts.get(lastPosition).setImageUrl(drawable);
 //                adapter.notifyItemChanged(lastPosition);
 //            }
+        }
+        if (requestCode == 99) {
+            ActionGps.setIsGPS(true); // flag maintain before get location
         }
     }
 
