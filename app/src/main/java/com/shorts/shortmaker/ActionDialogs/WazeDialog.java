@@ -9,7 +9,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,6 +38,8 @@ public class WazeDialog extends ActionDialog {
 
     private String apiId;
     private Button okButton;
+    private String finalLocation;
+    private String finalAddress;
     PlacesClient placesClient;
     private View view;
 
@@ -62,21 +66,45 @@ public class WazeDialog extends ActionDialog {
         Objects.requireNonNull(autocompleteSupportFragment)
                 .setPlaceFields(Arrays.asList(Place.Field.ID,
                         Place.Field.LAT_LNG,
-                        Place.Field.NAME));
-//        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-//            @Override
-//            public void onPlaceSelected(@NonNull Place place) {
-//                final LatLng latLng = place.getLatLng();
-//                if (latLng != null) {
-//                    Log.v("placeApi", "place = " + latLng.latitude + ":" + latLng.longitude);
-//                }
-//            }
-//
-//            @Override
-//            public void onError(@NonNull Status status) {
-//
-//            }
-//        });
+                        Place.Field.NAME,
+                        Place.Field.ADDRESS,
+                        Place.Field.ADDRESS_COMPONENTS));
+        autocompleteSupportFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                final String locationName = place.getName();
+                final String locationAddress = place.getAddress();
+                if (locationName != null) {
+                    okButton.setEnabled(true);
+                    finalLocation = locationName;
+                    finalAddress = locationAddress;
+                } else {
+                    okButton.setEnabled(false);
+                    Toast.makeText(getContext(),
+                            "Place is invalid, try choosing something else",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(@NonNull Status status) {
+
+            }
+        });
+        final ImageButton imageButton = Objects.requireNonNull(autocompleteSupportFragment.getView())
+                .findViewById(R.id.places_autocomplete_clear_button);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                EditText editText = autocompleteSupportFragment
+                        .getView().findViewById(R.id.places_autocomplete_search_input);
+                editText.setText("");
+                okButton.setEnabled(false);
+                finalLocation = "";
+                finalAddress = "";
+                imageButton.setVisibility(View.INVISIBLE);
+            }
+        });
 
     }
 
@@ -122,19 +150,20 @@ public class WazeDialog extends ActionDialog {
 
 
     protected void getUserInput() {
-        String address = "";
         ArrayList<String> results = new ArrayList<>();
-        results.add(address);
-        String description = "Waze"; //TODO decide
+        results.add(finalAddress);
+        String description = "Navigate to " + finalAddress; //TODO decide
         listener.applyUserInfo(results, description);
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Fragment fragment = (getFragmentManager().findFragmentById(R.id.autocomplete_fragment));
-        FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-        ft.remove(fragment);
+        Fragment fragment = (Objects.requireNonNull(getFragmentManager())
+                .findFragmentById(R.id.autocomplete_fragment));
+        FragmentTransaction ft = Objects.requireNonNull(getActivity())
+                .getSupportFragmentManager().beginTransaction();
+        ft.remove(Objects.requireNonNull(fragment));
         ft.commit();
     }
 }
