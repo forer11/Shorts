@@ -31,6 +31,7 @@ import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
 import com.shorts.shortmaker.DataClasses.LocationData;
 import com.shorts.shortmaker.DataClasses.Shortcut;
+import com.shorts.shortmaker.DialogFragments.ChangeLocationOrKeepCurrentDialog;
 import com.shorts.shortmaker.DialogFragments.ChooseActionDialog;
 import com.shorts.shortmaker.DialogFragments.ChooseIconDialog;
 import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
@@ -424,13 +425,41 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                 }
                 return true;
             case R.id.whenEnteringLocation:
-
-                Intent intent = new Intent(getBaseContext(), LocationPickerActivity.class);
-                startActivityForResult(intent, REQUEST_CODE);
+                if (currentShortcut.getLocationData() == null) {
+                    callLocationPickActivity();
+                } else {
+                    ChangeLocationOrKeepCurrentDialog dialog =
+                            new ChangeLocationOrKeepCurrentDialog();
+                    dialog.show(getSupportFragmentManager(), "Change or keep");
+                    dialog.setNewDialogListener
+                            (new ChangeLocationOrKeepCurrentDialog.DialogListener() {
+                                @Override
+                                public void getResponse(Boolean change) {
+                                    if (change) {
+                                        callLocationPickActivity();
+                                    } else {
+                                        setActionLocationToCurrent(actionData);
+                                    }
+                                }
+                            });
+                }
                 return true;
             default:
                 return false;
         }
+    }
+
+    private void setActionLocationToCurrent(ActionData actionData) {
+        LocationData locationData = currentShortcut.getLocationData();
+        actionData.setConditionDescription("When I'm at " + locationData.getLocationName());
+        actionData.setCondition(ActionFactory.Conditions.ON_AT_LOCATION);
+        appData.fireStoreHandler.updateShortcut(currentShortcut);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void callLocationPickActivity() {
+        Intent intent = new Intent(getBaseContext(), LocationPickerActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     protected void removeAction(ActionData actionData) {
@@ -460,9 +489,13 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                             longtitude,
                             radius);
                     currentShortcut.setLocationData(locationData);
-                    ActionData actionData = currentShortcut.getActionDataList().get(lastPosition);
-                    actionData.setConditionDescription("When I'm at " + locationName);
-                    actionData.setCondition(ActionFactory.Conditions.ON_AT_LOCATION);
+                    currentShortcut.getActionDataList().get(lastPosition)
+                            .setCondition(ActionFactory.Conditions.ON_AT_LOCATION);
+                    for (ActionData actionData : currentShortcut.getActionDataList()) {
+                        if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION) {
+                            actionData.setConditionDescription("When I'm at " + locationName);
+                        }
+                    }
                     adapter.notifyDataSetChanged();
                     appData.fireStoreHandler.updateShortcut(currentShortcut);
                 }
