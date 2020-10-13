@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.Voice;
@@ -121,7 +122,9 @@ public class ForegroundReadSmsService extends Service {
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("listening")
                 .setContentText("yay")
-                .setSmallIcon(R.drawable.bluetooth_icon)
+                .setSmallIcon(R.mipmap.pants)
+                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
+                        R.mipmap.pants))
                 .addAction(R.mipmap.teddy_bear, "Stop service", actionIntent)
                 .build();
 

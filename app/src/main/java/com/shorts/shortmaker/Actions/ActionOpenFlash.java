@@ -6,19 +6,18 @@ import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
 
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
-import com.shorts.shortmaker.ActionDialogs.ChangeOrientationDialog;
-import com.shorts.shortmaker.ActionDialogs.FlashActionDialog;
+import com.shorts.shortmaker.ActionDialogs.FlashDialog;
 
 import java.util.List;
 
 
 public class ActionOpenFlash implements Action {
-    private FlashActionDialog dialog;
+    private FlashDialog dialog;
     private int turnOn;
 
 
     public ActionOpenFlash() {
-        this.dialog = new FlashActionDialog();
+        this.dialog = new FlashDialog();
     }
 
     @Override
