@@ -86,6 +86,8 @@
             android:src="@drawable/v_icon"
             android:visibility="invisible" />
 
+
+
     </RelativeLayout>
 
     <androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
@@ -157,7 +159,6 @@
         android:layout_height="wrap_content"
         android:src="@drawable/ic_action_add"
         app:backgroundTint="#283593"
-        app:tint="@color/white"
         app:borderWidth="0dp"
         app:elevation="6dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -166,7 +167,46 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.95"
-        app:rippleColor="@color/colorAccent" />
+        app:rippleColor="@color/colorAccent"
+        app:tint="@color/white" />
 
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cameraBearing="112.5"
+        app:cameraTargetLat="-33.796923"
+        app:cameraTargetLng="150.922433"
+        app:cameraTilt="30"
+        app:cameraZoom="15"
+        app:mapType="normal"
+        app:uiRotateGestures="true"
+        app:uiScrollGestures="true"
+        app:uiTiltGestures="true"
+        app:uiZoomControls="true"
+        app:uiZoomGestures="true" />
+
+    <SearchView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sv_location"
+        android:queryHint="Search..."
+        android:iconifiedByDefault="false"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_margin="10dp"
+        android:elevation="5dp"
+        android:background="@drawable/bg_round"/>
+
+    <SeekBar
+        android:id="@+id/seekbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="10dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
