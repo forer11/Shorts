@@ -8,10 +8,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.speech.tts.TextToSpeech;
-import android.speech.tts.Voice;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
@@ -25,8 +23,8 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.shorts.shortmaker.Activities.MainActivity;
 import com.shorts.shortmaker.BroadcastReceivers.NotificationReceiver;
-import com.shorts.shortmaker.SmsReceiver;
 import com.shorts.shortmaker.R;
+import com.shorts.shortmaker.SmsReceiver;
 import com.shorts.shortmaker.SystemHandlers.ContactsHandler;
 
 import java.util.HashMap;
@@ -34,7 +32,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 
 import static com.shorts.shortmaker.AppData.CHANNEL_ID;
 
@@ -119,7 +116,8 @@ public class ForegroundReadSmsService extends Service {
         Intent notificationIntent = new Intent(this, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, 0);
-        RemoteViews notificationLayout = new RemoteViews(getPackageName(), R.layout.notification_layout);
+        RemoteViews notificationLayout = new RemoteViews(getPackageName(),
+                R.layout.notification_layout);
 
         Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setContentTitle("Listening for incoming SMS")
