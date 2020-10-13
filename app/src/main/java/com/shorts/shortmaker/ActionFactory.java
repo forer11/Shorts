@@ -31,8 +31,8 @@ public class ActionFactory {
         ON_AT_LOCATION
     }
 
-    public static final String WHEN_CLICKING_ON_A_SHORTCUT = "When clicking on the Shortcut";
-    public static final String ON_LOCATION = "When I'm at";
+    public static final String WHEN_CLICKING_ON_A_SHORTCUT = "On shortcut click";
+    public static final String ON_LOCATION = "When entering a location";
 
     public static final HashMap<Conditions, String> ENUM_TO_CONDITION_TITLE = new HashMap<Conditions, String>() {{
         put(Conditions.ON_DEFAULT, WHEN_CLICKING_ON_A_SHORTCUT);

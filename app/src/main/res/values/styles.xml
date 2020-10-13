@@ -53,7 +53,7 @@
     <style name="ToolbarTheme" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <!-- android:textColorPrimary is the color of the title text in the Toolbar  -->
         <item name="android:textColorPrimary">#FFFFFF</item>
-        <!-- actionMenuTextColor is the color of the text of action (popup_menu) items  -->
+        <!-- actionMenuTextColor is the color of the text of action (more_menu) items  -->
         <item name="actionMenuTextColor">#FFFFFF</item>
         <!-- Tints the input fields like checkboxes and text fields -->
         <item name="colorAccent">@color/salmon</item>

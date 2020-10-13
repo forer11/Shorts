@@ -9,7 +9,6 @@
     app:cardCornerRadius="4dp">
 
 
-
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
@@ -35,7 +34,8 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:textColor="#706C6C"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <Switch
                 android:id="@+id/is_enabled_switch"
@@ -52,10 +52,24 @@
                 android:layout_gravity="center"
                 android:src="@drawable/ic_baseline_more_vert_24" />
         </LinearLayout>
+
+
         <TextView
-            android:id="@+id/spinner_text"
+            android:id="@+id/conditionsText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/action_layout"/>
+            android:layout_marginStart="60dp"
+            android:layout_below="@+id/action_layout" />
+
+        <ImageView
+            android:id="@+id/conditionsButton"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/conditionsText"
+            android:layout_alignBottom="@+id/conditionsText"
+            android:layout_toEndOf="@+id/conditionsText"
+            android:src="@drawable/ic_baseline_arrow_drop_down_24" />
+
+
     </RelativeLayout>
 </androidx.cardview.widget.CardView>
