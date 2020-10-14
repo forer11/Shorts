@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.airbnb.lottie.LottieAnimationView;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.R;
 import com.facebook.CallbackManager;
@@ -70,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setViews() {
         googleSignInButton = findViewById(R.id.google_sign_in_button);
+        setAnimation();
     }
 
     private void getAppData() {
@@ -131,6 +133,12 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
         finish();
+    }
+
+    private void setAnimation() {
+        LottieAnimationView teamAnimation = findViewById(R.id.animation);
+        teamAnimation.setProgress(0);
+        teamAnimation.playAnimation();
     }
 
 

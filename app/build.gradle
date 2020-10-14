@@ -46,6 +46,8 @@ dependencies {
     implementation 'com.maltaisn:iconpack-default:1.0.1'
     implementation 'com.maltaisn:iconpack-font-awesome:5.13.0'
     implementation 'com.maltaisn:iconpack-community-material:5.3.45'
+    implementation 'com.airbnb.android:lottie:3.3.1'
+
     implementation files('libs\\activation.jar')
     implementation files('libs\\additionnal.jar')
     implementation files('libs\\mail.jar')
