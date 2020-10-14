@@ -75,7 +75,7 @@
         <activity
             android:name=".Activities.LoginActivity"
             android:theme="@style/LoginTheme"></activity>
-       
+
         <activity
             android:name=".Activities.OpeningScreenActivity"
             android:theme="@style/SplashTheme">
@@ -120,7 +120,9 @@
         </activity>
 
         <service android:name=".Services.ForegroundReadSmsService" />
+        <service android:name=".Services.ForegroundLocationListenerService" />
 
+        <receiver android:name=".BroadcastReceivers.NotificationLocationReceiver" />
         <receiver android:name=".BroadcastReceivers.NotificationReceiver" />
 
         <meta-data
