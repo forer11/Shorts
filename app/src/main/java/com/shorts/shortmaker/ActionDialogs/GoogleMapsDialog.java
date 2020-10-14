@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,10 +29,13 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.shorts.shortmaker.CustomAdapter;
+import com.shorts.shortmaker.CustomItem;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -45,8 +49,9 @@ public class GoogleMapsDialog extends ActionDialog {
     private View view;
     private String a;
     private int mode;
-    private String[] modes;
+    private ArrayList<CustomItem> modes;
     private Place chosenPlace = null;
+    private int width = 150;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -136,8 +141,8 @@ public class GoogleMapsDialog extends ActionDialog {
         ArrayList<String> results = new ArrayList<>();
         results.add(String.valueOf(chosenPlace.getLatLng().latitude));
         results.add(String.valueOf(chosenPlace.getLatLng().longitude));
-        results.add(modes[mode]);
-        String description = "Navigate to " + finalAddress + " by " + modes[mode];
+        results.add(modes.get(mode).getSpinnerItemName());
+        String description = "Navigate to " + finalAddress + " by " + modes.get(mode).getSpinnerItemName();
         listener.applyUserInfo(results, description);
     }
 
@@ -153,42 +158,54 @@ public class GoogleMapsDialog extends ActionDialog {
     }
 
     protected void setModesSpinner(View view) {
-        modes = new String[]{"Choose transportation mode", "Driving", "Bicycling", "Two-wheeler", "Walking"};
+        modes = new ArrayList<>(Arrays.asList(new CustomItem("Choose transportation mode", R.drawable.ic_baseline_arrow_drop_down_circle_24),
+                new CustomItem("Driving", R.drawable.ic_baseline_drive_eta_24),
+                new CustomItem("Bicycling", R.drawable.ic_baseline_directions_bike_24),
+                new CustomItem("Two-wheeler", R.drawable.ic_baseline_two_wheeler_24),
+                new CustomItem("Walking", R.drawable.ic_baseline_directions_walk_24)));
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item, modes);
+
+        CustomAdapter adapter = new CustomAdapter(getContext(), modes);
+        if (spinner != null) {
+            spinner.setAdapter(adapter);
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    try {
+                        LinearLayout linearLayout = view.findViewById(R.id.customSpinnerItemLayout);
+                        width = linearLayout.getWidth();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    spinner.setDropDownWidth(width);
+                    CustomItem item = (CustomItem) parent.getSelectedItem();
+                    setSpinnerSelectionListener(item, spinner);
+                    mode = position;
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+        }
         // set Adapter
         spinner.setAdapter(adapter);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        setSpinner(spinner);
     }
 
-    private void setSpinner(final Spinner spinner) {
-        //Register a callback to be invoked when an item in this AdapterView has been selected
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int position, long id) {
-                setSpinnerSelectionListener(position, spinner);
-                mode = position;
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-            }
-        });
-    }
 
-    protected void setSpinnerSelectionListener(int position, Spinner spinner) {
-        String item = (String) spinner.getItemAtPosition(position);
-        if (item.equals(modes[0])){
+
+    protected void setSpinnerSelectionListener(CustomItem item, Spinner spinner) {
+        if (item.getSpinnerItemName().equals(modes.get(0))) {
             okButton.setEnabled(false);
         } else {
-            if(chosenPlace!=null){
+            if (chosenPlace != null) {
                 okButton.setEnabled(true);
             }
         }
     }
-
 
 }
