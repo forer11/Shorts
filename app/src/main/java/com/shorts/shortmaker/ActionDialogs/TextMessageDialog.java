@@ -258,12 +258,6 @@ public class TextMessageDialog extends ActionDialog {
     }
 
 
-    /**
-     * //todo Carmel doc
-     *
-     * @param activity the activity
-     * @return true if permission is already granted, false otherwise
-     */
     private boolean showContacts(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(
                 Manifest.permission.READ_CONTACTS)

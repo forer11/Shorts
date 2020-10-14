@@ -91,7 +91,7 @@ public class GmailDialog extends ActionDialog {
         results.add(messageSubjectInput);
         results.add(messageBodyInput);
 
-        String description = "Gmail"; //TODO decide
+        String description = "Gmail";
         listener.applyUserInfo(results, description);
     }
 }

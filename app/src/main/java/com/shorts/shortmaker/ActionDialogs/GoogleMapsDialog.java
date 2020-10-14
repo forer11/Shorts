@@ -52,6 +52,7 @@ public class GoogleMapsDialog extends ActionDialog {
     private ArrayList<CustomItem> modes;
     private Place chosenPlace = null;
     private int width = 150;
+    private CustomItem lastChosenITem;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,6 +89,9 @@ public class GoogleMapsDialog extends ActionDialog {
                     finalName = locationName;
                     finalAddress = locationAddress;
                     chosenPlace = place;
+                    if (!lastChosenITem.getSpinnerItemName().equals("Choose transportation mode")) {
+                        okButton.setEnabled(true);
+                    }
                 } else {
                     okButton.setEnabled(false);
                     Toast.makeText(getContext(),
@@ -158,7 +162,8 @@ public class GoogleMapsDialog extends ActionDialog {
     }
 
     protected void setModesSpinner(View view) {
-        modes = new ArrayList<>(Arrays.asList(new CustomItem("Choose transportation mode", R.drawable.ic_baseline_arrow_drop_down_circle_24),
+        modes = new ArrayList<>(Arrays.asList(new CustomItem(
+                        "Choose transportation mode", R.drawable.ic_baseline_arrow_drop_down_circle_24),
                 new CustomItem("Driving", R.drawable.ic_baseline_drive_eta_24),
                 new CustomItem("Bicycling", R.drawable.ic_baseline_directions_bike_24),
                 new CustomItem("Two-wheeler", R.drawable.ic_baseline_two_wheeler_24),
@@ -180,7 +185,7 @@ public class GoogleMapsDialog extends ActionDialog {
 
                     spinner.setDropDownWidth(width);
                     CustomItem item = (CustomItem) parent.getSelectedItem();
-                    setSpinnerSelectionListener(item, spinner);
+                    setSpinnerSelectionListener(item);
                     mode = position;
                 }
 
@@ -196,9 +201,8 @@ public class GoogleMapsDialog extends ActionDialog {
     }
 
 
-
-
-    protected void setSpinnerSelectionListener(CustomItem item, Spinner spinner) {
+    protected void setSpinnerSelectionListener(CustomItem item) {
+        lastChosenITem = item;
         if (item.getSpinnerItemName().equals(modes.get(0))) {
             okButton.setEnabled(false);
         } else {
