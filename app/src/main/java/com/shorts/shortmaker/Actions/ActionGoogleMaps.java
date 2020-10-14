@@ -14,6 +14,8 @@ import com.shorts.shortmaker.ActionDialogs.WazeDialog;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class ActionGoogleMaps implements Action {
 
     private String address;
@@ -33,11 +35,14 @@ public class ActionGoogleMaps implements Action {
     }
 
     @Override
-    public void activate(Context context, Activity activity) {
+    public void activate(Context context, Context activity, boolean isNewTask) {
         //TODO - add here the location entered
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude
                 + "," + longtitude + "&mode=" + transportationShortcutName);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        if (isNewTask) {
+            mapIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        }
         mapIntent.setPackage("com.google.android.apps.maps");
         activity.startActivity(mapIntent);
     }

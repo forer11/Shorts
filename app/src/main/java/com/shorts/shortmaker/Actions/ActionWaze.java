@@ -12,6 +12,8 @@ import com.shorts.shortmaker.ActionDialogs.WazeDialog;
 
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class ActionWaze implements Action {
 
     private String address;
@@ -23,13 +25,15 @@ public class ActionWaze implements Action {
     }
 
     @Override
-    public void activate(Context context, Activity activity) {
+    public void activate(Context context, Context activity, boolean isNewTask) {
         Log.v("YAY", "Waze activated");
         try {
-            openOrInstallWaze("https://waze.com/ul?q=" + address+"&navigate=yes",activity);
+            openOrInstallWaze("https://waze.com/ul?q=" + address + "&navigate=yes",
+                    activity,
+                    isNewTask);
         } catch (ActivityNotFoundException ex) {
             // If Waze is not installed, open it in Google Play:
-            openOrInstallWaze("market://details?id=com.waze",activity);
+            openOrInstallWaze("market://details?id=com.waze", activity, isNewTask);
         }
     }
 
@@ -43,8 +47,11 @@ public class ActionWaze implements Action {
         address = data.get(0);
     }
 
-    private void openOrInstallWaze(String uri,Activity activity) {
+    private void openOrInstallWaze(String uri, Context activity, boolean isNewTask) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+        if (isNewTask) {
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        }
         activity.startActivity(intent);
     }
 }

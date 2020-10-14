@@ -244,7 +244,9 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
                                 Action action = ActionFactory.getAction(actionData.getTitle());
                                 if (action != null) {
                                     action.setData(actionData.getData());
-                                    action.activate(getBaseContext(), MainActivity.this);
+                                    action.activate(getBaseContext(),
+                                            MainActivity.this,
+                                            false);
                                 }
                             }
                         }
@@ -536,6 +538,10 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
             intent.setAction(ForegroundLocationListenerService.START_LOCATION_SERVICE);
             intent.putExtra(ForegroundLocationListenerService.SHORTCUT_ID_EXTRA, shortcutId);
             startService(intent);
+        } else {
+            Toast.makeText(appData,
+                    "Sorry, we Can only listen to one Location at a time for now!",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }

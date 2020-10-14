@@ -27,11 +27,11 @@ public class ActionGps implements Action {
     }
 
     @Override
-    public void activate(Context context, final Activity activity) {
-        new GpsUtils(context,activity).turnGPSOn(new GpsUtils.onGpsListener() {
+    public void activate(Context context, final Context activity, boolean isNewTask) {
+        new GpsUtils(context, activity).turnGPSOn(new GpsUtils.onGpsListener() {
             @Override
             public void gpsStatus(boolean isGPSEnable) {
-                if(state){
+                if (state) {
                     // turn on GPS
                     isGPS = isGPSEnable;
                 } else {

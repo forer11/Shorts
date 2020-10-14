@@ -31,7 +31,7 @@ public class ActionBluetooth implements Action {
     }
 
     @Override
-    public void activate(final Context context, final Activity activity) {
+    public void activate(final Context context, final Context activity, boolean isNewTask) {
         bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Dexter.withContext(activity)
                 .withPermission(Manifest.permission.BLUETOOTH)
@@ -71,21 +71,18 @@ public class ActionBluetooth implements Action {
         state = data.get(0).equals(SetBluetoothDialog.ON);
     }
 
-    public void enableBluetooth(Activity activity) {
+    public void enableBluetooth(Context activity) {
         if (bluetoothAdapter == null) {
             Log.d("ERROR", DEVICE_DOES_NOT_HAVE_BLUETOOTH_CAPABILITIES);
             Toast.makeText(activity,
                     DEVICE_DOES_NOT_HAVE_BLUETOOTH_CAPABILITIES,
                     Toast.LENGTH_SHORT).show();
         } else if (!bluetoothAdapter.isEnabled()) {
-//            Intent enableBluetoothIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//            activity.startActivity(enableBluetoothIntent);
             bluetoothAdapter.enable();
-
         }
     }
 
-    public void disableBluetooth(Activity activity) {
+    public void disableBluetooth(Context activity) {
         if (bluetoothAdapter == null) {
             Log.d("ERROR", DEVICE_DOES_NOT_HAVE_BLUETOOTH_CAPABILITIES);
             Toast.makeText(activity,

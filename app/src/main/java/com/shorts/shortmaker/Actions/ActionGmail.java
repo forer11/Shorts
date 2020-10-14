@@ -32,7 +32,7 @@ public class ActionGmail implements Action {
     }
 
     @Override
-    public void activate(Context context , Activity activity) {
+    public void activate(Context context , Context activity, boolean isNewTask) {
         Log.v("YAY", "Gmail activated");
 
         new Thread(new Runnable() {

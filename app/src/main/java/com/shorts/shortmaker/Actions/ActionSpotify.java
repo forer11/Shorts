@@ -17,6 +17,8 @@ import com.shorts.shortmaker.ActionDialogs.SpotifyDialog;
 
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class ActionSpotify implements Action {
 
     private static final String SPOTIFY_PACKAGE_NAME = "com.spotify.music";
@@ -28,14 +30,14 @@ public class ActionSpotify implements Action {
     }
 
     @Override
-    public void activate(Context context , Activity activity) {
+    public void activate(Context context, Context activity, boolean isNewTask) {
         Log.v("YAY", "Spotify activated");
         boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
         if (isSpotifyInstalled) {
 //            launchSpotify(context,activity);
-            playSearchArtist(activity,artist);
+            playSearchArtist(activity, artist);
         } else {
-            installSpotify(activity);
+            installSpotify(activity, isNewTask);
         }
     }
 
@@ -49,7 +51,7 @@ public class ActionSpotify implements Action {
         artist = data.get(0);
     }
 
-    private void installSpotify(Activity activity) {
+    private void installSpotify(Context activity, boolean isNewTask) {
         final String referrer = "adjust_campaign=PACKAGE_NAME&adjust_tracker=ndjczk&utm_source=adjust_preinstall";
         try {
             Uri uri = Uri.parse("market://details")
@@ -57,28 +59,39 @@ public class ActionSpotify implements Action {
                     .appendQueryParameter("id", SPOTIFY_PACKAGE_NAME)
                     .appendQueryParameter("referrer", referrer)
                     .build();
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (isNewTask) {
+                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+            }
+            activity.startActivity(intent);
         } catch (ActivityNotFoundException ignored) {
             Uri uri = Uri.parse("https://play.google.com/store/apps/details")
                     .buildUpon()
                     .appendQueryParameter("id", SPOTIFY_PACKAGE_NAME)
                     .appendQueryParameter("referrer", referrer)
                     .build();
-            activity.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+            if (isNewTask) {
+                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+            }
+            activity.startActivity(intent);
         }
     }
 
-    private void launchSpotify(Context context,Activity activity) {
+    private void launchSpotify(Context context, Context activity, boolean isNewTask) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
+        if (isNewTask) {
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        }
         //TODO - we can generally open spotify with "spotify:open" and not a specific album
         // we can delete the ":play: from the uri in order for the song not to be played automatically
-        intent.setData(Uri.parse("spotify:album:"+artist+":play"));
+        intent.setData(Uri.parse("spotify:album:" + artist + ":play"));
         intent.putExtra(Intent.EXTRA_REFERRER,
                 Uri.parse("android-app://" + context.getPackageName()));
         activity.startActivity(intent);
     }
 
-    public void playSearchArtist(Activity activity,String artist) {
+    public void playSearchArtist(Context activity, String artist) {
         Intent intent = new Intent(MediaStore.INTENT_ACTION_MEDIA_PLAY_FROM_SEARCH);
         intent.setComponent(new ComponentName("com.spotify.music", "com.spotify.music.MainActivity"));
         intent.putExtra(MediaStore.EXTRA_MEDIA_FOCUS, MediaStore.Audio.Artists.ENTRY_CONTENT_TYPE);
@@ -91,7 +104,6 @@ public class ActionSpotify implements Action {
         }
 
     }
-
 
 
     private boolean checkIfSpotifyInstalled(Context context) {

@@ -31,7 +31,7 @@ public class ActionSendTextMessage implements Action {
     private static final int REQUEST_CODE_PERMISSION_SMS = 1546;
     private static Map<String, String> reverseContacts = new HashMap<>();
     private TextMessageDialog dialog;
-    private Activity activity;
+    private Context activity;
     private String whoToSend;
     private String message;
     private List<String> recipientsList;
@@ -42,7 +42,7 @@ public class ActionSendTextMessage implements Action {
 
 
     @Override
-    public void activate(Context context, final Activity activity) {
+    public void activate(Context context, final Context activity, boolean isNewTask) {
         this.activity = activity;
 
         Dexter.withContext(activity)

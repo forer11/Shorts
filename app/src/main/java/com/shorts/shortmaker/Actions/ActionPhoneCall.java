@@ -26,6 +26,8 @@ import com.shorts.shortmaker.ActionDialogs.PhoneCallDialog;
 
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class ActionPhoneCall implements Action {
     private static final int REQUEST_CALL = 1;
 
@@ -36,25 +38,9 @@ public class ActionPhoneCall implements Action {
         this.dialog = new PhoneCallDialog();
     }
 
-    public void makePhoneCall(Context context, Activity activity, String number) {
-
-        if (number.trim().length() > 0) {
-            if (ContextCompat.checkSelfPermission(context,
-                    Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CALL);
-            } else {
-                String dial = "tel:" + number;
-                activity.startActivity(new Intent(Intent.ACTION_CALL, Uri.parse(dial)));
-            }
-        } else {
-            Toast.makeText(context, "Enter Phone Number", Toast.LENGTH_SHORT).show();
-        }
-    }
-
 
     @Override
-    public void activate(final Context context, final Activity activity) {
+    public void activate(final Context context, final Context activity, boolean isNewTask) {
         Log.v("YAY", "Phone call activated");
 
         Dexter.withContext(activity)
@@ -68,8 +54,12 @@ public class ActionPhoneCall implements Action {
                                     Manifest.permission.CALL_PHONE) == PackageManager
                                     .PERMISSION_GRANTED) {
                                 String dial = "tel:" + number;
-                                activity.startActivity(new Intent(Intent.ACTION_CALL,
-                                        Uri.parse(dial)));
+                                Intent callIntent = new Intent(Intent.ACTION_CALL,
+                                        Uri.parse(dial));
+                                if (isNewTask) {
+                                    callIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                                }
+                                activity.startActivity(callIntent);
                             }
                         }
                     }
@@ -91,7 +81,6 @@ public class ActionPhoneCall implements Action {
                         permissionToken.continuePermissionRequest();
                     }
                 }).check();
-        makePhoneCall(context, activity, number);
     }
 
     @Override
