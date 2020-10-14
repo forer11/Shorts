@@ -21,7 +21,7 @@ import java.util.ArrayList;
 
 public class SpotifyDialog extends ActionDialog {
 
-    private EditText albumToPlay;
+    private EditText artist;
     private Button okButton;
     private TextWatcher userInputTextWatcher = new TextWatcher() {
         @Override
@@ -35,11 +35,11 @@ public class SpotifyDialog extends ActionDialog {
 
         @Override
         public void afterTextChanged(Editable s) {
-            if (albumToPlay.getText().toString().equals("")) {
-                albumToPlay.setError("Enter an album");
+            if (artist.getText().toString().equals("")) {
+                artist.setError("Enter an artist");
                 okButton.setEnabled(false);
             } else {
-                albumToPlay.setError(null);
+                artist.setError(null);
                 okButton.setEnabled(true);
             }
         }
@@ -54,21 +54,21 @@ public class SpotifyDialog extends ActionDialog {
 
         initializeDialogViews(view);
 
-        buildDialog(builder, view, "Which album to play on Spotify", okButton);
+        buildDialog(builder, view, "Which artist to search on Spotify", okButton);
         return builder.create();
     }
 
     protected void initializeDialogViews(View view) {
-        albumToPlay = view.findViewById(R.id.editText);
+        artist = view.findViewById(R.id.editText);
         ImageView imageView = view.findViewById(R.id.imageView);
         setDialogImage(imageView, R.drawable.spotify_gif);
         okButton = view.findViewById(R.id.okButton);
-        albumToPlay.addTextChangedListener(userInputTextWatcher);
+        artist.addTextChangedListener(userInputTextWatcher);
     }
 
 
     protected void getUserInput() {
-        String album = albumToPlay.getText().toString();
+        String album = artist.getText().toString();
         ArrayList<String> results = new ArrayList<>();
         results.add(album);
         String description = "Spotify";
