@@ -28,9 +28,8 @@ public class FireStoreHandler {
     private static final String USERS = "Users";
     private static final String ICONS = "Icons";
     private static final String SHORTCUTS = "Shortcuts";
-    public static final String DEFAULT_IMAGE_URL = "https://firebasestorage.googleapis.com/v0/b/" +
-            "shortmaker-dbb76.appspot.com/o/icons%2Fshortcut.png?alt=media&token=73eea0f1-e6a8-" +
-            "4057-b6e8-4098e9b56c14";
+    public static final String DEFAULT_IMAGE_URL =
+            "https://firebasestorage.googleapis.com/v0/b/shortmaker-dbb76.appspot.com/o/icons%2Fdefault_fox.png?alt=media&token=5eafaf54-06f6-4619-92e5-5bf288cdf68c";
 
 
     private FirebaseFirestore db;

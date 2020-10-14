@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView"
             android:layout_marginTop="20dp"
-            android:hint="Which album to play" />
+            android:hint="Which artist to search on Spotify" />
 
         <Button
             android:id="@+id/okButton"

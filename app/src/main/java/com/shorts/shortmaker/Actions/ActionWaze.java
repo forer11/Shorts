@@ -16,8 +16,9 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 
 public class ActionWaze implements Action {
 
-    private String address;
     private WazeDialog dialog;
+    private String latitude;
+    private String longtitude;
 
 
     public ActionWaze() {
@@ -28,7 +29,7 @@ public class ActionWaze implements Action {
     public void activate(Context context, Context activity, boolean isNewTask) {
         Log.v("YAY", "Waze activated");
         try {
-            openOrInstallWaze("https://waze.com/ul?q=" + address + "&navigate=yes",
+            openOrInstallWaze("https://waze.com/ul?q=" + latitude + "," + longtitude + "&navigate=yes",
                     activity,
                     isNewTask);
         } catch (ActivityNotFoundException ex) {
@@ -44,7 +45,8 @@ public class ActionWaze implements Action {
 
     @Override
     public void setData(List<String> data) {
-        address = data.get(0);
+        latitude = data.get(0);
+        longtitude = data.get(1);
     }
 
     private void openOrInstallWaze(String uri, Context activity, boolean isNewTask) {
