@@ -55,6 +55,8 @@ import com.shorts.shortmaker.Actions.ActionGps;
 import com.shorts.shortmaker.Adapters.DraggableGridAdapter;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
+import com.shorts.shortmaker.DialogFragments.ActivateShortcutDialog;
+import com.shorts.shortmaker.DialogFragments.ChangeLocationOrKeepCurrentDialog;
 import com.shorts.shortmaker.DialogFragments.ChooseIconDialog;
 import com.shorts.shortmaker.DataClasses.Shortcut;
 import com.shorts.shortmaker.DialogFragments.CreateShortcutDialog;
@@ -234,36 +236,58 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
             @Override
             public void onItemClick(int position) {
                 Shortcut shortcut = shortcuts.get(position);
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        //TODO on different thread
-                        for (ActionData actionData : shortcut.getActionDataList()) {
-                            if (actionData.getIsActivated() && actionData.getCondition()
-                                    == ActionFactory.Conditions.ON_DEFAULT) {
-                                Action action = ActionFactory.getAction(actionData.getTitle());
-                                if (action != null) {
-                                    action.setData(actionData.getData());
-                                    action.activate(getBaseContext(),
-                                            MainActivity.this,
-                                            false);
-                                }
+                if (shortcut.isShowAgain()) {
+                    ActivateShortcutDialog dialog =
+                            new ActivateShortcutDialog();
+                    dialog.show(getSupportFragmentManager(), "Activation");
+                    dialog.setNewDialogListener(new ActivateShortcutDialog.DialogListener() {
+                        @Override
+                        public void getResponse(Boolean show, boolean activate) {
+                            if (show) {
+                                shortcut.setShowAgain(false);
+                                appData.fireStoreHandler.updateShortcut(shortcut);
+                            }
+                            if (activate) {
+                                activateShortcutHandler(shortcut);
                             }
                         }
-                    }
-                }).start();
-                boolean isOnLocation = false;
-                for (ActionData actionData : shortcut.getActionDataList()) {
-                    if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION) {
-                        isOnLocation = true;
-                        break;
-                    }
-                }
-                if (shortcut.getLocationData() != null && isOnLocation) {
-                    startLocationService(shortcut.getId());
+                    });
+                } else {
+                    activateShortcutHandler(shortcut);
                 }
             }
         });
+    }
+
+    private void activateShortcutHandler(Shortcut shortcut) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //TODO on different thread
+                for (ActionData actionData : shortcut.getActionDataList()) {
+                    if (actionData.getIsActivated() && actionData.getCondition()
+                            == ActionFactory.Conditions.ON_DEFAULT) {
+                        Action action = ActionFactory.getAction(actionData.getTitle());
+                        if (action != null) {
+                            action.setData(actionData.getData());
+                            action.activate(getBaseContext(),
+                                    MainActivity.this,
+                                    false);
+                        }
+                    }
+                }
+            }
+        }).start();
+        boolean isOnLocation = false;
+        for (ActionData actionData : shortcut.getActionDataList()) {
+            if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION) {
+                isOnLocation = true;
+                break;
+            }
+        }
+        if (shortcut.getLocationData() != null && isOnLocation) {
+            startLocationService(shortcut.getId());
+        }
     }
 
     private void showCreateShortcutDialog() {
