@@ -32,8 +32,12 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.BroadcastReceivers.NotificationLocationReceiver;
 import com.shorts.shortmaker.BroadcastReceivers.NotificationReceiver;
+import com.shorts.shortmaker.DataClasses.LocationData;
+import com.shorts.shortmaker.DataClasses.Shortcut;
+import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.shorts.shortmaker.R;
 import com.sun.mail.imap.protocol.FLAGS;
 
@@ -48,7 +52,10 @@ public class ForegroundLocationListenerService extends Service {
     public static final String STOP_LOCATION_SERVICE = "stopLocationService";
     static final String CHANNEL_ID = "shorts.locationChannel";
     public static final String CLOSE_LOCATION_FOREGROUND = "CLOSE_LOCATION_FOREGROUND";
+    public static final String SHORTCUT_ID_EXTRA = "SHORTCUT_ID_EXTRA";
+
     private Context context;
+    private Shortcut currentShortcut;
 
 
     private LocationCallback locationCallback = new LocationCallback() {
@@ -56,9 +63,11 @@ public class ForegroundLocationListenerService extends Service {
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
             if (locationResult != null && locationResult.getLastLocation() != null) {
+                LocationData locationData = currentShortcut.getLocationData();
                 double latitude = locationResult.getLastLocation().getLatitude();
                 double longtitude = locationResult.getLastLocation().getLongitude();
                 Log.v("location service", latitude + ", " + longtitude);
+                //TODO check radios and activate actions
             }
         }
     };
@@ -167,13 +176,27 @@ public class ForegroundLocationListenerService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent != null) {
             String action = intent.getAction();
-            if (action != null) {
-                startLocationService();
+            String shortcutId = Objects.requireNonNull(intent.getExtras())
+                    .getString(SHORTCUT_ID_EXTRA);
+            if (action != null && shortcutId != null) {
+                AppData appData = (AppData) getApplicationContext();
+                appData.fireStoreHandler.getShortcut(shortcutId,
+                        new FireStoreHandler.SingleShortcutCallback() {
+                            @Override
+                            public void onAddedShortcut(String id,
+                                                        Shortcut shortcut,
+                                                        Boolean success) {
+                                if (success) {
+                                    IntentFilter filter = new IntentFilter();
+                                    filter.addAction(CLOSE_LOCATION_FOREGROUND);
+                                    context.registerReceiver(closeReceiver, filter);
+                                    currentShortcut = shortcut;
+                                    startLocationService();
+                                }
+                            }
+                        });
             }
         }
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(CLOSE_LOCATION_FOREGROUND);
-        this.registerReceiver(closeReceiver, filter);
         return START_NOT_STICKY;
     }
 

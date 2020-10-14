@@ -113,7 +113,6 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         setObjects();
         setToolbar();
         setAddShortcutButton();
-//        startLocationService();
     }
 
     private void getScreenSize() {
@@ -235,18 +234,32 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
             @Override
             public void onItemClick(int position) {
                 Shortcut shortcut = shortcuts.get(position);
-                for (ActionData actionData : shortcut.getActionDataList()) {
-                    if (actionData.getIsActivated()) {
-                        Action action = ActionFactory.getAction(actionData.getTitle());
-                        if (action != null) {
-                            action.setData(actionData.getData());
-                            action.activate(getBaseContext(), MainActivity.this);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        //TODO on different thread
+                        for (ActionData actionData : shortcut.getActionDataList()) {
+                            if (actionData.getIsActivated() && actionData.getCondition()
+                                    == ActionFactory.Conditions.ON_DEFAULT) {
+                                Action action = ActionFactory.getAction(actionData.getTitle());
+                                if (action != null) {
+                                    action.setData(actionData.getData());
+                                    action.activate(getBaseContext(), MainActivity.this);
+                                }
+                            }
                         }
                     }
+                }).start();
+                boolean isOnLocation = false;
+                for (ActionData actionData : shortcut.getActionDataList()) {
+                    if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION) {
+                        isOnLocation = true;
+                        break;
+                    }
                 }
-                Toast.makeText(MainActivity.this,
-                        "position = " + position,
-                        Toast.LENGTH_SHORT).show();
+                if (shortcut.getLocationData() != null && isOnLocation) {
+                    startLocationService(shortcut.getId());
+                }
             }
         });
     }
@@ -499,29 +512,30 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     }
 
 
-//    private boolean isLocationServiceRunning() {
-//        ActivityManager activityManager =
-//                (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-//        if (activityManager != null) {
-//            for (ActivityManager.RunningServiceInfo serviceInfo :
-//                    activityManager.getRunningServices(Integer.MAX_VALUE)) {
-//                if (ForegroundLocationListenerService.class.getName()
-//                        .equals(serviceInfo.service.getClassName())) {
-//                    if (serviceInfo.foreground) {
-//                        return true;
-//                    }
-//                }
-//            }
-//        }
-//        return false;
-//    }
-//
-//    private void startLocationService() {
-//        if (!isLocationServiceRunning()) {
-//            Intent intent = new Intent(getApplicationContext(),
-//                    ForegroundLocationListenerService.class);
-//            intent.setAction(ForegroundLocationListenerService.START_LOCATION_SERVICE);
-//            startService(intent);
-//        }
-//    }
+    private boolean isLocationServiceRunning() {
+        ActivityManager activityManager =
+                (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if (activityManager != null) {
+            for (ActivityManager.RunningServiceInfo serviceInfo :
+                    activityManager.getRunningServices(Integer.MAX_VALUE)) {
+                if (ForegroundLocationListenerService.class.getName()
+                        .equals(serviceInfo.service.getClassName())) {
+                    if (serviceInfo.foreground) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private void startLocationService(String shortcutId) {
+        if (!isLocationServiceRunning()) {
+            Intent intent = new Intent(getApplicationContext(),
+                    ForegroundLocationListenerService.class);
+            intent.setAction(ForegroundLocationListenerService.START_LOCATION_SERVICE);
+            intent.putExtra(ForegroundLocationListenerService.SHORTCUT_ID_EXTRA, shortcutId);
+            startService(intent);
+        }
+    }
 }
