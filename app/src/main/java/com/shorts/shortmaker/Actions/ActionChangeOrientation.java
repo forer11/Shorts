@@ -24,16 +24,16 @@ public class ActionChangeOrientation implements Action{
         this.dialog = new ChangeOrientationDialog();
     }
     @Override
-    public void activate(Context context, Activity activity) {
-        switch (desiredOrientation){
-            case PORTRAIT_ORIENTATION:
-                activity.setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);
-
-                break;
-            case LANDSCAPE_ORIENTATION:
-                activity.setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
-                break;
-        }
+    public void activate(Context context, Context activity, boolean isNewTask) {
+//        switch (desiredOrientation){
+//            case PORTRAIT_ORIENTATION:
+//                activity.setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);
+//
+//                break;
+//            case LANDSCAPE_ORIENTATION:
+//                activity.setRequestedOrientation(SCREEN_ORIENTATION_LANDSCAPE);
+//                break;
+//        }
     }
 
     @Override

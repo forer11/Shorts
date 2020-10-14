@@ -11,6 +11,8 @@ import com.shorts.shortmaker.ActionDialogs.SetTimerDialog;
 
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class ActionSetTimer implements Action {
 
 
@@ -26,11 +28,14 @@ public class ActionSetTimer implements Action {
 
 
     @Override
-    public void activate(Context context, Activity activity) {
+    public void activate(Context context, Context activity, boolean isNewTask) {
         Log.v("YAY", "Timer activated");
         Intent intent = new Intent(AlarmClock.ACTION_SET_TIMER)
                 .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
                 .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+        if (isNewTask) {
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        }
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             activity.startActivity(intent);
         }
@@ -43,8 +48,8 @@ public class ActionSetTimer implements Action {
 
     @Override
     public void setData(List<String> data) {
-        hour = Integer.parseInt(data.get(0))*3600;
-        minutes = Integer.parseInt(data.get(1))*60;
-        seconds = Integer.parseInt(data.get(2))+hour+minutes;
+        hour = Integer.parseInt(data.get(0)) * 3600;
+        minutes = Integer.parseInt(data.get(1)) * 60;
+        seconds = Integer.parseInt(data.get(2)) + hour + minutes;
     }
 }

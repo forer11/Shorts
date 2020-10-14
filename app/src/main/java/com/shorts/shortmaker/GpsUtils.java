@@ -41,9 +41,9 @@ public class GpsUtils {
     private LocationSettingsRequest mLocationSettingsRequest;
     private LocationManager locationManager;
     private LocationRequest locationRequest;
-    private final Activity activity;
+    private final Context activity;
 
-    public GpsUtils(Context context, Activity activity) {
+    public GpsUtils(Context context, Context activity) {
         this.context = context;
         this.activity = activity;
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);

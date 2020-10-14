@@ -24,7 +24,7 @@ public class ActionBrightness implements Action {
 
 
     @Override
-    public void activate(Context context, Activity activity) {
+    public void activate(Context context, Context activity, boolean isNewTask) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Settings.System.canWrite(context)) {
                 ContentResolver cResolver = context.getApplicationContext().getContentResolver();

@@ -47,7 +47,7 @@ public class ActionFactory {
 
     public static final String WAZE_ACTION_TITLE = "Waze";
     public static final String SPOTIFY_ACTION_TITLE = "Spotify";
-    public static final String ALARM_CLOCK_ACTION_TITLE = "Alaram clock";
+    public static final String ALARM_CLOCK_ACTION_TITLE = "Alarm clock";
     public static final String TEXT_MESSAGE_ACTION_TITLE = "Text message";
     public static final String SOUND_MODE_ACTION_TITLE = "Sound mode";
     public static final String PHONE_CALL_ACTION_TITLE = "Phone call";

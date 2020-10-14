@@ -10,7 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
+import android.location.Location;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.IBinder;
@@ -20,7 +20,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.LocationCallback;
@@ -32,16 +31,17 @@ import com.karumi.dexter.MultiplePermissionsReport;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
+import com.shorts.shortmaker.ActionFactory;
+import com.shorts.shortmaker.Actions.Action;
+import com.shorts.shortmaker.Activities.MainActivity;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.BroadcastReceivers.NotificationLocationReceiver;
-import com.shorts.shortmaker.BroadcastReceivers.NotificationReceiver;
+import com.shorts.shortmaker.DataClasses.ActionData;
 import com.shorts.shortmaker.DataClasses.LocationData;
 import com.shorts.shortmaker.DataClasses.Shortcut;
 import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
 import com.shorts.shortmaker.R;
-import com.sun.mail.imap.protocol.FLAGS;
 
-import java.security.Provider;
 import java.util.List;
 import java.util.Objects;
 
@@ -66,6 +66,29 @@ public class ForegroundLocationListenerService extends Service {
                 LocationData locationData = currentShortcut.getLocationData();
                 double latitude = locationResult.getLastLocation().getLatitude();
                 double longtitude = locationResult.getLastLocation().getLongitude();
+
+                float[] results = new float[1];
+                Location.distanceBetween(locationData.getLatitude()
+                        , locationData.getLongitude(),
+                        latitude,
+                        longtitude,
+                        results);
+                if (results[0] <= locationData.getRadius()) {
+                    for (ActionData actionData : currentShortcut.getActionDataList()) {
+                        if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION) {
+                            Action action = ActionFactory.getAction(actionData.getTitle());
+                            if (action != null) {
+                                action.setData(actionData.getData());
+                                action.activate(getBaseContext(),
+                                        getApplicationContext(),
+                                        true);
+                            }
+                        }
+                    }
+                    stopLocationService();
+                }
+
+
                 Log.v("location service", latitude + ", " + longtitude);
                 //TODO check radios and activate actions
             }
@@ -99,7 +122,8 @@ public class ForegroundLocationListenerService extends Service {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 this, channelId);
         builder.setSmallIcon(R.mipmap.teddy_bear);
-        builder.setContentTitle("Listening to your Location...");
+        builder.setContentTitle("Will activate when you are at "
+                + currentShortcut.getLocationData().getLocationName() + "...");
         builder.addAction(R.mipmap.delete_icon, "Stop service", actionIntent);
         builder.setDefaults(NotificationCompat.DEFAULT_ALL);
         builder.setContentText("Running");
