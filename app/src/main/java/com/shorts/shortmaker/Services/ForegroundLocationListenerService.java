@@ -33,7 +33,6 @@ import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Actions.Action;
-import com.shorts.shortmaker.Activities.MainActivity;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.BroadcastReceivers.NotificationLocationReceiver;
 import com.shorts.shortmaker.DataClasses.ActionData;
@@ -75,7 +74,8 @@ public class ForegroundLocationListenerService extends Service {
                         results);
                 if (results[0] <= locationData.getRadius()) {
                     for (ActionData actionData : currentShortcut.getActionDataList()) {
-                        if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION) {
+                        if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION
+                                && actionData.getIsActivated()) {
                             Action action = ActionFactory.getAction(actionData.getTitle());
                             if (action != null) {
                                 action.setData(actionData.getData());

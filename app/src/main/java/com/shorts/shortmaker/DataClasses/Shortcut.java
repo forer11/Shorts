@@ -20,6 +20,8 @@ public class Shortcut {
 
     private ArrayList<ActionData> actionDataList;
 
+    private boolean showAgain;
+
     @Exclude
     private ArrayList<Action> actions;
 
@@ -27,6 +29,7 @@ public class Shortcut {
         /* empty public constructor for FireStore */
         actions = new ArrayList<>();
         actionDataList = new ArrayList<>();
+        showAgain = true;
     }
 
     public Shortcut(String title, String imageUrl) {
@@ -34,6 +37,7 @@ public class Shortcut {
         this.imageUrl = imageUrl;
         actions = new ArrayList<>();
         actionDataList = new ArrayList<>();
+        showAgain = true;
     }
 
     @Exclude
@@ -105,5 +109,13 @@ public class Shortcut {
 
     public void setLocationData(LocationData locationData) {
         this.locationData = locationData;
+    }
+
+    public boolean isShowAgain() {
+        return showAgain;
+    }
+
+    public void setShowAgain(boolean showAgain) {
+        this.showAgain = showAgain;
     }
 }
