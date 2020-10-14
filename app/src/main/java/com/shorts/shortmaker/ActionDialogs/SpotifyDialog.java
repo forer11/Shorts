@@ -71,7 +71,7 @@ public class SpotifyDialog extends ActionDialog {
         String album = albumToPlay.getText().toString();
         ArrayList<String> results = new ArrayList<>();
         results.add(album);
-        String description = "Spotify"; //TODO decide
+        String description = "Spotify";
         listener.applyUserInfo(results, description);
     }
 }

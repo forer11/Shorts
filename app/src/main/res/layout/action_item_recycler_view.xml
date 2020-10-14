@@ -34,7 +34,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_weight="1"
                 android:textColor="#706C6C"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:textStyle="bold" />
 
             <Switch
