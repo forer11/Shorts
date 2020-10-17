@@ -30,7 +30,7 @@ public class ActivateShortcutActivity extends AppCompatActivity {
                                 Action action = ActionFactory.getAction(actionData.getTitle());
                                 if (action != null) {
                                     action.setData(actionData.getData());
-                                    action.activate(getBaseContext(),
+                                    action.activate(getApplication(),
                                             ActivateShortcutActivity.this,
                                             true);
                                 }

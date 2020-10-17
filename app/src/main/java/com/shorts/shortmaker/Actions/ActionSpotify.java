@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -30,14 +31,14 @@ public class ActionSpotify implements Action {
     }
 
     @Override
-    public void activate(Context context, Context activity, boolean isNewTask) {
+    public void activate(Application application, Context context, boolean isNewTask) {
         Log.v("YAY", "Spotify activated");
         boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
         if (isSpotifyInstalled) {
-//            launchSpotify(context,activity);
-            playSearchArtist(activity, artist);
+//            launchSpotify(context,context);
+            playSearchArtist(context, artist);
         } else {
-            installSpotify(activity, isNewTask);
+            installSpotify(context, isNewTask);
         }
     }
 

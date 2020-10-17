@@ -150,12 +150,14 @@ public class PhoneCallDialog extends ActionDialog implements
     }
 
 
-
     private boolean showContacts(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M &&
                 activity.checkSelfPermission(Manifest.permission.READ_CONTACTS)
-                        != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
+                        != PackageManager.PERMISSION_GRANTED
+                || activity.checkSelfPermission(Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS,
+                            Manifest.permission.CALL_PHONE},
                     PERMISSIONS_REQUEST_READ_CONTACTS);
             return false;
             //After this point you wait for callback in onRequestPermissionsResult(int, String[], i
@@ -171,13 +173,16 @@ public class PhoneCallDialog extends ActionDialog implements
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 queryContacts(getActivity());
                 buildRecyclerView();
             } else {
-                Toast.makeText(getActivity(), "Until you grant the permission, we cannot" +
-                        " get the names", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),
+                        "Until you grant the permission, we cannot set this action",
+                        Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         }
     }

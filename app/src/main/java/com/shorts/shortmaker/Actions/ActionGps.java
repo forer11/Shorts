@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
@@ -27,8 +28,8 @@ public class ActionGps implements Action {
     }
 
     @Override
-    public void activate(Context context, final Context activity, boolean isNewTask) {
-        new GpsUtils(context, activity).turnGPSOn(new GpsUtils.onGpsListener() {
+    public void activate(Application application, final Context context, boolean isNewTask) {
+        new GpsUtils(context, context).turnGPSOn(new GpsUtils.onGpsListener() {
             @Override
             public void gpsStatus(boolean isGPSEnable) {
                 if (state) {

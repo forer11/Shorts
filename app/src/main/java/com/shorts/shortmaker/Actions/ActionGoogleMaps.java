@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +36,7 @@ public class ActionGoogleMaps implements Action {
     }
 
     @Override
-    public void activate(Context context, Context activity, boolean isNewTask) {
+    public void activate(Application application, Context context, boolean isNewTask) {
         //TODO - add here the location entered
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude
                 + "," + longtitude + "&mode=" + transportationShortcutName);
@@ -44,7 +45,7 @@ public class ActionGoogleMaps implements Action {
             mapIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         }
         mapIntent.setPackage("com.google.android.apps.maps");
-        activity.startActivity(mapIntent);
+        context.startActivity(mapIntent);
     }
 
     @Override

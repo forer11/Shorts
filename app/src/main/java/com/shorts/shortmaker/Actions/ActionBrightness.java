@@ -1,9 +1,12 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -24,7 +27,7 @@ public class ActionBrightness implements Action {
 
 
     @Override
-    public void activate(Context context, Context activity, boolean isNewTask) {
+    public void activate(Application application, Context context, boolean isNewTask) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (Settings.System.canWrite(context)) {
                 ContentResolver cResolver = context.getApplicationContext().getContentResolver();
@@ -34,9 +37,15 @@ public class ActionBrightness implements Action {
                 Settings.System.putInt(cResolver,
                         Settings.System.SCREEN_BRIGHTNESS, brightness);
             } else {
-                Toast.makeText(context,
-                        "Enable Modify system settings and try again",
-                        Toast.LENGTH_SHORT).show();
+                Handler handler = new Handler(Looper.getMainLooper());
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(context,
+                                "Enable Modify system settings and try again",
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
         }
     }

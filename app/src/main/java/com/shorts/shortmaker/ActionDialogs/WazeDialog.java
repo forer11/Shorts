@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.PlacesClient;
@@ -38,7 +39,8 @@ public class WazeDialog extends ActionDialog {
     private String finalAddress;
     PlacesClient placesClient;
     private View view;
-    private String a;
+    private String addressDataFormat;
+    private LatLng latLng;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,11 +72,14 @@ public class WazeDialog extends ActionDialog {
             @Override
             public void onPlaceSelected(@NonNull Place place) {
                 final String locationName = place.getName();
+                latLng = place.getLatLng();
                 final String locationAddress = place.getAddress();
-                if (locationName != null) {
+                if (locationName != null && latLng != null) {
                     okButton.setEnabled(true);
                     finalName = locationName;
                     finalAddress = locationAddress;
+                    addressDataFormat = finalAddress.replace(",", "");
+                    addressDataFormat = addressDataFormat.replace(" ", "%20");
                 } else {
                     okButton.setEnabled(false);
                     Toast.makeText(getContext(),
@@ -125,7 +130,10 @@ public class WazeDialog extends ActionDialog {
 
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
-        results.add(a);
+        results.add(addressDataFormat);
+        results.add(Double.toString(latLng.latitude));
+        results.add(Double.toString(latLng.longitude));
+        results.add(finalName);
         String description = "Navigate to " + finalAddress; //TODO decide
         listener.applyUserInfo(results, description);
     }

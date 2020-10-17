@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.provider.AlarmClock;
@@ -28,7 +29,7 @@ public class ActionSetTimer implements Action {
 
 
     @Override
-    public void activate(Context context, Context activity, boolean isNewTask) {
+    public void activate(Application application, Context context, boolean isNewTask) {
         Log.v("YAY", "Timer activated");
         Intent intent = new Intent(AlarmClock.ACTION_SET_TIMER)
                 .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
@@ -37,7 +38,7 @@ public class ActionSetTimer implements Action {
             intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         }
         if (intent.resolveActivity(context.getPackageManager()) != null) {
-            activity.startActivity(intent);
+            context.startActivity(intent);
         }
     }
 
