@@ -10,52 +10,54 @@
         android:padding="16dp">
 
 
-
         <TextView
             android:id="@+id/shortcutTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18dp"
-            android:layout_marginTop="20dp" />
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:textSize="18dp" />
+
         <TextView
             android:id="@+id/show_again_text"
             android:layout_width="wrap_content"
-            android:layout_below="@id/shortcutTitle"
-            android:layout_marginStart="20dp"
-            android:textSize="12sp"
-            android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
+            android:layout_above="@id/cancelButton"
+            android:layout_below="@id/shortcutTitle"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="20dp"
             android:text="Don't show this again for this shortcut"
-            />
+            android:textSize="12sp" />
+
         <CheckBox
             android:id="@+id/show_checkbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@id/show_again_text"
-            android:layout_alignBottom="@id/show_again_text"
-            android:layout_toEndOf="@id/show_again_text"/>
+            android:layout_below="@id/shortcutTitle"
+            android:layout_toEndOf="@id/show_again_text" />
 
 
         <Button
             android:id="@+id/okButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/show_again_text"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/show_checkbox"
             android:layout_alignParentEnd="true"
-            android:textSize="12sp"
-            android:text="Ok" />
+            android:layout_marginTop="20dp"
+            android:text="Ok"
+            android:textSize="12sp" />
 
         <Button
             android:id="@+id/cancelButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/show_again_text"
+            android:layout_below="@+id/show_checkbox"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:textSize="12sp"
             android:layout_toStartOf="@+id/okButton"
-            android:text="Cancel" />
+            android:text="Cancel"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 </ScrollView>
