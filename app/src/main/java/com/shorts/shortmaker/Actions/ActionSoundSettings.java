@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -29,7 +30,7 @@ public class ActionSoundSettings implements Action {
 
 
     @Override
-    public void activate(Context context, Context activity, boolean isNewTask) {
+    public void activate(Application application, Context context, boolean isNewTask) {
         Log.v("YAY", "sound setting activated");
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         if (audioManager != null) {

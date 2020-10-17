@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
@@ -20,8 +21,8 @@ public class ActionReadAuto implements Action {
     }
 
     @Override
-    public void activate(Context context, Context activity, boolean isNewTask) {
-        activity.startService(new Intent(activity, ForegroundReadSmsService.class));
+    public void activate(Application application, Context context, boolean isNewTask) {
+        context.startService(new Intent(context, ForegroundReadSmsService.class));
     }
 
     @Override

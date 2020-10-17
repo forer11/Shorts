@@ -8,13 +8,17 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.speech.tts.TextToSpeech;
 import android.widget.RemoteViews;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.MultiplePermissionsReport;
@@ -77,32 +81,35 @@ public class ForegroundReadSmsService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Dexter.withContext(this).withPermissions(Manifest.permission.RECEIVE_SMS,
-                Manifest.permission.READ_CONTACTS)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void
-                    onPermissionsChecked(MultiplePermissionsReport multiplePermissionsReport) {
-                        if (ContactsHandler.getContactNames()) {
-                            reverseContacts.putAll(ContactsHandler.getReverseContacts());
-                        }
-                        setTextToSpeech();
-                    }
 
-                    @Override
-                    public void
-                    onPermissionRationaleShouldBeShown(List<PermissionRequest> list,
-                                                       PermissionToken permissionToken) {
+        if (ContextCompat.checkSelfPermission(
+                getApplicationContext(), Manifest.permission.READ_CONTACTS) ==
+                PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(
+                getApplicationContext(), Manifest.permission.RECEIVE_SMS) ==
+                PackageManager.PERMISSION_GRANTED) {
+            if (ContactsHandler.getContactNames()) {
+                reverseContacts.putAll(ContactsHandler.getReverseContacts());
+            }
+            setTextToSpeech();
+            // do your jobs here
+            IntentFilter filter = new IntentFilter();
+            filter.addAction(MY_CLOSE_FOREGROUND);
+            this.registerReceiver(closeReceiver, filter);
+            startForeground();
 
-                    }
-                }).check();
+        } else {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(getApplicationContext(),
+                            "Please confirm Contacts and read sms permissions",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-
-        // do your jobs here
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(MY_CLOSE_FOREGROUND);
-        this.registerReceiver(closeReceiver, filter);
-        startForeground();
 
         return START_NOT_STICKY;
     }

@@ -3,10 +3,13 @@ package com.shorts.shortmaker.Actions;
 import android.Manifest;
 import android.app.Activity;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import android.widget.Toast;
@@ -40,47 +43,37 @@ public class ActionPhoneCall implements Action {
 
 
     @Override
-    public void activate(final Context context, final Context activity, boolean isNewTask) {
+    public void activate(Application application, final Context context, boolean isNewTask) {
         Log.v("YAY", "Phone call activated");
 
-        Dexter.withContext(activity)
-                .withPermission(Manifest.permission.CALL_PHONE)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void
-                    onPermissionGranted(PermissionGrantedResponse permissionGrantedResponse) {
-                        if (number.trim().length() > 0) {
-                            if (ContextCompat.checkSelfPermission(context,
-                                    Manifest.permission.CALL_PHONE) == PackageManager
-                                    .PERMISSION_GRANTED) {
-                                String dial = "tel:" + number;
-                                Intent callIntent = new Intent(Intent.ACTION_CALL,
-                                        Uri.parse(dial));
-                                if (isNewTask) {
-                                    callIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
-                                }
-                                activity.startActivity(callIntent);
-                            }
-                        }
+        if (ContextCompat.checkSelfPermission(
+                context, Manifest.permission.CALL_PHONE) ==
+                PackageManager.PERMISSION_GRANTED) {
+            if (number.trim().length() > 0) {
+                if (ContextCompat.checkSelfPermission(context,
+                        Manifest.permission.CALL_PHONE) == PackageManager
+                        .PERMISSION_GRANTED) {
+                    String dial = "tel:" + number;
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse(dial));
+                    callIntent.addFlags(Intent.FLAG_FROM_BACKGROUND);
+                    if (isNewTask) {
+                        callIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                     }
-
-                    @Override
-                    public void
-                    onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
-                        Toast.makeText(context, "Enter Phone Number", Toast.LENGTH_SHORT)
-                                .show();
-                    }
-
-                    @Override
-                    public void
-                    onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest,
-                                                       PermissionToken permissionToken) {
-                        Toast.makeText(context, "Enter Phone Number",
-                                Toast.LENGTH_SHORT).show();
-                        // TODO - maybe to a dialog here(can be added using the dexter library automatically!!!)
-                        permissionToken.continuePermissionRequest();
-                    }
-                }).check();
+                    context.startActivity(callIntent);
+                }
+            }
+        } else {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context,
+                            "Please confirm Phone permission",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
     }
 
     @Override

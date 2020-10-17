@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraManager;
@@ -21,10 +22,10 @@ public class ActionOpenFlash implements Action {
     }
 
     @Override
-    public void activate(Context context, Context activity , boolean isNewTask) {
+    public void activate(Application application, Context context , boolean isNewTask) {
         if(turnOn==0){
             String mCameraId="";
-            CameraManager mCameraManager= (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
+            CameraManager mCameraManager= (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);
             try {
                 mCameraId = mCameraManager.getCameraIdList()[0];
             } catch (CameraAccessException e) {

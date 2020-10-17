@@ -1,6 +1,7 @@
 package com.shorts.shortmaker.Actions;
 
 import android.app.Activity;
+import android.app.Application;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -17,8 +18,10 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 public class ActionWaze implements Action {
 
     private WazeDialog dialog;
+    private String addressFormat;
     private String latitude;
     private String longtitude;
+    private String name;
 
 
     public ActionWaze() {
@@ -26,15 +29,17 @@ public class ActionWaze implements Action {
     }
 
     @Override
-    public void activate(Context context, Context activity, boolean isNewTask) {
+    public void activate(Application application, Context context, boolean isNewTask) {
         Log.v("YAY", "Waze activated");
         try {
-            openOrInstallWaze("https://waze.com/ul?q=" + latitude + "," + longtitude + "&navigate=yes",
-                    activity,
+            openOrInstallWaze("https://waze.com/ul?q=" + name + "%20" + addressFormat
+                            + "&ll=" + latitude + "," + longtitude +
+                            "&navigate=yes",
+                    context,
                     isNewTask);
         } catch (ActivityNotFoundException ex) {
             // If Waze is not installed, open it in Google Play:
-            openOrInstallWaze("market://details?id=com.waze", activity, isNewTask);
+            openOrInstallWaze("market://details?id=com.waze", context, isNewTask);
         }
     }
 
@@ -45,8 +50,10 @@ public class ActionWaze implements Action {
 
     @Override
     public void setData(List<String> data) {
-        latitude = data.get(0);
-        longtitude = data.get(1);
+        addressFormat = data.get(0);
+        latitude = data.get(1);
+        longtitude = data.get(2);
+        name = data.get(3);
     }
 
     private void openOrInstallWaze(String uri, Context activity, boolean isNewTask) {

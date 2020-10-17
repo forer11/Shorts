@@ -2,14 +2,18 @@ package com.shorts.shortmaker.Actions;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Application;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.os.Handler;
+import android.os.Looper;
 import android.telephony.SmsManager;
 import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
@@ -42,35 +46,25 @@ public class ActionSendTextMessage implements Action {
 
 
     @Override
-    public void activate(Context context, final Context activity, boolean isNewTask) {
-        this.activity = activity;
+    public void activate(Application application, final Context context, boolean isNewTask) {
+        this.activity = context;
 
-        Dexter.withContext(activity)
-                .withPermission(Manifest.permission.SEND_SMS)
-                .withListener(new PermissionListener() {
-                    @Override
-                    public void onPermissionGranted(PermissionGrantedResponse response) {
-                        sendSms();
+        if (ContextCompat.checkSelfPermission(
+                context, Manifest.permission.SEND_SMS) ==
+                PackageManager.PERMISSION_GRANTED) {
+            sendSms();
+        } else {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context,
+                            "Please confirm SMS permission",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
-                    }
-
-                    @Override
-                    public void onPermissionDenied(PermissionDeniedResponse response) {
-                        Toast.makeText(activity,
-                                "Please confirm permission",
-                                Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(PermissionRequest permission,
-                                                                   PermissionToken token) {
-                        Toast.makeText(activity,
-                                "Please confirm permission",
-                                Toast.LENGTH_SHORT).show();
-                        // TODO - maybe to a dialog here(can be added using the dexter library automatically!!!)
-                        token.continuePermissionRequest();
-                    }
-                }).check();
     }
 
     private void sendSms() {

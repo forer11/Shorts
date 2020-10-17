@@ -269,10 +269,16 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
                             == ActionFactory.Conditions.ON_DEFAULT) {
                         Action action = ActionFactory.getAction(actionData.getTitle());
                         if (action != null) {
-                            action.setData(actionData.getData());
-                            action.activate(getBaseContext(),
-                                    MainActivity.this,
-                                    false);
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    action.setData(actionData.getData());
+                                    action.activate(getApplication(),
+                                            getApplicationContext(),
+                                            false);
+                                }
+                            }).start();
+
                         }
                     }
                 }

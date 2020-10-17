@@ -260,9 +260,12 @@ public class TextMessageDialog extends ActionDialog {
 
     private boolean showContacts(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && activity.checkSelfPermission(
-                Manifest.permission.READ_CONTACTS)
+                Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED
+                || activity.checkSelfPermission(
+                Manifest.permission.SEND_SMS)
                 != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS},
+            requestPermissions(new String[]{Manifest.permission.READ_CONTACTS,
+                            Manifest.permission.SEND_SMS},
                     PERMISSIONS_REQUEST_READ_CONTACTS);
             return false;
             //After this point you wait for callback in onRequestPermissionsResult(int, String[],
@@ -287,14 +290,16 @@ public class TextMessageDialog extends ActionDialog {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         if (requestCode == PERMISSIONS_REQUEST_READ_CONTACTS) {
-            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED
+                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
                 queryContacts(getActivity());
                 buildRecyclerView();
             } else {
                 Toast.makeText(getActivity(),
-                        "Until you grant the permission, we cannot get the names",
+                        "Until you grant the permission, we cannot set this action",
                         Toast.LENGTH_SHORT).show();
+                dismiss();
             }
         }
     }
