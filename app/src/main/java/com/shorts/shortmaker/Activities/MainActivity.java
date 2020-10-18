@@ -21,7 +21,9 @@ import android.content.Intent;
 
 import android.graphics.Point;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -85,6 +87,8 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     public static final int Y = 1;
     public static final int X = 0;
     public static final String TAG = "location";
+    public static int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 5469;
+
 
 
     List<Shortcut> shortcuts;
@@ -109,12 +113,24 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Show alert dialog to the user saying a separate permission is needed
+        // Launch the settings activity if the user prefers
+        //TODO dialog here
+        checkForeOverlayPermission();
         setContentView(R.layout.activity_main);
         getScreenSize();
 
         setObjects();
         setToolbar();
         setAddShortcutButton();
+    }
+
+    private void checkForeOverlayPermission() {
+        if (!Settings.canDrawOverlays(this)) {
+            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                    Uri.parse("package:" + getPackageName()));
+            startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+        }
     }
 
     private void getScreenSize() {
@@ -203,6 +219,16 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         }
         if (requestCode == 99) {
             ActionGps.setIsGPS(true); // flag maintain before get location
+        }
+
+        if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
+            if (!Settings.canDrawOverlays(this)) {
+                // You don't have permission//todo dialog
+                checkForeOverlayPermission();
+            } else {
+                // Do as per your logic
+            }
+
         }
     }
 
