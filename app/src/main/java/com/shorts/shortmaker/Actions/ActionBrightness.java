@@ -1,6 +1,5 @@
 package com.shorts.shortmaker.Actions;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -27,26 +26,24 @@ public class ActionBrightness implements Action {
 
 
     @Override
-    public void activate(Application application, Context context, boolean isNewTask) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (Settings.System.canWrite(context)) {
-                ContentResolver cResolver = context.getApplicationContext().getContentResolver();
-                Settings.System.putInt(cResolver,
-                        Settings.System.SCREEN_BRIGHTNESS_MODE,
-                        Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
-                Settings.System.putInt(cResolver,
-                        Settings.System.SCREEN_BRIGHTNESS, brightness);
-            } else {
-                Handler handler = new Handler(Looper.getMainLooper());
-                handler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        Toast.makeText(context,
-                                "Enable Modify system settings and try again",
-                                Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
+    public void activate(Application application, Context context) {
+        if (Settings.System.canWrite(context)) {
+            ContentResolver cResolver = context.getApplicationContext().getContentResolver();
+            Settings.System.putInt(cResolver,
+                    Settings.System.SCREEN_BRIGHTNESS_MODE,
+                    Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL);
+            Settings.System.putInt(cResolver,
+                    Settings.System.SCREEN_BRIGHTNESS, brightness);
+        } else {
+            Handler handler = new Handler(Looper.getMainLooper());
+            handler.post(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(context,
+                            "Enable Modify system settings and try again",
+                            Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 

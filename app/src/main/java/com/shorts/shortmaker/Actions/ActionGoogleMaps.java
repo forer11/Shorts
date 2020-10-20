@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.shorts.shortmaker.AppData.inBackground;
 
 public class ActionGoogleMaps implements Action {
 
@@ -36,14 +37,15 @@ public class ActionGoogleMaps implements Action {
     }
 
     @Override
-    public void activate(Application application, Context context, boolean isNewTask) {
+    public void activate(Application application, Context context) {
         //TODO - add here the location entered
         Uri gmmIntentUri = Uri.parse("google.navigation:q=" + latitude
                 + "," + longtitude + "&mode=" + transportationShortcutName);
         Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-        if (isNewTask) {
-            mapIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        if (inBackground) {
+            mapIntent.addFlags(Intent.FLAG_FROM_BACKGROUND);
         }
+        mapIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         mapIntent.setPackage("com.google.android.apps.maps");
         context.startActivity(mapIntent);
     }

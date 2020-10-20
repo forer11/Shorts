@@ -22,7 +22,7 @@ public class ActionOpenFlash implements Action {
     }
 
     @Override
-    public void activate(Application application, Context context , boolean isNewTask) {
+    public void activate(Application application, Context context) {
         if(turnOn==0){
             String mCameraId="";
             CameraManager mCameraManager= (CameraManager) context.getSystemService(Context.CAMERA_SERVICE);

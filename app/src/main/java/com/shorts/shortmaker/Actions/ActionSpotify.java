@@ -19,6 +19,7 @@ import com.shorts.shortmaker.ActionDialogs.SpotifyDialog;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.shorts.shortmaker.AppData.inBackground;
 
 public class ActionSpotify implements Action {
 
@@ -31,14 +32,14 @@ public class ActionSpotify implements Action {
     }
 
     @Override
-    public void activate(Application application, Context context, boolean isNewTask) {
+    public void activate(Application application, Context context) {
         Log.v("YAY", "Spotify activated");
         boolean isSpotifyInstalled = checkIfSpotifyInstalled(context);
         if (isSpotifyInstalled) {
 //            launchSpotify(context,context);
             playSearchArtist(context, artist);
         } else {
-            installSpotify(context, isNewTask);
+            installSpotify(context, inBackground);
         }
     }
 
@@ -62,8 +63,9 @@ public class ActionSpotify implements Action {
                     .build();
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             if (isNewTask) {
-                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_FROM_BACKGROUND);
             }
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(intent);
         } catch (ActivityNotFoundException ignored) {
             Uri uri = Uri.parse("https://play.google.com/store/apps/details")
@@ -73,8 +75,9 @@ public class ActionSpotify implements Action {
                     .build();
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             if (isNewTask) {
-                intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_FROM_BACKGROUND);
             }
+            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
             activity.startActivity(intent);
         }
     }
@@ -82,8 +85,9 @@ public class ActionSpotify implements Action {
     private void launchSpotify(Context context, Context activity, boolean isNewTask) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         if (isNewTask) {
-            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_FROM_BACKGROUND);
         }
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         //TODO - we can generally open spotify with "spotify:open" and not a specific album
         // we can delete the ":play: from the uri in order for the song not to be played automatically
         intent.setData(Uri.parse("spotify:album:" + artist + ":play"));

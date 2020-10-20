@@ -88,7 +88,7 @@ public class ForegroundReadSmsService extends Service {
                 && ContextCompat.checkSelfPermission(
                 getApplicationContext(), Manifest.permission.RECEIVE_SMS) ==
                 PackageManager.PERMISSION_GRANTED) {
-            if (ContactsHandler.getContactNames()) {
+            if (ContactsHandler.getContactNames(getBaseContext())) {
                 reverseContacts.putAll(ContactsHandler.getReverseContacts());
             }
             setTextToSpeech();

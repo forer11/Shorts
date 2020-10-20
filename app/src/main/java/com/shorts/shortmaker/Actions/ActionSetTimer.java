@@ -13,6 +13,7 @@ import com.shorts.shortmaker.ActionDialogs.SetTimerDialog;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.shorts.shortmaker.AppData.inBackground;
 
 public class ActionSetTimer implements Action {
 
@@ -29,14 +30,15 @@ public class ActionSetTimer implements Action {
 
 
     @Override
-    public void activate(Application application, Context context, boolean isNewTask) {
+    public void activate(Application application, Context context) {
         Log.v("YAY", "Timer activated");
         Intent intent = new Intent(AlarmClock.ACTION_SET_TIMER)
                 .putExtra(AlarmClock.EXTRA_LENGTH, seconds)
                 .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-        if (isNewTask) {
-            intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        if (inBackground) {
+            intent.addFlags(Intent.FLAG_FROM_BACKGROUND);
         }
+        intent.setFlags(FLAG_ACTIVITY_NEW_TASK);
         if (intent.resolveActivity(context.getPackageManager()) != null) {
             context.startActivity(intent);
         }

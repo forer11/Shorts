@@ -10,6 +10,12 @@ import android.content.pm.Signature;
 import android.os.Build;
 import android.util.Base64;
 import android.util.Log;
+import android.widget.Toast;
+
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.shorts.shortmaker.DataClasses.Icon;
 import com.shorts.shortmaker.FireBaseHandlers.FireBaseAuthHandler;
@@ -20,12 +26,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class AppData extends Application {
+public class AppData extends Application implements LifecycleObserver {
     public FireStoreHandler fireStoreHandler;
     public FireBaseAuthHandler fireBaseAuthHandler;
     public ArrayList<Icon> icons;
     public static String CHANNEL_ID = "default_id";
-    private static Context context;
+    private Context context;
+    public static boolean inBackground;
 
     @Override
     public void onCreate() {
@@ -37,6 +44,18 @@ public class AppData extends Application {
         icons = new ArrayList<>();
         loadIcons();
         createNotificationChannel();
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
+    public void appInResumeState() {
+        inBackground = false;
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_PAUSE)
+    public void appInPauseState() {
+        inBackground = true;
     }
 
     public void loadIcons() {
@@ -76,8 +95,7 @@ public class AppData extends Application {
         }
     }
 
-    public static Context getContext()
-    {
+    public Context getContext() {
         return context;
     }
 }

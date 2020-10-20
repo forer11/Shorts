@@ -1,6 +1,5 @@
 package com.shorts.shortmaker.Actions;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +12,7 @@ import com.shorts.shortmaker.ActionDialogs.AlarmClockDialog;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.shorts.shortmaker.AppData.inBackground;
 
 public class ActionAlarmClock implements Action {
 
@@ -25,15 +25,16 @@ public class ActionAlarmClock implements Action {
     }
 
     @Override
-    public void activate(Application application, Context context, boolean isNewTask) {
+    public void activate(Application application, Context context) {
         Log.v("YAY", "Alarm clock activated");
         Intent intent = new Intent(AlarmClock.ACTION_SET_ALARM)
                 .putExtra(AlarmClock.EXTRA_HOUR, hour) //hours in 24 hours format
                 .putExtra(AlarmClock.EXTRA_MINUTES, minute)
                 .putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-        if (isNewTask) {
-            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        if (inBackground) {
+            intent.addFlags(Intent.FLAG_FROM_BACKGROUND);
         }
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
 
     }

@@ -1,18 +1,12 @@
 package com.shorts.shortmaker.Actions;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
-import com.shorts.shortmaker.ActionDialogs.AlarmClockDialog;
 import com.shorts.shortmaker.ActionDialogs.ChangeOrientationDialog;
 
 import java.util.List;
-
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 
 public class ActionChangeOrientation implements Action{
     public static final int PORTRAIT_ORIENTATION = 0;
@@ -25,7 +19,7 @@ public class ActionChangeOrientation implements Action{
         this.dialog = new ChangeOrientationDialog();
     }
     @Override
-    public void activate(Application application, Context context, boolean isNewTask) {
+    public void activate(Application application, Context context) {
 //        switch (desiredOrientation){
 //            case PORTRAIT_ORIENTATION:
 //                context.setRequestedOrientation(SCREEN_ORIENTATION_PORTRAIT);

@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface Action {
 
-    void activate(Application application, Context context, boolean isNewTask);
+    void activate(Application application, Context context);
 
     ActionDialog getDialog();
 

@@ -1,39 +1,19 @@
 package com.shorts.shortmaker.Activities;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.pm.ShortcutInfoCompat;
-import androidx.core.content.pm.ShortcutManagerCompat;
-import androidx.core.graphics.drawable.IconCompat;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
-
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-
 import android.graphics.Point;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import android.view.View;
 import android.view.ViewGroup;
-
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -41,15 +21,17 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.DialogFragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.Target;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.libraries.places.api.Places;
-import com.google.android.libraries.places.api.model.Place;
-import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Actions.Action;
@@ -57,22 +39,18 @@ import com.shorts.shortmaker.Actions.ActionGps;
 import com.shorts.shortmaker.Adapters.DraggableGridAdapter;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
-import com.shorts.shortmaker.DialogFragments.ActivateShortcutDialog;
-import com.shorts.shortmaker.DialogFragments.ChangeLocationOrKeepCurrentDialog;
-import com.shorts.shortmaker.DialogFragments.ChooseIconDialog;
 import com.shorts.shortmaker.DataClasses.Shortcut;
+import com.shorts.shortmaker.DialogFragments.ActivateShortcutDialog;
+import com.shorts.shortmaker.DialogFragments.ChooseIconDialog;
 import com.shorts.shortmaker.DialogFragments.CreateShortcutDialog;
 import com.shorts.shortmaker.DialogFragments.DeleteShortcutDialog;
 import com.shorts.shortmaker.FireBaseHandlers.FireStoreHandler;
-import com.shorts.shortmaker.GpsUtils;
 import com.shorts.shortmaker.R;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shorts.shortmaker.Services.ForegroundLocationListenerService;
 
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -300,8 +278,7 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
                                 public void run() {
                                     action.setData(actionData.getData());
                                     action.activate(getApplication(),
-                                            getApplicationContext(),
-                                            false);
+                                            getApplicationContext());
                                 }
                             }).start();
 
