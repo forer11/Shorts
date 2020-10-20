@@ -21,7 +21,7 @@ public class ActionReadAuto implements Action {
     }
 
     @Override
-    public void activate(Application application, Context context, boolean isNewTask) {
+    public void activate(Application application, Context context) {
         context.startService(new Intent(context, ForegroundReadSmsService.class));
     }
 

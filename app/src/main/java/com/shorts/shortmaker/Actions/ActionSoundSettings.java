@@ -15,6 +15,7 @@ import com.shorts.shortmaker.ActionDialogs.SoundSettingsDialog;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.shorts.shortmaker.AppData.inBackground;
 
 public class ActionSoundSettings implements Action {
 
@@ -30,13 +31,13 @@ public class ActionSoundSettings implements Action {
 
 
     @Override
-    public void activate(Application application, Context context, boolean isNewTask) {
+    public void activate(Application application, Context context) {
         Log.v("YAY", "sound setting activated");
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         if (audioManager != null) {
             switch (mode) {
                 case SILENT_MODE:
-                    putPhoneOnSilent(audioManager, context, isNewTask);
+                    putPhoneOnSilent(audioManager, context, inBackground);
                     break;
                 case VIBRATE_MODE:
                     audioManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
@@ -67,8 +68,9 @@ public class ActionSoundSettings implements Action {
                     android.provider.Settings
                             .ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
             if (isNewTask) {
-                intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                intent.addFlags(Intent.FLAG_FROM_BACKGROUND);
             }
+            intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(intent);
         } else {
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);

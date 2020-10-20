@@ -47,6 +47,7 @@ dependencies {
     implementation 'com.maltaisn:iconpack-font-awesome:5.13.0'
     implementation 'com.maltaisn:iconpack-community-material:5.3.45'
     implementation 'com.airbnb.android:lottie:3.3.1'
+    implementation 'android.arch.lifecycle:extensions:1.1.1'
 
     implementation files('libs\\activation.jar')
     implementation files('libs\\additionnal.jar')

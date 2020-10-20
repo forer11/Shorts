@@ -272,13 +272,13 @@ public class TextMessageDialog extends ActionDialog {
             // int[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            queryContacts(activity);
+            queryContacts();
             return true;
         }
     }
 
-    private void queryContacts(Activity activity) {
-        if (ContactsHandler.getContactNames()) {
+    private void queryContacts() {
+        if (ContactsHandler.getContactNames(getContext())) {
             createContactsList();
 
         } else {
@@ -293,7 +293,7 @@ public class TextMessageDialog extends ActionDialog {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                queryContacts(getActivity());
+                queryContacts();
                 buildRecyclerView();
             } else {
                 Toast.makeText(getActivity(),

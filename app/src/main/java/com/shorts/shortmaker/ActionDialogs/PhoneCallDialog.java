@@ -164,7 +164,7 @@ public class PhoneCallDialog extends ActionDialog implements
             // nt[]) overriden method
         } else {
             // Android version is lesser than 6.0 or the permission is already granted.
-            queryContacts(activity);
+            queryContacts();
             return true;
         }
     }
@@ -176,7 +176,7 @@ public class PhoneCallDialog extends ActionDialog implements
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED &&
                     grantResults[1] == PackageManager.PERMISSION_GRANTED) {
                 // Permission is granted
-                queryContacts(getActivity());
+                queryContacts();
                 buildRecyclerView();
             } else {
                 Toast.makeText(getActivity(),
@@ -187,8 +187,8 @@ public class PhoneCallDialog extends ActionDialog implements
         }
     }
 
-    private void queryContacts(Activity activity) {
-        if (ContactsHandler.getContactNames()) {
+    private void queryContacts() {
+        if (ContactsHandler.getContactNames(getContext())) {
             createContactsList();
         } else {
             //todo handel error

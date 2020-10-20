@@ -3,6 +3,7 @@ package com.shorts.shortmaker.SystemHandlers;
 import android.Manifest;
 import android.app.Activity;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
@@ -29,9 +30,9 @@ public class ContactsHandler {
      *
      * @return false if an error accord true otherwise.
      */
-    static public boolean getContactNames() {
+    static public boolean getContactNames(Context context) {
         if (!loadedContacts) {
-            ContentResolver cr = AppData.getContext().getContentResolver();
+            ContentResolver cr = context.getContentResolver();
             Cursor cursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
                     PROJECTION,
                     null,

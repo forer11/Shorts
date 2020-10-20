@@ -80,8 +80,7 @@ public class ForegroundLocationListenerService extends Service {
                             if (action != null) {
                                 action.setData(actionData.getData());
                                 action.activate(getApplication(),
-                                        getApplicationContext(),
-                                        true);
+                                        getApplicationContext());
                             }
                         }
                     }

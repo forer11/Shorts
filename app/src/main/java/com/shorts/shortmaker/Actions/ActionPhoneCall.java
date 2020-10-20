@@ -30,6 +30,7 @@ import com.shorts.shortmaker.ActionDialogs.PhoneCallDialog;
 import java.util.List;
 
 import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static com.shorts.shortmaker.AppData.inBackground;
 
 public class ActionPhoneCall implements Action {
     private static final int REQUEST_CALL = 1;
@@ -43,7 +44,7 @@ public class ActionPhoneCall implements Action {
 
 
     @Override
-    public void activate(Application application, final Context context, boolean isNewTask) {
+    public void activate(Application application, final Context context) {
         Log.v("YAY", "Phone call activated");
 
         if (ContextCompat.checkSelfPermission(
@@ -56,10 +57,10 @@ public class ActionPhoneCall implements Action {
                     String dial = "tel:" + number;
                     Intent callIntent = new Intent(Intent.ACTION_CALL);
                     callIntent.setData(Uri.parse(dial));
-                    callIntent.addFlags(Intent.FLAG_FROM_BACKGROUND);
-                    if (isNewTask) {
-                        callIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+                    if (inBackground) {
+                        callIntent.addFlags(Intent.FLAG_FROM_BACKGROUND);
                     }
+                    callIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(callIntent);
                 }
             }

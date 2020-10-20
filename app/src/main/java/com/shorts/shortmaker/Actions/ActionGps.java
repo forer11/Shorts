@@ -28,7 +28,7 @@ public class ActionGps implements Action {
     }
 
     @Override
-    public void activate(Application application, final Context context, boolean isNewTask) {
+    public void activate(Application application, final Context context) {
         new GpsUtils(context, context).turnGPSOn(new GpsUtils.onGpsListener() {
             @Override
             public void gpsStatus(boolean isGPSEnable) {
