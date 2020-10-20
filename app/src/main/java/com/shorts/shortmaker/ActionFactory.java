@@ -83,21 +83,21 @@ public class ActionFactory {
 
     public static final ArrayList<ActionData> ACTION_DATA_ARRAY_LIST = new ArrayList<ActionData>(
             Arrays.asList(
-                    new ActionData(ActionFactory.WAZE_ACTION_TITLE),
-                    new ActionData(ActionFactory.SPOTIFY_ACTION_TITLE),
-                    new ActionData(ActionFactory.ALARM_CLOCK_ACTION_TITLE),
-                    new ActionData(ActionFactory.PHONE_CALL_ACTION_TITLE),
-                    new ActionData(ActionFactory.TIMER_ACTION_TITLE),
-                    new ActionData(ActionFactory.TEXT_MESSAGE_ACTION_TITLE),
-                    new ActionData(ActionFactory.SOUND_MODE_ACTION_TITLE),
-                    new ActionData(ActionFactory.BRIGHTNESS_ACTION_TITLE),
-                    new ActionData(ActionFactory.ORIENTATION_ACTION_TITLE),
-                    new ActionData(ActionFactory.FLASH_ACTION_TITLE),
-                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE),
-                    new ActionData(ActionFactory.BLUETOOTH_ACTION_TITLE),
-                    new ActionData(ActionFactory.READ_AUTO_ACTION_TITLE),
-                    new ActionData(ActionFactory.GOOGLE_MAPS_ACTION_TITLE),
-                    new ActionData(ActionFactory.GPS_ACTION_TITLE)
+                    new ActionData(ActionFactory.WAZE_ACTION_TITLE, true),
+                    new ActionData(ActionFactory.SPOTIFY_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.ALARM_CLOCK_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.PHONE_CALL_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.TIMER_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.TEXT_MESSAGE_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.SOUND_MODE_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.BRIGHTNESS_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.ORIENTATION_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.FLASH_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.BLUETOOTH_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.READ_AUTO_ACTION_TITLE, false),
+                    new ActionData(ActionFactory.GOOGLE_MAPS_ACTION_TITLE, true),
+                    new ActionData(ActionFactory.GPS_ACTION_TITLE, false)
 
             ));
 

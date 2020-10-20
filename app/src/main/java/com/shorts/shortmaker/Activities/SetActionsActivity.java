@@ -26,6 +26,7 @@ import com.bumptech.glide.request.target.Target;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
+import com.shorts.shortmaker.Actions.Action;
 import com.shorts.shortmaker.Adapters.ActionAdapter;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
@@ -299,7 +300,22 @@ public class SetActionsActivity extends AppCompatActivity implements ChooseIconD
                         .ChooseActionDialogListener() {
                     @Override
                     public void onChoseAction(final ActionData action, int position) {
-                        showActionDialog(action, false);
+                        boolean isThirdInShortcut = false;
+                        if (action.getThirdParty()) {
+                            for (ActionData actionData : currentShortcut.getActionDataList()) {
+                                if (actionData.getThirdParty()) {
+                                    isThirdInShortcut = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (!isThirdInShortcut) {
+                            showActionDialog(action, false);
+                        } else {
+                            Toast.makeText(getBaseContext(),
+                                    "Sorry we allow only 1 third arty app at the moment",
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 });
             }

@@ -68,7 +68,6 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     public static int ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE = 5469;
 
 
-
     List<Shortcut> shortcuts;
     List<Shortcut> fullShortcutsList;
     private DraggableGridAdapter adapter;
@@ -93,7 +92,7 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         super.onCreate(savedInstanceState);
         // Show alert dialog to the user saying a separate permission is needed
         // Launch the settings activity if the user prefers
-        //TODO dialog here
+        //TODO dialog here carmel
         checkForeOverlayPermission();
         setContentView(R.layout.activity_main);
         getScreenSize();
@@ -267,21 +266,19 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         new Thread(new Runnable() {
             @Override
             public void run() {
-                //TODO on different thread
                 for (ActionData actionData : shortcut.getActionDataList()) {
                     if (actionData.getIsActivated() && actionData.getCondition()
                             == ActionFactory.Conditions.ON_DEFAULT) {
                         Action action = ActionFactory.getAction(actionData.getTitle());
                         if (action != null) {
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    action.setData(actionData.getData());
-                                    action.activate(getApplication(),
-                                            getApplicationContext());
-                                }
-                            }).start();
-
+                            action.setData(actionData.getData());
+                            action.activate(getApplication(),
+                                    getApplicationContext());
+                            try {
+                                Thread.sleep(1000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
