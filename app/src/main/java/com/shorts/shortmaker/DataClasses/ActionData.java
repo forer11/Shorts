@@ -14,6 +14,7 @@ public class ActionData {
     private String conditionDescription;
     /* True by default */
     private Boolean isActivated;
+    private Boolean isThirdParty;
 
 
     public ActionData() {
@@ -28,12 +29,14 @@ public class ActionData {
         this.description = actionData.description;
         this.condition = actionData.condition;
         this.conditionDescription = actionData.conditionDescription;
+        this.isThirdParty = actionData.isThirdParty;
     }
 
-    public ActionData(String title) {
+    public ActionData(String title, boolean isThirdParty) {
         this.title = title;
         isActivated = true;
         this.condition = ActionFactory.Conditions.ON_DEFAULT;
+        this.isThirdParty = isThirdParty;
         conditionDescription = ActionFactory.ENUM_TO_CONDITION_TITLE.get(this.condition);
         allocData();
     }
@@ -98,5 +101,13 @@ public class ActionData {
 
     public void setConditionDescription(String conditionDescription) {
         this.conditionDescription = conditionDescription;
+    }
+
+    public Boolean getThirdParty() {
+        return isThirdParty;
+    }
+
+    public void setThirdParty(Boolean thirdParty) {
+        isThirdParty = thirdParty;
     }
 }

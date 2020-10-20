@@ -73,17 +73,27 @@ public class ForegroundLocationListenerService extends Service {
                         longtitude,
                         results);
                 if (results[0] <= locationData.getRadius()) {
-                    for (ActionData actionData : currentShortcut.getActionDataList()) {
-                        if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION
-                                && actionData.getIsActivated()) {
-                            Action action = ActionFactory.getAction(actionData.getTitle());
-                            if (action != null) {
-                                action.setData(actionData.getData());
-                                action.activate(getApplication(),
-                                        getApplicationContext());
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (ActionData actionData : currentShortcut.getActionDataList()) {
+                                if (actionData.getCondition() == ActionFactory.Conditions.ON_AT_LOCATION
+                                        && actionData.getIsActivated()) {
+                                    Action action = ActionFactory.getAction(actionData.getTitle());
+                                    if (action != null) {
+                                        action.setData(actionData.getData());
+                                        action.activate(getApplication(),
+                                                getApplicationContext());
+                                        try {
+                                            Thread.sleep(1000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
+                    }).start();
                     stopLocationService();
                 }
 
