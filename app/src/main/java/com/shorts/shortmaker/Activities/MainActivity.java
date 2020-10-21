@@ -2,7 +2,9 @@ package com.shorts.shortmaker.Activities;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
@@ -90,9 +92,7 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Show alert dialog to the user saying a separate permission is needed
-        // Launch the settings activity if the user prefers
-        //TODO dialog here carmel
+
         checkForeOverlayPermission();
         setContentView(R.layout.activity_main);
         getScreenSize();
@@ -104,9 +104,20 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
 
     private void checkForeOverlayPermission() {
         if (!Settings.canDrawOverlays(this)) {
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+            new AlertDialog.Builder(this)
+                    .setTitle("More Permission is needed")
+                    .setMessage("A separate permission is needed")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                                    Uri.parse("package:" + getPackageName()));
+                            startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+                        }
+                    })
+                    .setNegativeButton("CANCEL", null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+
         }
     }
 
