@@ -45,7 +45,7 @@ public class ActionGoogleMaps implements Action {
         if (inBackground) {
             mapIntent.addFlags(Intent.FLAG_FROM_BACKGROUND);
         }
-        mapIntent.setFlags(FLAG_ACTIVITY_NEW_TASK);
+        mapIntent.addFlags(FLAG_ACTIVITY_NEW_TASK);
         mapIntent.setPackage("com.google.android.apps.maps");
         context.startActivity(mapIntent);
     }
