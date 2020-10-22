@@ -4,4 +4,6 @@
     <string name="maps_id">AIzaSyABCw_nZez0zjzHyHjIzPY4zMK6RoaA7Zk </string>
     <string name="fb_login_protocol_scheme">fb301932977528563</string>
     <string name="choose_an_icon">Choose an Icon</string>
+    <string name="permission_main_msg">For you to be able to lunch apps like Spotify,
+        Waze and so on from the background, you need to enable the show on top permission</string>
 </resources>

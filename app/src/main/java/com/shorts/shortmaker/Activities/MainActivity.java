@@ -3,6 +3,7 @@ package com.shorts.shortmaker.Activities;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -104,20 +106,34 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
 
     private void checkForeOverlayPermission() {
         if (!Settings.canDrawOverlays(this)) {
-            new AlertDialog.Builder(this)
-                    .setTitle("More Permission is needed")
-                    .setMessage("A separate permission is needed")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                                    Uri.parse("package:" + getPackageName()));
-                            startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
-                        }
-                    })
-                    .setNegativeButton("CANCEL", null)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .show();
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("Enabling On Top Permission is Recommended");
+            builder.setIcon(android.R.drawable.star_on);
+            builder.setCancelable(false);
 
+            LayoutInflater inflater = this.getLayoutInflater();
+            View dialogView = inflater.inflate(R.layout.main_permission_dialog, null);
+            builder.setView(dialogView);
+            Button okButton, cancelButton;
+            okButton = dialogView.findViewById(R.id.ok_button);
+            cancelButton = dialogView.findViewById(R.id.cancel_button);
+            Dialog dialog = builder.create();
+            okButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
+                            Uri.parse("package:" + getPackageName()));
+                    startActivityForResult(intent, ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE);
+                    dialog.dismiss();
+                }
+            });
+            cancelButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+            dialog.show();
         }
     }
 
