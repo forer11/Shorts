@@ -5,7 +5,6 @@ import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Point;
 import android.net.Uri;
@@ -39,7 +38,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.shorts.shortmaker.ActionDialogs.ActionDialog;
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.Actions.Action;
-import com.shorts.shortmaker.Actions.ActionGps;
 import com.shorts.shortmaker.Adapters.DraggableGridAdapter;
 import com.shorts.shortmaker.AppData;
 import com.shorts.shortmaker.DataClasses.ActionData;
@@ -212,17 +210,6 @@ public class MainActivity extends BaseMenuActivity implements ChooseIconDialog.O
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode != Activity.RESULT_OK) {
             return;
-        }
-        if (requestCode == PICKER_REQUEST_CODE) {
-//            String[] pathsList = data.getExtras().getStringArray(GligarPicker.IMAGES_RESULT); // action list of length 1
-//            Drawable drawable = Drawable.createFromPath(pathsList[0]);
-//            if (lastPosition != NO_POSITION) {
-//                shortcuts.get(lastPosition).setImageUrl(drawable);
-//                adapter.notifyItemChanged(lastPosition);
-//            }
-        }
-        if (requestCode == 99) {
-            ActionGps.setIsGPS(true); // flag maintain before get location
         }
 
         if (requestCode == ACTION_MANAGE_OVERLAY_PERMISSION_REQUEST_CODE) {
