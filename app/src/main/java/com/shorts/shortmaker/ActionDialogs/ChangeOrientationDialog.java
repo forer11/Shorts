@@ -2,7 +2,9 @@ package com.shorts.shortmaker.ActionDialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -19,14 +22,12 @@ import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
 
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-import static android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-import static com.shorts.shortmaker.Actions.ActionChangeOrientation.PORTRAIT_ORIENTATION;
+import static com.shorts.shortmaker.Actions.ActionChangeOrientation.AUTO_ROTATION_OFF;
 
 
 public class ChangeOrientationDialog extends ActionDialog {
 
-    public static final String CHANGE_ORIENTATION = "Change orientation";
+    public static final String CHANGE_ORIENTATION = "Set Auto Rotation Settings";
     private int mode;
     private Button okButton;
     private String[] modes;
@@ -42,6 +43,12 @@ public class ChangeOrientationDialog extends ActionDialog {
         return builder.create();
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        checkForPermission();
+    }
+
     protected void initializeDialogViews(AlertDialog.Builder builder, View view) {
         setModesSpinner(view);
         ImageView imageView = view.findViewById(R.id.imageView);
@@ -54,13 +61,14 @@ public class ChangeOrientationDialog extends ActionDialog {
     protected void getUserInput() {
         ArrayList<String> results = new ArrayList<>();
         results.add(String.valueOf(mode - 1));
-        String orientation = modes[mode];
-        String description = "set for " + orientation;
+        String orientation = ((mode - 1) == AUTO_ROTATION_OFF) ? "Off" : "On";
+        String description = "Auto Rotation set to: " + orientation;
         listener.applyUserInfo(results, description);
     }
 
     protected void setModesSpinner(View view) {
-        modes = new String[]{CHANGE_ORIENTATION, "Portrait", "Landscape"};
+        modes = new String[]{CHANGE_ORIENTATION, "Off",
+                "On"};
         Spinner spinner = (Spinner) view.findViewById(R.id.spinner);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
                 android.R.layout.simple_spinner_item, modes);
@@ -93,6 +101,16 @@ public class ChangeOrientationDialog extends ActionDialog {
             okButton.setEnabled(true);
         } else {
             okButton.setEnabled(false);
+        }
+    }
+
+    private void checkForPermission() {
+        if (!Settings.System.canWrite(getContext())) {
+            Intent brightnessIntent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+            getContext().startActivity(brightnessIntent);
+            Toast.makeText(getContext(), "Enable Modify system settings and try again"
+                    , Toast.LENGTH_SHORT).show();
+            dismiss();
         }
     }
 }
