@@ -108,22 +108,17 @@ public class BrightnessDialog extends ActionDialog {
         }
     }
 
-    @SuppressLint("ObsoleteSdkInt")
     private boolean checkForPermission(boolean isOnDismiss) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-
-            if (Settings.System.canWrite(getContext())) {
-                return true;
-            } else {
-                if (!isOnDismiss) {
-                    Intent brightnessIntent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                    getContext().startActivity(brightnessIntent);
-                    Toast.makeText(getContext(), "Enable Modify system settings and try again"
-                            , Toast.LENGTH_SHORT).show();
-                    dismiss();
-                }
+        if (Settings.System.canWrite(getContext())) {
+            return true;
+        } else {
+            if (!isOnDismiss) {
+                Intent brightnessIntent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                getContext().startActivity(brightnessIntent);
+                Toast.makeText(getContext(), "Enable Modify system settings and try again"
+                        , Toast.LENGTH_SHORT).show();
+                dismiss();
             }
-
         }
         return false;
     }
