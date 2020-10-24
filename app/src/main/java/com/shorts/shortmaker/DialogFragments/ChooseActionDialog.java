@@ -3,8 +3,11 @@ package com.shorts.shortmaker.DialogFragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.appcompat.app.AlertDialog;
@@ -26,6 +29,7 @@ import java.util.Objects;
 public class ChooseActionDialog extends AppCompatDialogFragment {
 
     private Context context;
+    private ChooseActionAdapter adapter;
 
     public interface ChooseActionDialogListener {
         void onChoseAction(ActionData action, int position);
@@ -46,6 +50,7 @@ public class ChooseActionDialog extends AppCompatDialogFragment {
                 .Builder(Objects.requireNonNull(getActivity()));
         LayoutInflater layoutInflater = getActivity().getLayoutInflater();
         View view = layoutInflater.inflate(R.layout.choose_action_dialog, null);
+        setSearchEditText(view);
         setExitClickListener(view);
         setRecyclerView(view);
         builder.setView(view);
@@ -63,11 +68,11 @@ public class ChooseActionDialog extends AppCompatDialogFragment {
     }
 
     private void setRecyclerView(View view) {
-        final ArrayList<ActionData> items = ActionFactory.ACTION_DATA_ARRAY_LIST;
+        final ArrayList<ActionData> items = new ArrayList<>(ActionFactory.ACTION_DATA_ARRAY_LIST);
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context);
-        ChooseActionAdapter adapter = new ChooseActionAdapter(items);
+        adapter = new ChooseActionAdapter(items);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
         itemClickHandler(items, adapter);
@@ -80,6 +85,25 @@ public class ChooseActionDialog extends AppCompatDialogFragment {
             public void onItemClick(int position) {
                 listener.onChoseAction(items.get(position), position);
                 dismiss();
+            }
+        });
+    }
+
+    private void setSearchEditText(View view) {
+        EditText searchEditText;
+        searchEditText = view.findViewById(R.id.search_edit_text);
+        searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                adapter.getFilter().filter(s.toString());
             }
         });
     }
