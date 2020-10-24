@@ -3,6 +3,8 @@ package com.shorts.shortmaker.Adapters;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -11,14 +13,18 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.shorts.shortmaker.ActionFactory;
 import com.shorts.shortmaker.DataClasses.ActionData;
+import com.shorts.shortmaker.DataClasses.Icon;
 import com.shorts.shortmaker.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapter.ActionViewHolder> {
+public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapter.ActionViewHolder>
+        implements Filterable {
 
     private ArrayList<ActionData> offeredActionsList;
+    private ArrayList<ActionData> fullActionsList;
     private OnItemClickListener onItemClickListener;
 
     public interface OnItemClickListener {
@@ -53,7 +59,9 @@ public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapte
     }
 
     public ChooseActionAdapter(ArrayList<ActionData> actionsObjList) {
-        offeredActionsList = actionsObjList;
+        this.offeredActionsList = actionsObjList;
+        this.fullActionsList = new ArrayList<>(this.offeredActionsList);
+
     }
 
     @Override
@@ -79,4 +87,40 @@ public class ChooseActionAdapter extends RecyclerView.Adapter<ChooseActionAdapte
     public int getItemCount() {
         return offeredActionsList.size();
     }
+
+    /*********************** Search implementation ******************************/
+
+    @Override
+    public Filter getFilter() {
+        return ActionsFilter;
+    }
+
+    private Filter ActionsFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<ActionData> filteredActions = new ArrayList<>();
+
+            if (constraint == null || constraint.length() == 0) {
+                filteredActions.addAll(fullActionsList);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (ActionData actionData : fullActionsList) {
+                    if (actionData.getTitle().toLowerCase().trim().contains(filterPattern)) {
+                        filteredActions.add(actionData);
+                    }
+                }
+            }
+
+            FilterResults results = new FilterResults();
+            results.values = filteredActions;
+            return results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            offeredActionsList.clear();
+            offeredActionsList.addAll((List) results.values);
+            notifyDataSetChanged();
+        }
+    };
 }
