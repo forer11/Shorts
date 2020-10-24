@@ -49,7 +49,6 @@ public class ActionChangeOrientation implements Action {
     @Override
     public void setData(List<String> data) {
         desiredOrientation = !(Integer.parseInt(data.get(0)) == AUTO_ROTATION_OFF);
-        System.out.println("ss");
     }
 
     public static void setAutoOrientationEnabled(Context context, boolean enabled) {
