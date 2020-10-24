@@ -7,7 +7,6 @@ import com.shorts.shortmaker.Actions.ActionBrightness;
 import com.shorts.shortmaker.Actions.ActionChangeOrientation;
 import com.shorts.shortmaker.Actions.ActionGmail;
 import com.shorts.shortmaker.Actions.ActionGoogleMaps;
-import com.shorts.shortmaker.Actions.ActionGps;
 import com.shorts.shortmaker.Actions.ActionOpenFlash;
 import com.shorts.shortmaker.Actions.ActionPhoneCall;
 import com.shorts.shortmaker.Actions.ActionReadAuto;
@@ -53,13 +52,12 @@ public class ActionFactory {
     public static final String PHONE_CALL_ACTION_TITLE = "Phone call";
     public static final String TIMER_ACTION_TITLE = "Timer";
     public static final String BRIGHTNESS_ACTION_TITLE = "Brightness";
-    public static final String ORIENTATION_ACTION_TITLE = "Orientation";
+    public static final String ORIENTATION_ACTION_TITLE = "Auto Rotation";
     public static final String FLASH_ACTION_TITLE = "Flashlight";
     public static final String GMAIL_ACTION_TITLE = "Gmail";
     public static final String BLUETOOTH_ACTION_TITLE = "Bluetooth";
     public static final String READ_AUTO_ACTION_TITLE = "Read auto";
     public static final String GOOGLE_MAPS_ACTION_TITLE = "Google maps";
-    public static final String GPS_ACTION_TITLE = "Gps";
 
 
     public static final HashMap<String, Integer> ICON_NAME_TO_PATH = new HashMap<String, Integer>() {{
@@ -77,7 +75,6 @@ public class ActionFactory {
         put(BLUETOOTH_ACTION_TITLE, R.drawable.bluetooth_icon);
         put(READ_AUTO_ACTION_TITLE, R.drawable.read_auto_icon);
         put(GOOGLE_MAPS_ACTION_TITLE, R.drawable.google_maps_icon);
-        put(GPS_ACTION_TITLE, R.drawable.gps_icon);
 
     }};
 
@@ -93,12 +90,10 @@ public class ActionFactory {
                     new ActionData(ActionFactory.BRIGHTNESS_ACTION_TITLE, false),
                     new ActionData(ActionFactory.ORIENTATION_ACTION_TITLE, false),
                     new ActionData(ActionFactory.FLASH_ACTION_TITLE, false),
-                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE, false),
+//                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE, false),
                     new ActionData(ActionFactory.BLUETOOTH_ACTION_TITLE, false),
                     new ActionData(ActionFactory.READ_AUTO_ACTION_TITLE, false),
-                    new ActionData(ActionFactory.GOOGLE_MAPS_ACTION_TITLE, true),
-                    new ActionData(ActionFactory.GPS_ACTION_TITLE, false)
-
+                    new ActionData(ActionFactory.GOOGLE_MAPS_ACTION_TITLE, true)
             ));
 
 
@@ -132,8 +127,6 @@ public class ActionFactory {
                 return new ActionReadAuto();
             case GOOGLE_MAPS_ACTION_TITLE:
                 return new ActionGoogleMaps();
-            case GPS_ACTION_TITLE:
-                return new ActionGps();
         }
         return null;
     }
