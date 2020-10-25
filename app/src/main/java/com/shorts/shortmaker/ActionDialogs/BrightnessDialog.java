@@ -138,7 +138,7 @@ public class BrightnessDialog extends ActionDialog {
         ImageView imageView = view.findViewById(R.id.imageView);
         okButton = view.findViewById(R.id.okButton);
         setDialogImage(imageView, R.drawable.dark_bright);
-        buildDialog(builder, view, "Turn on wifi", okButton);
+        buildDialog(builder, view, "Modify Brightness", okButton);
     }
 
 

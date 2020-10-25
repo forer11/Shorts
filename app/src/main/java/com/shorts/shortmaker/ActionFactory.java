@@ -14,6 +14,7 @@ import com.shorts.shortmaker.Actions.ActionSendTextMessage;
 import com.shorts.shortmaker.Actions.ActionSetTimer;
 import com.shorts.shortmaker.Actions.ActionSoundSettings;
 import com.shorts.shortmaker.Actions.ActionSpotify;
+import com.shorts.shortmaker.Actions.ActionVolume;
 import com.shorts.shortmaker.Actions.ActionWaze;
 import com.shorts.shortmaker.DataClasses.ActionData;
 
@@ -58,6 +59,7 @@ public class ActionFactory {
     public static final String BLUETOOTH_ACTION_TITLE = "Bluetooth";
     public static final String READ_AUTO_ACTION_TITLE = "Read auto";
     public static final String GOOGLE_MAPS_ACTION_TITLE = "Google maps";
+    public static final String CHANGE_VOLUME_ACTION_TITLE = "Change Volume";
 
 
     public static final HashMap<String, Integer> ICON_NAME_TO_PATH = new HashMap<String, Integer>() {{
@@ -75,6 +77,8 @@ public class ActionFactory {
         put(BLUETOOTH_ACTION_TITLE, R.drawable.bluetooth_icon);
         put(READ_AUTO_ACTION_TITLE, R.drawable.read_auto_icon);
         put(GOOGLE_MAPS_ACTION_TITLE, R.drawable.google_maps_icon);
+        put(CHANGE_VOLUME_ACTION_TITLE, R.drawable.equlizer_icon);
+
 
     }};
 
@@ -93,7 +97,9 @@ public class ActionFactory {
 //                    new ActionData(ActionFactory.GMAIL_ACTION_TITLE, false),
                     new ActionData(ActionFactory.BLUETOOTH_ACTION_TITLE, false),
                     new ActionData(ActionFactory.READ_AUTO_ACTION_TITLE, false),
-                    new ActionData(ActionFactory.GOOGLE_MAPS_ACTION_TITLE, true)
+                    new ActionData(ActionFactory.GOOGLE_MAPS_ACTION_TITLE, true),
+                    new ActionData(ActionFactory.CHANGE_VOLUME_ACTION_TITLE, false)
+
             ));
 
 
@@ -127,6 +133,8 @@ public class ActionFactory {
                 return new ActionReadAuto();
             case GOOGLE_MAPS_ACTION_TITLE:
                 return new ActionGoogleMaps();
+            case CHANGE_VOLUME_ACTION_TITLE:
+                return new ActionVolume();
         }
         return null;
     }

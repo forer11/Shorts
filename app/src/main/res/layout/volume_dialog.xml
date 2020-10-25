@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fadeScrollbars="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_dialog_image_size"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitCenter" />
+
+        <TextView
+            android:id="@+id/ring_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/imageView"
+            android:layout_marginTop="5dp"
+            android:text="Ring Volume" />
+
+        <ImageView
+            android:id="@+id/ring_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ring_text"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@mipmap/volume_icon" />
+
+        <SeekBar
+            android:id="@+id/ring_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ring_text"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@id/ring_icon" />
+
+        <TextView
+            android:id="@+id/media_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ring_icon"
+            android:layout_marginTop="5dp"
+            android:text="Media Volume" />
+
+        <ImageView
+            android:id="@+id/media_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/media_text"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@mipmap/volume_icon" />
+
+        <SeekBar
+            android:id="@+id/media_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/media_text"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@id/media_icon" />
+
+        <TextView
+            android:id="@+id/notification_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/media_icon"
+            android:layout_marginTop="5dp"
+            android:text="notifications Volume" />
+
+        <ImageView
+            android:id="@+id/notification_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/notification_text"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="10dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@mipmap/volume_icon" />
+
+        <SeekBar
+            android:id="@+id/notification_seek_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/notification_text"
+            android:layout_marginTop="12dp"
+            android:layout_toEndOf="@id/notification_icon" />
+
+        <Button
+            android:id="@+id/okButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notification_seek_bar"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:text="OK" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/notification_seek_bar"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/okButton"
+            android:text="CANCEL" />
+    </RelativeLayout>
+</ScrollView>
